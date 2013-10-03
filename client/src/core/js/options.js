@@ -22,6 +22,7 @@ define([
             sectionFolding: true,
             innerNavigation: true,
             trimSpaces: false, //trimspaces in example sections to emulate HTML minify, off by default
+            specAssets: true,
             scrollToHash: true,
             sections: true,
             globalNav: true,
@@ -31,6 +32,9 @@ define([
         modulesOptions : {
             innerNavigation : {
                 hashSymb: '!'
+            },
+            specAssets : {
+                postponedInit : true
             }
         },
 
