@@ -570,20 +570,32 @@ a.source_catalog_a:hover .source_catalog_title {
 /* /Navigation
 ---------------------------------------------------------------------------------- *//* Info blocks
 ---------------------------------------------------------------------------------- */
+.source_data,
+.source_doc,
+.source_note,
 .source_warn,
 .source_info {
   display: block;
   position: relative;
   border-radius: 10px;
 }
+.source_data:empty,
+.source_doc:empty,
+.source_note:empty,
 .source_warn:empty,
 .source_info:empty {
   display: none;
 }
+.source_data p,
+.source_doc p,
+.source_note p,
 .source_warn p,
 .source_info p {
   margin: 0 0 10px;
 }
+.source_data p:last-child,
+.source_doc p:last-child,
+.source_note p:last-child,
 .source_warn p:last-child,
 .source_info p:last-child {
   margin-bottom: 0;
@@ -601,6 +613,26 @@ body p.source_warn,
   margin: 20px 33.6% 20px 0;
   padding: 10px 10px 10px 35px;
   background: #ffe2e5 url(../i/warn.png) no-repeat 13px 13px;
+}
+body p.source_note,
+.source_note {
+  margin: 20px 33.6% 20px 0;
+  padding: 10px 10px 10px 35px;
+  background: #dcf1fa url(../i/note.png) no-repeat 13px 13px;
+}
+body p.source_doc,
+.source_doc {
+  margin: 20px 33.6% 20px 0;
+  padding: 10px 25px;
+  background: #DCFCDA;
+}
+body p.source_data,
+.source_data {
+  margin: 20px 33.6% 20px 0;
+  padding: 10px 25px;
+  border: 1px dotted #ccc;
+  background: #f9f9f9;
+  font-size: 11px;
 }
 /* /Info blocks
 ---------------------------------------------------------------------------------- *//* Section

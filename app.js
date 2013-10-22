@@ -15,6 +15,17 @@ global.opts = require('./core/options/');
 global.app.set('views', __dirname + '/core/views');
 global.app.set('specs path', __dirname + '/' + global.opts.common.pathToSpecs);
 
+/* LESS processing */
+var lessMiddleware = require('less-middleware');
+var path = require('path');
+
+global.app.use(lessMiddleware({
+    src: __dirname + "/public",
+    force: true
+}));
+global.app.use(express.static(path.join(__dirname, 'public')));
+/* /LESS processing */
+
 /*  Clarify module */
 var clarify = require('./core/clarify');
 app.use(clarify);
