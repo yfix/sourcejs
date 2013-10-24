@@ -16,6 +16,7 @@ global.app.set('views', __dirname + '/core/views');
 global.app.set('specs path', __dirname + '/' + global.opts.common.pathToSpecs);
 
 /* LESS processing */
+//TODO: add config and move to other module, and add configurable varibles (/public folder etc)
 var lessMiddleware = require('less-middleware');
 var path = require('path');
 
