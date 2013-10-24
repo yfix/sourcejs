@@ -22,6 +22,7 @@
     "grunt-contrib-cssmin": "~0.6.2",
     "grunt-sftp-deploy": "0.0.9",
     "grunt-contrib-less": "~0.7.0",
-    "jsdom": "~0.8.5"
+    "jsdom": "~0.8.5",
+    "less-middleware": "~0.1.12"
   }
 }
