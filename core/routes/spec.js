@@ -1,4 +1,5 @@
-var fs = require('fs');
+var fs = require('fs'),
+        ejs = require('ejs');
 
 function serveContent(filePath, pathToSpec, res) {
     fs.exists(filePath, function(exists) {

@@ -48,9 +48,6 @@ global.app.use(logErrors);
 global.app.use(clientErrorHandler);
 global.app.use(errorHandler);
 
-/* serve static content */
-global.app.use(express.static(global.app.get('specs path')));
-
 try {
     /* Routes */
     global.routes = require('./core/routes');
@@ -64,6 +61,9 @@ try {
     console.log(e);
     process.exit(e.code);
 }
+
+/* serve static content */
+global.app.use(express.static(global.app.get('specs path')));
 
 if (!module.parent) {
     global.app.listen(80);
