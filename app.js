@@ -7,7 +7,9 @@
 /* Module dependencies */
 var express = require('express')
     , colors = require('colors')
-    , fs = require('fs');
+    , fs = require('fs')
+    , lessMiddleware = require('less-middleware')
+    , os = require('os');
 
 global.app = express();
 global.opts = require('./core/options/');
@@ -17,14 +19,12 @@ global.app.set('specs path', __dirname + '/' + global.opts.common.pathToSpecs);
 
 /* LESS processing */
 //TODO: add config and move to other module, and add configurable varibles (/public folder etc)
-var lessMiddleware = require('less-middleware');
-var path = require('path');
-
+var tmpDir = os.tmpDir();
 global.app.use(lessMiddleware({
-    src: __dirname + "/public",
+    src: global.app.get('specs path'),
+    dest: tmpDir,
     force: true
 }));
-global.app.use(express.static(path.join(__dirname, 'public')));
 /* /LESS processing */
 
 /*  Clarify module */
@@ -64,6 +64,7 @@ try {
 
 /* serve static content */
 global.app.use(express.static(global.app.get('specs path')));
+app.use(express.static(tmpDir));
 
 if (!module.parent) {
     global.app.listen(80);
