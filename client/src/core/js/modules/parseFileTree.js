@@ -6,12 +6,8 @@
 *
 * */
 
-var MIN = 0,
-    MAX = 1000;
-var rand = Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
-
 //Getting always new version of navigation JSON
-var fileTreeJson = 'text!/data/pages_tree.json?' + rand;
+var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
 
 define([
     'jquery',
@@ -35,23 +31,48 @@ define([
             fileTree = {};
 
         var searchCat = function(currentCatObj, currentCat, toCheckCat) {
-            for (var currentSubCat in currentCatObj) {
+            for (var currentSubCat in currentCatObj) { //console.log(currentSubCat);
                 var targetSubCatObj = currentCatObj[currentSubCat];
 
                 if (typeof targetSubCatObj === 'object') {
 
                     //Need to collect only spec pages objects
                     if ( _this.checkCatInfo(targetSubCatObj, currentSubCat, getCatInfo) && _this.checkCat(currentCat, getSpecificCat, toCheckCat) ) {
-
                         //Checking if object is already there
                         if (typeof fileTree[currentSubCat] != 'object') {
                             fileTree[currentSubCat] = targetSubCatObj;
                         }
 
-                    } else {
-
+                    } else {                 						
                         //Going deeper
-                        if (_this.checkCat(currentCat, getSpecificCat, toCheckCat)) {
+                        
+                        // complex/paths/handles/here
+                        if ( (getSpecificCat !== undefined) && (getSpecificCat.indexOf('/') !== -1) ) { 
+                        	var getSpecificCatArr = getSpecificCat.split('/'),
+                        		success = true,
+                        		currentCheckCat = currentSubCat,
+                        		returnedTreeObj = currentCatObj;
+                        	
+                        	for (var i = 0; i < getSpecificCatArr.length; i++) {                      	
+                        		if (_this.checkCat(currentCheckCat, getSpecificCatArr[i])) {
+                        			currentCheckCat = getSpecificCatArr[i+1];
+                        		} else {
+                        			success = false;
+                        			break;
+                        		}
+                        		
+                        		returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
+                        	}
+                        	
+                        	if (success) {                        		
+                        		for (innerCat in returnedTreeObj) {
+                        			if ( _this.checkCatInfo(returnedTreeObj[innerCat]) ) {                        				
+                        				fileTree[innerCat] = returnedTreeObj[innerCat];
+                        			}
+                        		}
+                        	}
+                        	
+                        } else if (_this.checkCat(currentCat, getSpecificCat, toCheckCat)) {
                             //Turn off cat checking in this process, to get all inner folders
 
                             //Except other cats in specific cat search mode
@@ -62,7 +83,7 @@ define([
                                     searchCat(targetSubCatObj, currentSubCat, true);
                                 }
 
-                            } else {
+                            } else { 
                                 searchCat(targetSubCatObj, currentSubCat, true);
                             }
 
@@ -102,7 +123,6 @@ define([
         var getSpecificCat = getSpecificCat,
             currentCat = currentCat,
             toCheckCat = toCheckCat;
-
 
         var checkCat = function() {
 

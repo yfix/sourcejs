@@ -65,8 +65,8 @@ function fileTree(dir) {
         if (fileStats.isDirectory()) {
 
             var childObj = fileTree(urlToFile);
-            if (fs.existsSync(urlToFile+"/"+fileMask) && Object.getOwnPropertyNames(childObj).length !== 0) {
-                arr[file] = extend(arr[file],childObj)
+            if (/*fs.existsSync(urlToFile+"/"+fileMask) &&*/ Object.getOwnPropertyNames(childObj).length !== 0) { // filter by dir/index.html disabled
+                arr[file] = extend(arr[file],childObj);
             }
 
         } else if (file == fileMask) {
@@ -84,7 +84,7 @@ function fileTree(dir) {
                 author = fileJSON.author,
                 title = fileJSON.title,
                 keywords = fileJSON.keywords;
-                info = fileJSON.info;
+                info = fileJSON.info;          
         } else {
             // if infoFile don't exist in project folder
             var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),

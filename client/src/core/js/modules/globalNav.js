@@ -68,6 +68,8 @@ define([
             RES_NO_CATALOG = this.options.modulesOptions.globalNav.RES_NO_CATALOG,
 
             pageLimit = this.options.modulesOptions.globalNav.pageLimit;
+            sortType = this.options.modulesOptions.globalNav.sortType || 'sortByDate';
+            ignorePages = this.options.modulesOptions.globalNav.ignorePages || [];
 
         L_CATALOG.each(function () {
             var t = $(this),
@@ -89,17 +91,23 @@ define([
 
                     // sort
                     targetCatArray.sort(function(a, b){
-                        return _this.sortByDate(a, b)
-                                || _this.sortByAlpha(a, b);
+                    	if (sortType == 'sortByDate') {
+                    		return _this.sortByDate(a, b)
+                    	} else if (sortType == 'sortByAlpha') {
+                    		return _this.sortByAlpha(a, b);  
+                    	} else {
+							return _this.sortByDate(a, b)
+									|| _this.sortByAlpha(a, b);                    	
+                    	}                    
                     });
-                }
+                } 
 
                 //Collecting nav tree
                 if (L_CATALOG_LIST.length === 1 && targetCatArray != undefined) {
+                                
                     var navTreeHTML = '',
                         authorName = '',
-
-                        targetCatUrl = targetCat['index.html']['url'];
+                        targetCatUrl =  (targetCat['index.html'] !== undefined) ? targetCat['index.html']['url'] : targetCatArray['0']['index.html']['url'] ;
 
                     //Building navigation HTML
                     var addNavPosition = function (target) {
@@ -137,6 +145,17 @@ define([
 
                     for (var j = 0; j < navListItems; j++) {
                         var targetPage = targetCatArray[j]['index.html'];
+
+                        //Ignore page list
+                        if ( $.inArray(targetPage.title, ignorePages) !== -1 ) {
+                        	continue;
+                        }
+                        
+                        //Undefined title
+                        if (targetPage === undefined || targetPage.title === undefined) {
+                        	continue;
+                        }
+                        
                         addNavPosition(targetPage);
                     }
 
