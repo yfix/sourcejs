@@ -74,7 +74,6 @@ define([
         L_CATALOG.each(function () {
             var t = $(this),
                 navListCat = t.attr('data-nav'),
-
                 L_CATALOG_LIST = t.find('.' + CATALOG_LIST);
 
             if (navListCat != '') { //Catalog has data about category
@@ -94,17 +93,17 @@ define([
                     	if (sortType == 'sortByDate') {
                     		return _this.sortByDate(a, b)
                     	} else if (sortType == 'sortByAlpha') {
-                    		return _this.sortByAlpha(a, b);  
+                    		return _this.sortByAlpha(a, b);
                     	} else {
 							return _this.sortByDate(a, b)
-									|| _this.sortByAlpha(a, b);                    	
-                    	}                    
+									|| _this.sortByAlpha(a, b);
+                    	}
                     });
-                } 
+                }
 
                 //Collecting nav tree
                 if (L_CATALOG_LIST.length === 1 && targetCatArray != undefined) {
-                                
+
                     var navTreeHTML = '',
                         authorName = '',
                         targetCatUrl =  (targetCat['index.html'] !== undefined) ? targetCat['index.html']['url'] : targetCatArray['0']['index.html']['url'] ;
@@ -150,12 +149,12 @@ define([
                         if ( $.inArray(targetPage.title, ignorePages) !== -1 ) {
                         	continue;
                         }
-                        
+
                         //Undefined title
                         if (targetPage === undefined || targetPage.title === undefined) {
                         	continue;
                         }
-                        
+
                         addNavPosition(targetPage);
                     }
 

@@ -18,6 +18,7 @@ define([
         this.json = $.parseJSON(data.toString());
     }
 
+
     /* наследуем от Module */
     ParseFileTree.prototype = module.createInstance();
     ParseFileTree.prototype.constructor = ParseFileTree;
@@ -31,7 +32,7 @@ define([
             fileTree = {};
 
         var searchCat = function(currentCatObj, currentCat, toCheckCat) {
-            for (var currentSubCat in currentCatObj) { //console.log(currentSubCat);
+            for (var currentSubCat in currentCatObj) {
                 var targetSubCatObj = currentCatObj[currentSubCat];
 
                 if (typeof targetSubCatObj === 'object') {
@@ -43,35 +44,62 @@ define([
                             fileTree[currentSubCat] = targetSubCatObj;
                         }
 
-                    } else {                 						
+                    } else {
                         //Going deeper
-                        
+
                         // complex/paths/handles/here
-                        if ( (getSpecificCat !== undefined) && (getSpecificCat.indexOf('/') !== -1) ) { 
-                        	var getSpecificCatArr = getSpecificCat.split('/'),
-                        		success = true,
-                        		currentCheckCat = currentSubCat,
-                        		returnedTreeObj = currentCatObj;
-                        	
-                        	for (var i = 0; i < getSpecificCatArr.length; i++) {                      	
-                        		if (_this.checkCat(currentCheckCat, getSpecificCatArr[i])) {
-                        			currentCheckCat = getSpecificCatArr[i+1];
-                        		} else {
-                        			success = false;
-                        			break;
+                        if ( (getSpecificCat !== undefined) && (getSpecificCat.indexOf('/') !== -1) ) {
+							var getSpecificCatArr = getSpecificCat.split('/'),
+								success = true;
+
+                        	// absolute path
+                        	if (getSpecificCat.indexOf('/') == 0) {
+                        		returnedTreeObj = _this.json;
+
+                        		for (var i = 1; i < getSpecificCatArr.length; i++) {
+
+									returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
                         		}
-                        		
-                        		returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
+
+								for (innerCat in returnedTreeObj) {
+									if ( _this.checkCatInfo(returnedTreeObj[innerCat]) ) {
+										fileTree[innerCat] = returnedTreeObj[innerCat];
+									}
+								}
+
+                        	} else {
+                        		//relative path
+
+								var	currentCheckCat = currentSubCat,
+									returnedTreeObj = currentCatObj;
+
+								for (var i = 0; i < getSpecificCatArr.length; i++) {
+									if (_this.checkCat(currentCheckCat, getSpecificCatArr[i])) {
+										currentCheckCat = getSpecificCatArr[i+1];
+									} else {
+										success = false;
+										break;
+									}
+
+									returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
+								}
+
+								if (success) {
+									for (innerCat in returnedTreeObj) {
+										if ( _this.checkCatInfo(returnedTreeObj[innerCat]) ) {
+											fileTree[innerCat] = returnedTreeObj[innerCat];
+											continue;
+										}
+
+										if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, true) ) {
+											fileTree[innerCat] = returnedTreeObj;
+										}
+									}
+								}
+
+
                         	}
-                        	
-                        	if (success) {                        		
-                        		for (innerCat in returnedTreeObj) {
-                        			if ( _this.checkCatInfo(returnedTreeObj[innerCat]) ) {                        				
-                        				fileTree[innerCat] = returnedTreeObj[innerCat];
-                        			}
-                        		}
-                        	}
-                        	
+
                         } else if (_this.checkCat(currentCat, getSpecificCat, toCheckCat)) {
                             //Turn off cat checking in this process, to get all inner folders
 
@@ -83,7 +111,7 @@ define([
                                     searchCat(targetSubCatObj, currentSubCat, true);
                                 }
 
-                            } else { 
+                            } else {
                                 searchCat(targetSubCatObj, currentSubCat, true);
                             }
 
