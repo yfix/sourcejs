@@ -12,7 +12,7 @@ page.onLoadFinished = function (msg) {
 	else {
 
         //TODO: create and check callback from templater
-//        setTimeout(function(){
+        setTimeout(function(){
             var code = page.evaluate(function (id) {
             var html = {};
 
@@ -22,8 +22,8 @@ page.onLoadFinished = function (msg) {
                     headTag = document.head,
                     links = headTag.getElementsByTagName('link'),
                     linksArr = [],
-					scripts = headTag.getElementsByTagName('script'),
-					scriptsArr = [],
+										scripts = headTag.getElementsByTagName('script'),
+										scriptsArr = [],
                     styleTag = headTag.getElementsByTagName('style')[0],
                     styleTagHtml = (styleTag)? styleTag.outerHTML : "";
 
@@ -41,7 +41,11 @@ page.onLoadFinished = function (msg) {
 				while(i < scripts.length) {
 					var el = scripts[i];
 
-					if(!el.dataset['requiremodule'] && !el.dataset['main']) scriptsArr.push(el.outerHTML);
+					if( el.dataset['nonclarify'] ) {
+						++i;
+						continue;
+					}
+					scriptsArr.push(el.outerHTML);
 					++i;
 				}
 
@@ -103,7 +107,7 @@ page.onLoadFinished = function (msg) {
         }, id);
 
         console.log(JSON.stringify(code, null, 1));
-//        }, 250);
+        }, 250);
 	}
 
     setTimeout(function(){
