@@ -3,6 +3,8 @@ var
 	url = require('url'),
 	path = require('path'),
 	exec = require('child_process').exec,
+	jsdom = require('jsdom'),
+	dom = require('./dom'),
 	jady = require('./jady');
 
 var
@@ -15,56 +17,66 @@ module.exports = function reply(req, res, next) {
 		parsedUrl = url.parse(req.url, true),
 		urlPath = parsedUrl.pathname,
 		urlHost = req.headers.host,
-		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath;
+		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath,
+		id = parsedUrl.query.id;
+//debugger
 
-	// if we have query on index.html
+//  if we have query on index.html
 	if (path.basename(parsedUrl.path).indexOf('index.html') != -1 && parsedUrl.query.get) {
 		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
+
 			if (err) res.end('Huston, we have 404.\n'+ err);
 
-			// executes ph.js via phantomjs
-			var id = parsedUrl.query.id,
-				params = "sudo core/clarify/phantomjs " +
-						"core/clarify/phantom/ph.js " +
-						"http://" + urlAdress + " " + id;
+			jsdom.env(data.toString(), function (err, win) {
+//  url mode
+//			jsdom.env(publicPath + '/' + urlPath, function (err, win) {
 
-			var child = exec(params, function (err, stdout, stderr) {
-				if (err) console.log('Exec error: ' + err);
-				else {
-					try {
-						var html = JSON.parse(stdout);
-						console.log(html);
-					} catch(e) {
-						html = 'Parsing error: ' + e;
-						console.log(html);
-					}
+				var
+					doc = win.document,
+					html = {};
 
-					if (html.source) {
-						// переменные для Jade
-						var locals = {
-							head: {
-								title: html.title,
-								mAuthor: html.meta.author,
-								mKeywords: html.meta.keywords,
-								mDescription: html.meta.description,
-								scripts: html.scripts,
-								stylesheets: html.styles
-							},
-							body: {
-								spec: html.source.content,
-								specLength: html.source.length,
-								specId: html.source.id,
-								specIdSum: html.source.idSum,
-								homeLink: 'http://'+ urlAdress
-							},
-							pretty: true
-						};
-						res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-						res.end(jady(locals));
-					} else {
-						res.end('STDOUT: can\'t recieve content.');
-					}
+				try {
+					html.title = doc.title;
+					html.meta = dom.getMeta(doc);
+					html.styles = dom.getHeadData(doc)[0];
+					html.scripts = dom.getHeadData(doc)[1];
+					html.source = dom.getSource(doc, id);
+				} catch (e) {
+					html.err = {
+						text: e,
+						type: e.name
+					};
 				}
+
+				win.close();
+				console.log(html);
+
+				if (html.source) {
+					// переменные для Jade
+					var locals = {
+						head: {
+							title: html.title,
+							mAuthor: html.meta.author,
+							mKeywords: html.meta.keywords,
+							mDescription: html.meta.description,
+							scripts: html.scripts,
+							stylesheets: html.styles
+						},
+						body: {
+							spec: html.source.content,
+							specLength: html.source.length,
+							specId: html.source.id,
+							specIdSum: html.source.idSum,
+							homeLink: 'http://'+ urlAdress
+						},
+						pretty: true
+					};
+					res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+//					res.end('all fine');
+						res.end(jady(locals));
+
+				} else res.end('STDOUT: can\'t recieve content.');
+
 			});
 
 		});
@@ -74,11 +86,11 @@ module.exports = function reply(req, res, next) {
 
 
 // TODO: check list below
-// [done] сделать красивый вывод html
+// [done] beaty html output
 // [done] разобрать и создать json для заполнения header
 // [done] парсинг нескольких спек сразу
-// * [parital support] переключатели на други спеки, если запрошенная не одна, иконки для get-запроса со большой спеки
-// * [] phantomjs -> jsdom
+// [done] переключатели на други спеки, если запрошенная не одна, иконки для get-запроса со большой спеки
+// [...] phantomjs -> jsdom
 // * [] Лёха: универсальный шаблонизатор для страниц контекста
 // * [] убрать захардкоженные пути
 // * [] сделать вывод полностью чистой спеки без любых элементов ОКП

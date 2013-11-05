@@ -1,5 +1,7 @@
-var page = require('webpage').create(),
-	system = require('system');
+var
+	page = require('webpage').create(),
+	system = require('system'),
+	dom = require('../dom');
 
 // arguments from node query
 var url = system.args[1],
