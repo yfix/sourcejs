@@ -49,12 +49,12 @@ define([
         //todo: move to post-init script
         setTimeout(function(){
             $("[data-" + o.assetAttrClone + "]").assetCloner();
-            $("[data-" + o.assetAttrCopy + "]").assetCopyPaste();
+            $("[data-" + o.assetAttrPaste + "]").assetCopyPaste();
         }, o.postponedTo);
     }
     else {
         $("[data-" + o.assetAttrClone + "]").assetCloner();
-        $("[data-" + o.assetAttrCopy + "]").assetCopyPaste();
+        $("[data-" + o.assetAttrPaste + "]").assetCopyPaste();
     }
 
     //
