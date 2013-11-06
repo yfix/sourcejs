@@ -29,7 +29,8 @@ define([
         var _this = this,
             json = _this.json,
             getSpecificCat = getSpecificCat,
-            fileTree = {};
+            fileTree = {},
+            totalTree = {};
 
         var searchCat = function(currentCatObj, currentCat, toCheckCat) {
             for (var currentSubCat in currentCatObj) {
@@ -41,7 +42,7 @@ define([
                     if ( _this.checkCatInfo(targetSubCatObj, currentSubCat, getCatInfo) && _this.checkCat(currentCat, getSpecificCat, toCheckCat) ) {
                         //Checking if object is already there
                         if (typeof fileTree[currentSubCat] != 'object') {
-                            fileTree[currentSubCat] = targetSubCatObj;
+                            fileTree[currentCat + '/' + currentSubCat] = targetSubCatObj;
                         }
 
                     } else {
@@ -130,10 +131,12 @@ define([
 
             //Go inside first level folders
             searchCat(currentCatObj, currentCat);
+
+            totalTree = $.extend(totalTree, fileTree);
         }
 
         if (Object.getOwnPropertyNames(fileTree).length > 0) {
-            return fileTree;
+            return totalTree;
         }
 
     };
@@ -194,7 +197,26 @@ define([
 
     ParseFileTree.prototype.getAllPages = function () {
         //Get pages from all categories
-        return this.parsePages();
+        var fileTree = this.parsePages(),
+        	fileFlat = {},
+        	_this = this;
+
+        var lookForIndexOrGoDeeper = function(tree, cat) {
+			for (folder in tree) {
+
+				if (typeof tree[folder] === 'object') {
+					if ( !_this.checkCatInfo(tree[folder], folder)) {
+						fileFlat[cat] = tree;
+					} else {
+						lookForIndexOrGoDeeper( tree[folder], folder );
+					}
+				}
+			}
+        }
+
+        lookForIndexOrGoDeeper(fileTree);
+
+        return fileFlat;
     };
 
     ParseFileTree.prototype.getCatPages = function (getSpecificCat) {
