@@ -11,7 +11,7 @@ page.onLoadFinished = function (msg) {
 	if (msg != 'success') console.log('Server is not responding.');
 	else {
 
-        //TODO: create and check callback from templater
+        /* TODO: create and check callback from templater */
         setTimeout(function(){
             var code = page.evaluate(function (id) {
             var html = {};
@@ -107,12 +107,12 @@ page.onLoadFinished = function (msg) {
         }, id);
 
         console.log(JSON.stringify(code, null, 1));
-        }, 250);
+        }, 350);
 	}
 
     setTimeout(function(){
 		phantom.exit();
-    }, 250)
+    }, 350)
 };
 
 // error handler & logger: helps to avoid error stream within a common log
