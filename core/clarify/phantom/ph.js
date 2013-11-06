@@ -12,7 +12,7 @@ page.onLoadFinished = function (msg) {
 	else {
 
         /* TODO: create and check callback from templater */
-        setTimeout(function(){
+        setTimeout(function() {
             var code = page.evaluate(function (id) {
             var html = {};
 
@@ -107,12 +107,12 @@ page.onLoadFinished = function (msg) {
         }, id);
 
         console.log(JSON.stringify(code, null, 1));
-        }, 350);
+        }, 500);
 	}
 
     setTimeout(function(){
 		phantom.exit();
-    }, 350)
+    }, 500);
 };
 
 // error handler & logger: helps to avoid error stream within a common log
