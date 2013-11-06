@@ -28,7 +28,7 @@ module.exports = function reply(req, res, next) {
 			if (err) res.end('Huston, we have 404.\n'+ err);
 
 			jsdom.env(data.toString(), function (err, win) {
-//  url mode
+//          url mode
 //			jsdom.env(publicPath + '/' + urlPath, function (err, win) {
 
 				var
@@ -48,8 +48,7 @@ module.exports = function reply(req, res, next) {
 					};
 				}
 
-				win.close();
-				console.log(html);
+//				console.log(html);
 
 				if (html.source) {
 					// переменные для Jade
@@ -86,11 +85,13 @@ module.exports = function reply(req, res, next) {
 
 
 // TODO: check list below
-// [done] beaty html output
-// [done] разобрать и создать json для заполнения header
-// [done] парсинг нескольких спек сразу
-// [done] переключатели на други спеки, если запрошенная не одна, иконки для get-запроса со большой спеки
-// [...] phantomjs -> jsdom
+// [done] beatify html output
+// [done] create json with <head> data
+// [done] parse several blocks in same page
+// [done] switchers to another specs from cleares one;
+// [done] fast links from spec page
+// [done] phantomjs -> jsdom
+// [...!] support for template engines
 // * [] Лёха: универсальный шаблонизатор для страниц контекста
 // * [] убрать захардкоженные пути
 // * [] сделать вывод полностью чистой спеки без любых элементов ОКП
