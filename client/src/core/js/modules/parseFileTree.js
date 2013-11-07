@@ -201,21 +201,23 @@ define([
         	fileFlat = {},
         	_this = this;
 
-        var lookForIndexOrGoDeeper = function(tree, cat) {
+        var lookForIndexOrGoDeeper = function(tree) {
 			for (folder in tree) {
 
 				if (typeof tree[folder] === 'object') {
-					if ( !_this.checkCatInfo(tree[folder], folder)) {
-						fileFlat[cat] = tree;
+					if ( !_this.checkCatInfo(tree[folder]) ) {
+
+							var fullPath = tree['index.html'].url.split('index.html')[0];
+							fileFlat[fullPath] = tree;
+
 					} else {
-						lookForIndexOrGoDeeper( tree[folder], folder );
+						lookForIndexOrGoDeeper( tree[folder] );
 					}
 				}
 			}
         }
 
         lookForIndexOrGoDeeper(fileTree);
-
         return fileFlat;
     };
 

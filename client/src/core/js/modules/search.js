@@ -4,12 +4,16 @@
 *
 * */
 
+//Getting always new version of navigation JSON
+var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
+
 define([
     'jquery',
     'core/options',
     'lib/jquery.autocomplete',
-    'modules/parseFileTree'
-    ], function ($, options, autocomplete, parseFileTree) {
+    'modules/parseFileTree',
+    fileTreeJson], function ($, options, autocomplete, parseFileTree, data) {
+    	var json = $.parseJSON(data.toString());
 
     //TODO: make localstorage caching
 
@@ -38,8 +42,13 @@ define([
                 var keywords = targetPage.keywords,
                     keywordsPageName = page, //get cat name
                     prepareKeywords = '',
-
+					rootFolder = page.split('/'),
                     autocompleteValue = targetPage.title;
+
+				if ( json[ rootFolder[1] ]['index.html'] !== undefined ) {
+					keywordsPageName = rootFolder[ rootFolder.length-2 ];
+					keywordsPageName = '<span style="font-weight: bold">' + json[ rootFolder[1] ]['index.html'].title + ':</span> ' + keywordsPageName; // exclude <b> from search
+				}
 
                 if (keywords != '' && typeof keywords != 'undefined') {
                     prepareKeywords = ', ' + keywords;

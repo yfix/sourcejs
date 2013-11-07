@@ -7,7 +7,7 @@
             "cron":"For locally project use false",
             "excludedDirs":"write path from public root. Example: ['core','docs/base']"
         },
-        "excludedDirs": ["core","data","test","plugins","node_modules",".git"],
+        "excludedDirs": ["core","data","test","plugins","node_modules",".git",".idea"],
         "fileMask": "index.html",
         "cron": false,
         "cronRepeatTime": 60000

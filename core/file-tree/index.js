@@ -33,22 +33,21 @@ var dirsForRegExp = '';
 var i = 1;
 excludedDirs.forEach(function(exlDir) {
     if (i<excludedDirs.length) {
-        dirsForRegExp = dirsForRegExp+"^"+sourceRoot+"\/"+exlDir+"\/|";
+        dirsForRegExp = dirsForRegExp+"^"+sourceRoot+"\/"+exlDir+"|";
     } else {
-        dirsForRegExp = dirsForRegExp+"^"+sourceRoot+"\/"+exlDir+"\/";
+        dirsForRegExp = dirsForRegExp+"^"+sourceRoot+"\/"+exlDir;
     }
     i++;
 });
 var excludes = new RegExp(dirsForRegExp);
 
 function fileTree(dir) {
-
     var arr = {},
         dirContent = fs.readdirSync(dir);
 
     dirContent.forEach(function(file) {
 
-        if (dir.match(excludes)) {return}
+        if (excludes.test(dir)) {return}
 
         var urlToFile = dir + '/' + file,
             baseName = path.basename(dir);
@@ -84,7 +83,7 @@ function fileTree(dir) {
                 author = fileJSON.author,
                 title = fileJSON.title,
                 keywords = fileJSON.keywords;
-                info = fileJSON.info;          
+                info = fileJSON.info;
         } else {
             // if infoFile don't exist in project folder
             var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
