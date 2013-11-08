@@ -35,6 +35,9 @@ define([
             },
             specAssets : {
                 postponedInit : true
+            },
+            search: {
+            	replacePathBySectionName: false // replace spec's path by root parent's dir name from json.info
             }
         },
 

@@ -195,6 +195,10 @@ define([
         }
     };
 
+    ParseFileTree.prototype.getParsedJSON = function() {
+    	return this.json;
+    }
+
     ParseFileTree.prototype.getAllPages = function () {
         //Get pages from all categories
         var fileTree = this.parsePages(),

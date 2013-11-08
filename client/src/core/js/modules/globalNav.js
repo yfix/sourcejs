@@ -72,13 +72,40 @@ define([
             ignorePages = this.options.modulesOptions.globalNav.ignorePages || [];
 
         L_CATALOG.each(function () {
-            var t = $(this),
-                navListCat = t.attr('data-nav'),
-                L_CATALOG_LIST = t.find('.' + CATALOG_LIST);
+            var sourceCat = $(this),
+                navListCat = sourceCat.attr('data-nav');
+
 
             if (navListCat != '') { //Catalog has data about category
 
-                var targetCat = parseFileTree.getCatAll(navListCat);
+                var targetCat = parseFileTree.getCatAll(navListCat),
+                	catObj;
+
+				if (typeof targetCat[ navListCat + '/index.html' ] === 'object') {
+					catObj = targetCat[ navListCat + '/index.html' ];
+				} else if ( typeof targetCat[ 'index.html' ] === 'object' ) {
+					catObj = targetCat[ 'index.html' ][ 'index.html' ];
+				}
+
+				if (typeof catObj === 'object') {
+
+					if ( (!sourceCat.find('.source_catalog_title').length) && (catObj.title !== undefined) ) {
+						sourceCat.prepend('<h2 class="source_catalog_title">' + catObj.title + '</h2>')
+					}
+
+					if ( (!sourceCat.find('.source_catalog_tx').length) && (catObj.info !== undefined) && ( $.trim(catObj.info) !== '' )) {
+						sourceCat
+							.children('.source_catalog_title')
+							.first()
+								.after('<div class="source_catalog_tx">' + catObj.info + '</div>')
+					}
+
+					if ( !sourceCat.find('.source_catalog_list').length ) {
+						sourceCat.append('<ul class="source_catalog_list"><img src="/core/i/process.gif" alt="Загрузка..."/></ul>');
+					}
+				}
+
+				var L_CATALOG_LIST = sourceCat.find('.' + CATALOG_LIST);
 
                 // cast Object to Array of objects
                 if (typeof targetCat === 'object'){

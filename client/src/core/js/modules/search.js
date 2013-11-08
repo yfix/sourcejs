@@ -12,8 +12,8 @@ define([
     'core/options',
     'lib/jquery.autocomplete',
     'modules/parseFileTree',
-    fileTreeJson], function ($, options, autocomplete, parseFileTree, data) {
-    	var json = $.parseJSON(data.toString());
+    ], function ($, options, autocomplete, parseFileTree) {
+    	var json = parseFileTree.getParsedJSON();
 
     //TODO: make localstorage caching
 
@@ -35,7 +35,6 @@ define([
                 };
 
             var pagesData = parseFileTree.getAllPages();
-
             for (var page in pagesData) {
                 var targetPage = pagesData[page]['index.html'];
 
@@ -45,9 +44,9 @@ define([
 					rootFolder = page.split('/'),
                     autocompleteValue = targetPage.title;
 
-				if ( json[ rootFolder[1] ]['index.html'] !== undefined ) {
+				if ( (json[rootFolder[1]]['index.html'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
 					keywordsPageName = rootFolder[ rootFolder.length-2 ];
-					keywordsPageName = '<span style="font-weight: bold">' + json[ rootFolder[1] ]['index.html'].title + ':</span> ' + keywordsPageName; // exclude <b> from search
+					keywordsPageName = '<span style="font-weight: 700">' + json[rootFolder[1]]['index.html'].title + ':</span> ' + keywordsPageName; // exclude <b> from search
 				}
 
                 if (keywords != '' && typeof keywords != 'undefined') {
