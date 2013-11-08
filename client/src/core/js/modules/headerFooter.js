@@ -13,27 +13,6 @@ define(["core/options"], function(options) {
             source_container.append($('<div class="source_main source_col-main" role="main">Welcome to Source!</div>'));
         }
 
-        //
-        // insert link to okp.me
-        var
-                loc = document.location,
-                host = loc.host,
-                href = loc.href;
-        if(host.indexOf('.')==-1){
-            href = href.replace(host, 'okp.me');
-            var head = source_container.find('h1');
-            if(head.length){
-                $('<a id="goToRemote" ' +
-                        'style="margin-left: 15px; font-size: 14px; color: #666; border-bottom: 1px dotted; text-decoration: none;"' +
-                        ' href="" target="_blank">open on OKP.ME' +
-                        '</a>')
-                        .appendTo(head);
-                setTimeout(function(){
-                    $('#goToRemote').attr('href', href);
-                },1);
-            }
-        }
-
         var insertHeader = function(data) { $('.source_header').replaceWith(data.responseText);}
 
         var headerFile = 'header.inc.html',
