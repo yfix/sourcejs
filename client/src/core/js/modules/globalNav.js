@@ -75,11 +75,12 @@ define([
             var sourceCat = $(this),
                 navListCat = sourceCat.attr('data-nav');
 
-
-            if (navListCat != '') { //Catalog has data about category
+            if ( (navListCat !== undefined) && (navListCat != '') ) { //Catalog has data about category
 
                 var targetCat = parseFileTree.getCatAll(navListCat),
                 	catObj;
+
+				if (targetCat === undefined) return;
 
 				if (typeof targetCat[ navListCat + '/index.html' ] === 'object') {
 					catObj = targetCat[ navListCat + '/index.html' ];
@@ -100,9 +101,14 @@ define([
 								.after('<div class="source_catalog_tx">' + catObj.info + '</div>')
 					}
 
-					if ( !sourceCat.find('.source_catalog_list').length ) {
-						sourceCat.append('<ul class="source_catalog_list"><img src="/core/i/process.gif" alt="Загрузка..."/></ul>');
-					}
+				} else {
+					/* 404 fake */
+					sourceCat.find('.source_catalog_title').text('Вложенные каталоги');
+					sourceCat.find('.source_catalog_tx').text('Страница, к которой вы обратились, содержит вложенные каталоги');
+				}
+
+				if ( !sourceCat.find('.source_catalog_list').length ) {
+					sourceCat.append('<ul class="source_catalog_list"><img src="/core/i/process.gif" alt="Загрузка..."/></ul>');
 				}
 
 				var L_CATALOG_LIST = sourceCat.find('.' + CATALOG_LIST);
@@ -203,8 +209,10 @@ define([
                 }
 
             } else {
-                //Display error
-                L_CATALOG_LIST.html(RES_NO_DATA_ATTR);
+            	if (navListCat !== undefined) {
+					//Display error
+					L_CATALOG_LIST.html(RES_NO_DATA_ATTR);
+            	}
             }
         });
     };

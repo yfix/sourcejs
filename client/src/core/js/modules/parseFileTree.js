@@ -3,6 +3,7 @@
 * Module for parsing Source file tree data
 *
 * @author Robert Haritonov (http://rhr.me)
+* @author Ivan Metelev
 *
 * */
 
@@ -53,6 +54,31 @@ define([
 							var getSpecificCatArr = getSpecificCat.split('/'),
 								success = true;
 
+							if (getSpecificCatArr[ getSpecificCatArr.length-1 ] == '') {
+								getSpecificCatArr.pop();
+							}
+
+							var returnObject = function(returnedTreeObj) {
+								var isSingle = false;
+								if (getSpecificCat.indexOf('index.html') === -1) {
+									for (innerCat in returnedTreeObj) {
+										if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, true) ) {
+											if (innerCat == 'index.html') {
+												fileTree[innerCat] = {};
+												fileTree[innerCat]['index.html'] = returnedTreeObj[innerCat];
+											} else {
+												fileTree[innerCat] = returnedTreeObj[innerCat];
+											}
+										}
+									}
+								} else {
+									fileTree['index.html'] = {};
+									fileTree['index.html']['index.html'] = returnedTreeObj;
+									isSingle = true;
+								}
+								return isSingle;
+							}
+
                         	// absolute path
                         	if (getSpecificCat.indexOf('/') == 0) {
                         		returnedTreeObj = _this.json;
@@ -62,11 +88,7 @@ define([
 									returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
                         		}
 
-								for (innerCat in returnedTreeObj) {
-									if ( _this.checkCatInfo(returnedTreeObj[innerCat]) ) {
-										fileTree[innerCat] = returnedTreeObj[innerCat];
-									}
-								}
+								if (returnObject(returnedTreeObj)) return;
 
                         	} else {
                         		//relative path
@@ -86,19 +108,8 @@ define([
 								}
 
 								if (success) {
-									for (innerCat in returnedTreeObj) {
-										if ( _this.checkCatInfo(returnedTreeObj[innerCat]) ) {
-											fileTree[innerCat] = returnedTreeObj[innerCat];
-											continue;
-										}
-
-										if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, true) ) {
-											fileTree[innerCat] = returnedTreeObj;
-										}
-									}
+									if (returnObject(returnedTreeObj)) return;
 								}
-
-
                         	}
 
                         } else if (_this.checkCat(currentCat, getSpecificCat, toCheckCat)) {

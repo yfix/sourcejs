@@ -9,7 +9,8 @@ var express = require('express')
     , colors = require('colors')
     , fs = require('fs')
     , lessMiddleware = require('less-middleware')
-    , os = require('os');
+    , os = require('os')
+    , ejs = require('ejs');
 
 global.app = express();
 global.opts = require('./core/options/');
@@ -65,6 +66,20 @@ try {
 /* serve static content */
 global.app.use(express.static(global.app.get('specs path')));
 app.use(express.static(tmpDir));
+
+app.use(function(req, res, next){
+
+	var path = req.url.replace('/index.html', '');
+
+	if (req.accepts('html')) {
+		res.render(__dirname + '/client/src/core/templates/404.ejs', {
+			section: path
+		})
+
+		return;
+	}
+
+});
 
 if (!module.parent) {
     global.app.listen(80);
