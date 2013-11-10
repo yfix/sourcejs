@@ -13,7 +13,9 @@ define([
 
         this.options.modulesOptions.innerNavigation = $.extend({}, {
             NAV_UL_CLASS: 'source_main_nav_ul',
+            NAV_UL_SECONDLEVEL_CLASS: 'source_main_nav_ul2',
             NAV_LI_CLASS: 'source_main_nav_li',
+            NAV_LI_SECONDLEVEL_CLASS: 'source_main_nav_li2',
             NAV_LINK_CLASS: 'source_main_nav_a',
             MENU__I_CLASS: 'source_main_nav_i',
             MENU_SCROLL_MOD_CLASS: '__menuScroll',
@@ -91,11 +93,22 @@ define([
 
     InnerNavigation.prototype.injectNavigation = function () {
         var appendString = '';
-        for (var i = 0; i < sections.getQuantity(); i++) {
+        for (var i = 0; i < sections.getQuantity() ; i++) {
             appendString +=
                     '<li class="' + this.options.modulesOptions.innerNavigation.NAV_LI_CLASS + '">' +
                             '<a href="#' + (sections.getSections()[i].id) + this.options.modulesOptions.innerNavigation.hashSymb + '"  class="' + this.options.modulesOptions.innerNavigation.NAV_LINK_CLASS + '">' +
-                            sections.getSections()[i].num + '. ' + sections.getSections()[i].caption + '</a></li>';
+                            sections.getSections()[i].num + '. ' + sections.getSections()[i].caption + '</a>';
+
+			if ( sections.getSections()[i].subHeaderElements !== undefined ) {
+				appendString += '<ul class="' + this.options.modulesOptions.innerNavigation.NAV_UL_SECONDLEVEL_CLASS + '">';
+				for (var j = 0; j < sections.getSections()[i].subHeaderElements.length; j++) {
+					appendString += '<li class="' + this.options.modulesOptions.innerNavigation.NAV_LI_SECONDLEVEL_CLASS + '">' +
+					sections.getSections()[i].num + '.' + (j+1) + '&nbsp;' + sections.getSections()[i].subHeaderElements[j].text() + '</li>';
+				}
+				appendString += '</ul>';
+			}
+
+             appendString += '</li>';
         }
 
         $('.' + this.options.modulesOptions.innerNavigation.NAV_UL_CLASS).append(appendString);

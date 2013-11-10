@@ -72,7 +72,7 @@ app.use(function(req, res, next){
 	var path = req.url.replace('/index.html', '');
 
 	if (req.accepts('html')) {
-		res.render(__dirname + '/client/src/core/templates/404.ejs', {
+		res.render(__dirname + '/core/views/404.ejs', {
 			section: path
 		})
 

@@ -26,7 +26,7 @@ define([
             scrollToHash: true,
             sections: true,
             globalNav: true,
-            search: true
+            search: true,
         },
 
         modulesOptions : {
@@ -39,6 +39,10 @@ define([
             search: {
             	replacePathBySectionName: false // replace spec's path by root parent's dir name from json.info
             }
+        },
+
+        pluginsEnabled: {
+			navHighlight: false
         },
 
         // Page classes

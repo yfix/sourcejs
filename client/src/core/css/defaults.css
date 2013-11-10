@@ -559,9 +559,32 @@ a.source_catalog_a:hover .source_catalog_title {
   line-height: 20px;
   margin-bottom: 2px;
 }
+.source_main_nav_ul2 {
+  display: none;
+  padding-left: 1.3em;
+  font-size: 12px;
+}
+.source_main_nav_li.__active .source_main_nav_ul2 {
+  display: block;
+}
+.source_main_nav_li2 {
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .source_main_nav_a {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.source_main_nav_li.__active .source_main_nav_a {
+  background-color: #8AB5D6;
+  margin-left: -21px;
+  /* menu padding compensation  */
+
+  margin-right: -21px;
+  padding: 0 21px;
+  color: #F9FBFD;
 }
 .source_main_nav_ac_item {
   position: relative;
