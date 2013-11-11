@@ -44,7 +44,7 @@ define([
 					rootFolder = page.split('/'),
                     autocompleteValue = targetPage.title;
 
-				if ( (json[rootFolder[1]]['index.html'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
+				if ( (json[rootFolder[1]] !== undefined) && (json[rootFolder[1]]['index.html'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
 					keywordsPageName = rootFolder[ rootFolder.length-2 ];
 					keywordsPageName = '<span style="font-weight: 700">' + json[rootFolder[1]]['index.html'].title + ':</span> ' + keywordsPageName; // exclude <b> from search
 				}
