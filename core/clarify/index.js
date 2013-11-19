@@ -18,17 +18,20 @@ module.exports = function reply(req, res, next) {
 		urlPath = parsedUrl.pathname,
 		urlHost = req.headers.host,
 		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath,
-		id = parsedUrl.query.id;
+		tpl = parsedUrl.query.get,
+		id = parsedUrl.query.id,
+		wrap = parsedUrl.query.wrap;
 //debugger
 
-//  if we have query on index.html
+
+//// if we have query on index.html
 	if (path.basename(parsedUrl.path).indexOf('index.html') != -1 && parsedUrl.query.get) {
 		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
 
 			if (err) res.end('Huston, we have 404.\n'+ err);
 
 			jsdom.env(data.toString(), function (err, win) {
-//          url mode
+////url mode
 //			jsdom.env(publicPath + '/' + urlPath, function (err, win) {
 
 				var
@@ -40,7 +43,7 @@ module.exports = function reply(req, res, next) {
 					html.meta = dom.getMeta(doc);
 					html.styles = dom.getHeadData(doc)[0];
 					html.scripts = dom.getHeadData(doc)[1];
-					html.source = dom.getSource(doc, id);
+					html.source = dom.getSource(doc, id, wrap);
 				} catch (e) {
 					html.err = {
 						text: e,
@@ -51,7 +54,7 @@ module.exports = function reply(req, res, next) {
 //				console.log(html);
 
 				if (html.source) {
-					// переменные для Jade
+//// переменные для Jade
 					var locals = {
 						head: {
 							title: html.title,
@@ -71,8 +74,7 @@ module.exports = function reply(req, res, next) {
 						pretty: true
 					};
 					res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-//					res.end('all fine');
-						res.end(jady(locals));
+						res.end(jady(locals, tpl));
 
 				} else res.end('STDOUT: can\'t recieve content.');
 

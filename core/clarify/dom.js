@@ -41,7 +41,7 @@ module.exports = {
 	},
 
 	// .source_examples code
-	getSource: function (doc, id) {
+	getSource: function (doc, id, wrap) {
 		var
 			sources = doc.getElementsByClassName('source_example'),
 			idArr = JSON.parse('['+ id +']'),
@@ -51,7 +51,8 @@ module.exports = {
 
 		var i = 0;
 		while(i < idArr.length) {
-			html += (sources[idArr[i]].outerHTML);
+            if (wrap === 'true') html += (sources[idArr[i]].outerHTML);
+            else html += (sources[idArr[i]].innerHTML);
 			++i;
 		}
 

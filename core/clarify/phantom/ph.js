@@ -14,7 +14,7 @@ page.onLoadFinished = function (msg) {
 	else {
 
         //TODO: create and check callback from templater
-        setTimeout(function(){
+        setTimeout(function() {
             var code = page.evaluate(function (id) {
             var html = {};
 
@@ -24,8 +24,8 @@ page.onLoadFinished = function (msg) {
                     headTag = document.head,
                     links = headTag.getElementsByTagName('link'),
                     linksArr = [],
-										scripts = headTag.getElementsByTagName('script'),
-										scriptsArr = [],
+                    scripts = headTag.getElementsByTagName('script'),
+                    scriptsArr = [],
                     styleTag = headTag.getElementsByTagName('style')[0],
                     styleTagHtml = (styleTag)? styleTag.outerHTML : "";
 
