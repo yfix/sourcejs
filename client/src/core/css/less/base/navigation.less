@@ -2,19 +2,32 @@
 ---------------------------------------------------------------------------------- */
 
 .source_nav {
-	padding: 20px 21px 10px;
-	background-color: #f1f2f3;
 	white-space: nowrap;
 
+	&:before {
+		content: '';
+		display: inline-block;
+		vertical-align: middle;
+		height: 100%;
+	}
+
+    &:empty {
+		display: none;
+		}
+	}
+
+.source_nav_c {
+	display: inline-block;
+	vertical-align: middle;
 	border-radius: 10px;
+	width: 100%;
 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 
-    &:empty {
-		display: none;
-		}
+	padding: 20px 21px 10px;
+	background-color: #f1f2f3;
 	}
 
 .source_nav_ul {

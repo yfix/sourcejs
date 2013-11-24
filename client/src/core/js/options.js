@@ -26,7 +26,7 @@ define([
             scrollToHash: true,
             sections: true,
             globalNav: true,
-            search: true,
+            search: true
         },
 
         modulesOptions : {

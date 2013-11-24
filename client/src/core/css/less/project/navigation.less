@@ -10,8 +10,9 @@
         position: fixed;
         z-index: 10;
 
-        top: @source_main_nav--top;
+        top: 70px; //@source_main_nav--top;
         right: @layout_col-main--padding;
+        bottom: 40px;
 
         width: @source_main_nav--width;
 
@@ -48,7 +49,8 @@
 		}
 
 	.source_main_nav.__menuScroll {
-		overflow: auto;
+		overflow-x: hidden;
+		overflow-y: auto;
 		bottom: 15px;
 		}
 

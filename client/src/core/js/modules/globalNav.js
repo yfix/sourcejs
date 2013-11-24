@@ -198,7 +198,7 @@ define([
                     if (targetCatArray.length > navListItems) {
                         L_CATALOG_LIST.append(
                             '<li class="' + CATALOG_LIST_I + ' ' + CATALOG_LIST_ALL + '">' +
-                                '<a class="' + CATALOG_LIST_ALL_A + '" href="' + targetCatUrl + '">'+ RES_LINK_TO_ALL + ' ' + targetCatArray.length + '</a>' +
+                                '<a class="' + CATALOG_LIST_ALL_A + '" href="' + navListCat + '">'+ RES_LINK_TO_ALL + ' ' + targetCatArray.length + '</a>' +
                             '</li>');
                     }
 
