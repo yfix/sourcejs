@@ -206,7 +206,7 @@ body {
 }
 .source_nav_c {
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
   border-radius: 10px;
   width: 100%;
   -webkit-box-sizing: border-box;
@@ -219,11 +219,8 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-@media all and (min-width: 990px) {
-  .source_nav_ul {
-    min-height: 100px;
-  }
+  /*@media @media_min-step-m { min-height: 100px; }*/
+
 }
 .source_nav_ul li:first-child {
   margin-top: 0;
@@ -539,12 +536,16 @@ a.source_catalog_a:hover .source_catalog_title {
   .source_main_nav {
     position: fixed;
     z-index: 10;
-    top: 70px;
+    top: 170px;
     right: 25px;
     bottom: 40px;
     width: 280px;
     margin-top: 0;
     margin-right: 0;
+    transition: top 0.3s;
+  }
+  .source__scrolled-down .source_main_nav {
+    top: 70px;
   }
 }
 @media all and (min-width: 1400px) {
