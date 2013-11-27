@@ -58,12 +58,12 @@ define([
 								getSpecificCatArr.pop();
 							}
 
-							var returnObject = function(returnedTreeObj) {
+							var returnObject = function(returnedTreeObj, excludeRootDocument) {
 								var isSingle = false;
 								if (getSpecificCat.indexOf('index.html') === -1) {
 									for (innerCat in returnedTreeObj) {
 										if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, true) ) {
-											if (innerCat == 'index.html') {
+											if (innerCat == 'index.html' && (!excludeRootDocument)) {
 												fileTree[innerCat] = {};
 												fileTree[innerCat]['index.html'] = returnedTreeObj[innerCat];
 											} else {
@@ -84,11 +84,10 @@ define([
                         		returnedTreeObj = _this.json;
 
                         		for (var i = 1; i < getSpecificCatArr.length; i++) {
-
 									returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
                         		}
 
-								if (returnObject(returnedTreeObj)) return;
+								if (returnObject(returnedTreeObj, true)) return;
 
                         	} else {
                         		//relative path

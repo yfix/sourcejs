@@ -42,15 +42,20 @@ define([
                     keywordsPageName = page, //get cat name
                     prepareKeywords = '',
 					rootFolder = page.split('/'),
-                    autocompleteValue = targetPage.title;
+                    autocompleteValue = targetPage.title,
+                    pclass = targetPage.pclass;
 
 				if ( (json[rootFolder[1]] !== undefined) && (json[rootFolder[1]]['index.html'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
 					keywordsPageName = rootFolder[ rootFolder.length-2 ];
 					keywordsPageName = '<span style="font-weight: 700">' + json[rootFolder[1]]['index.html'].title + ':</span> ' + keywordsPageName; // exclude <b> from search
 				}
 
-                if (keywords != '' && typeof keywords != 'undefined') {
-                    prepareKeywords = ', ' + keywords;
+                if ((pclass !== undefined) && (pclass != '')) {
+                    prepareKeywords += ', ' + pclass;
+                }
+
+                if ((keywords !== undefined) && (keywords != '')) {
+                    prepareKeywords += ', ' + keywords;
                 }
 
                 autocompleteValue += ' (' + keywordsPageName + prepareKeywords + ')';
