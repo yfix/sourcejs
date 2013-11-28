@@ -50,10 +50,6 @@ define([
 					keywordsPageName = '<span style="font-weight: 700">' + json[rootFolder[1]]['index.html'].title + ':</span> ' + keywordsPageName; // exclude <b> from search
 				}
 
-                if ((pclass !== undefined) && (pclass != '')) {
-                    prepareKeywords += ', ' + pclass;
-                }
-
                 if ((keywords !== undefined) && (keywords != '')) {
                     prepareKeywords += ', ' + keywords;
                 }

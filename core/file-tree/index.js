@@ -83,8 +83,7 @@ function fileTree(dir) {
                 author = fileJSON.author,
                 title = fileJSON.title,
                 keywords = fileJSON.keywords,
-                info = fileJSON.info,
-                pclass = fileJSON.pclass;
+                info = fileJSON.info;
         } else {
             // if infoFile don't exist in project folder
             var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
@@ -100,8 +99,7 @@ function fileTree(dir) {
                 author: author,
                 title: title,
                 keywords: keywords,
-                info: info,
-                pclass: pclass
+                info: info
             };
 
             arr[file] = extend(page);
