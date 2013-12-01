@@ -45,7 +45,8 @@ module.exports = {
 		var
 			sources = doc.getElementsByClassName('source_example'),
 			idArr = JSON.parse('['+ id +']'),
-			html = '';
+			html = '',
+            wrap = wrap || 'true';
 
 		idArr.forEach( function (el, i, arr) { arr.splice(i, 1, --el) } );
 
