@@ -44,6 +44,7 @@ html.no-js
         div.clasrify_body
             !=body.spec
         br
+        // Clarify UI
         hr
         footer
             span Actually showed blocks: #{body.specId};
@@ -53,6 +54,15 @@ html.no-js
             form(method='get')
                 input(type='hidden', name='get', value='mob')
                 input(type='text', placeholder='block index number(s)' , name='id', value='')
+                &nbsp;&nbsp;
+                a(id='getUri', href='#333')
+                    | insert IDs from URI
+                br
+                label(for='ph')
+                    input(type='checkbox', name='ph', value='true', id='ph', checked)
+                    &nbsp;
+                    | use PhantomJS
+                br
                 input(type='submit', value='Clear it for me')
             br
             a(href=body.homeLink) Back to full spec page
@@ -62,7 +72,23 @@ html.no-js
                 var elem = doc.getElementsByClassName('clarify_h')[0];
                 setTimeout(function () {
                     elem.className += ' __closed';
-                }, 2500)
+                }, 2500);
+
+                var getUri = doc.getElementById('getUri');
+                getUri.addEventListener('click', function () {
+                    var arr = decodeURIComponent(location.search).split('&'),
+                        data;
+
+                    var i = arr.length;
+                    while(i--) {
+                        if (~arr[i].indexOf('id=')) {
+                            data = arr[i].match(/id=(.*)+?/)[1];
+                        }
+                    }
+                    document.forms[0].id.value = data;
+                    console.log(data);
+                    console.log(data);
+                }, false);
             })(document);
 
 
