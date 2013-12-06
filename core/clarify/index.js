@@ -20,65 +20,99 @@ module.exports = function reply(req, res, next) {
 		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath,
 		tpl = parsedUrl.query.get,
 		id = parsedUrl.query.id,
-		wrap = parsedUrl.query.wrap;
-//debugger
+		wrap = parsedUrl.query.wrap,
+        phantom = parsedUrl.query.ph || false;
+//debugger;
 
 
 //// if we have query on index.html
 	if (path.basename(parsedUrl.path).indexOf('index.html') != -1 && parsedUrl.query.get) {
+// reading file..
 		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
+            if (err) res.end('Huston, we have 404.\n'+ err);
 
-			if (err) res.end('Huston, we have 404.\n'+ err);
+            // make data for template
+            function reqHandler(res, html) {
+                if (html.source) {
+                    //// переменные для Jade
+                    var locals = {
+                        head: {
+                            title: html.title,
+                            mAuthor: html.meta.author,
+                            mKeywords: html.meta.keywords,
+                            mDescription: html.meta.description,
+                            scripts: html.scripts,
+                            stylesheets: html.styles
+                        },
+                        body: {
+                            spec: html.source.content,
+                            specLength: html.source.length,
+                            specId: html.source.id,
+                            specIdSum: html.source.idSum,
+                            homeLink: 'http://'+ urlAdress
+                        },
+                        pretty: true
+                    };
 
-			jsdom.env(data.toString(), function (err, win) {
-////url mode
-//			jsdom.env(publicPath + '/' + urlPath, function (err, win) {
+                    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+                    res.end(jady(locals, tpl));
 
-				var
-					doc = win.document,
-					html = {};
+                } else res.end('STDOUT: can\'t recieve content.');
+            }
 
-				try {
-					html.title = doc.title;
-					html.meta = dom.getMeta(doc);
-					html.styles = dom.getHeadData(doc)[0];
-					html.scripts = dom.getHeadData(doc)[1];
-					html.source = dom.getSource(doc, id, wrap);
-				} catch (e) {
-					html.err = {
-						text: e,
-						type: e.name
-					};
-				}
 
-//				console.log(html);
+// if using PhantomJs
+            if (phantom) {
+                var params = "sudo core/clarify/phantomjs " +
+                    "core/clarify/phantom/ph.js " +
+                    "http://" + urlAdress + " " + id;
 
-				if (html.source) {
-//// переменные для Jade
-					var locals = {
-						head: {
-							title: html.title,
-							mAuthor: html.meta.author,
-							mKeywords: html.meta.keywords,
-							mDescription: html.meta.description,
-							scripts: html.scripts,
-							stylesheets: html.styles
-						},
-						body: {
-							spec: html.source.content,
-							specLength: html.source.length,
-							specId: html.source.id,
-							specIdSum: html.source.idSum,
-							homeLink: 'http://'+ urlAdress
-						},
-						pretty: true
-					};
-					res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-						res.end(jady(locals, tpl));
+                // executes ph.js via phantomjs like separate child process
+                exec(params, function (err, stdout, stderr) {
+                    if (err) console.log('Exec error: ' + err);
+                    else {
+                        try {
+                            var html = JSON.parse(stdout);
+console.log(html);
+                        } catch(e) {
+                            html = 'Parsing error: ' + e;
+console.log(html);
+                        }
 
-				} else res.end('STDOUT: can\'t recieve content.');
+// got to show some view
+                        reqHandler(res, html);
+                    }
+                });
 
-			});
+            }
+// jsdom starts
+            else {
+
+                jsdom.env(data.toString(), function (err, win) {
+                // url mode
+// 	     		jsdom.env(publicPath + '/' + urlPath, function (err, win) {
+                    var
+                        doc = win.document,
+                        html = {};
+
+                    try {
+                        html.title = doc.title;
+                        html.meta = dom.getMeta(doc);
+                        html.styles = dom.getHeadData(doc)[0];
+                        html.scripts = dom.getHeadData(doc)[1];
+                        html.source = dom.getSource(doc, id, wrap);
+                    } catch (e) {
+                        html.err = {
+                            text: e,
+                            type: e.name
+                        };
+                    }
+// console.log(html);
+
+// got to show some view
+                    reqHandler(res, html);
+                });
+            }
 
 		});
 	} else next();
