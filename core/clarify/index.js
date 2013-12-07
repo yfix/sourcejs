@@ -63,9 +63,9 @@ module.exports = function reply(req, res, next) {
 
 // if using PhantomJs
             if (phantom) {
-                var params = "sudo core/clarify/phantomjs " +
-                    "core/clarify/phantom/ph.js " +
-                    "http://" + urlAdress + " " + id;
+                var params = "sudo core/clarify/phantomjs "+
+                    "core/clarify/phantom/ph.js "+
+                    "http://"+ urlAdress +" "+ id +" "+ wrap;
 
                 // executes ph.js via phantomjs like separate child process
                 exec(params, function (err, stdout, stderr) {
@@ -121,22 +121,23 @@ console.log(html);
 
 
 // TODO: check list below
-// [done] beatify html output
-// [done] create json with <head> data
-// [done] parse several blocks in same page
-// [done] switchers to another specs from cleares one;
-// [done] fast links from spec page
+// [done] beatify HTML output
+// [done] create JSON with data from <HEAD>
+// [done] parse several blocks in same page with one request
+// [done] switchers to another specs from cleared one;
+// [..partial] client-side UI controls to clarify specs
 // [done] phantomjs -> jsdom
-// [...!] support for template engines
-// * [] Лёха: универсальный шаблонизатор для страниц контекста
-// * [] убрать захардкоженные пути
-// * [] сделать вывод полностью чистой спеки без любых элементов ОКП
-// * [] подключать css/js опционально по запросу в URI
-// * [] GET -> POST
+// [...] support for other template engines
+// * [] connect custom templates and scripts
+// * [] avoid hardcoded paths
+// [done] clear template - @param {GET} clr
+// * [] use css/js optionally by GET params
+// * [] save user session settings
+// * [] try POST instead GET
 // * [] Ajax
-// * [] Кнопки подключения библиотек (jQuery, require);
-// * [] ссылка с блока в clarify на оригинальный блок в спеке
-// * [] "чистые" шаблоны для других контекстов (все стилевые контексты моба, веб, ...)
-// * [] ошибка phantomjs при попытке загрузить недоступный script
-// * [] скриншоты спек со страницы
-// * [] phantomjs: не закрывать сессию (?);
+// * [] link from already clarified code to original spec page
+// * [] phantomjs error with try to get unavaliable script
+// * [] screenshots by phatnomjs
+// * [] phantomjs: not to close session (improve perfomance?);
+// * [] buttons  to add custom libraries to clarified page (jQuery, require);
+// * [] another context templates [mob, clr, ...]

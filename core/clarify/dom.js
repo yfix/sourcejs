@@ -46,7 +46,7 @@ module.exports = {
 			sources = doc.getElementsByClassName('source_example'),
 			idArr = JSON.parse('['+ id +']'),
 			html = '',
-            wrap = wrap || 'true';
+            wrap = (wrap === 'false')? false : (wrap)? true : false;
 
 		idArr.forEach( function (el, i, arr) { arr.splice(i, 1, --el) } );
 
