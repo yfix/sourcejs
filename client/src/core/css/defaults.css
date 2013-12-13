@@ -818,7 +818,8 @@ body .source_section > h2:first-child {
 .source_section__open .source_section_h_expand:after {
   content: "▼";
 }
-.source_section__open .source_source-code__show {
+.source_section__open .source_source-code__show,
+.source_section__open .source_source-code__static {
   display: block !important;
 }
 /* Header actions */
