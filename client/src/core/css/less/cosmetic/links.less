@@ -1,5 +1,6 @@
 /* Links
 ---------------------------------------------------------------------------------- */
+@spec-link-color: #1b9b19;
 
 /* TODO: rename classes */
 .source_a_hl, /* Higlight link */
@@ -52,74 +53,55 @@
 		}
 	}
 
-.source_a_d, /* Design link */
-.source_a_hl[href*="mgt.forticom.com"] {
-    color: #1B9B19 !important;
+.source_a_d { /* Design link */
+    color: @spec-link-color !important;
     font-size: 16px;
 
     &:hover {
-        color: #1B9B19;
+        color: @spec-link-color;
         }
+
     &:before {
         content: '';
-        background: url(../i/spec_design_link.svg) center center no-repeat;
-        width: 25px;
-        height: 17px;
-        display: inline-block;
-        margin-bottom: -2px;
+        display: inline;
+	   	padding: 0 25px 0 0;
+        background: url(../i/spec_design_link.svg) 50% no-repeat;
         }
 
     }
 
-.source_a_s, /* Spec link */
-.source_a_hl[href*="okp.me"],
-.source_a_hl[href*="/base"],
-.source_a_hl[href*="/project"] {
-    color: #1B9B19 !important;
+.source_a_s { /* Spec link */
+    color: @spec-link-color !important;
     font-size: 16px;
 
     &:hover {
-        color: #1B9B19;
+        color: @spec-link-color;
         }
+
     &:before {
         content: '';
-        background: url(../i/spec_link.svg) center center no-repeat;
-        width: 25px;
-        height: 17px;
-        display: inline-block;
-        margin-bottom: -2px;
-        }
+        display: inline;
+	  	padding: 0 25px 0 0;
+        background: url(../i/spec_link.svg) 50% no-repeat;
+      }
 
     }
 
-.ie8 { //fallback for ie which not support SVG
-
-    .source_a_d, /* Design link */
-    .source_a_hl[href*="mgt.forticom.com"] {
-
-        &:before {
-            background: url(../i/spec_design_link.png) center center no-repeat;
-            width: 25px;
-            height: 14px;
-            margin-bottom: 0;
-            }
-        }
-
-    .source_a_s, /* Spec link */
-    .source_a_hl[href*="okp.me"],
-    .source_a_hl[href*="/base"],
-    .source_a_hl[href*="/project"] {
+/* fallback for ie which not support SVG */
+.ie8 {
+    .source_a_d { /* Design link */
 
         &:before {
-            background: url(../i/spec_link.png) left center no-repeat;
-            width: 22px;
-            height: 12px;
-            margin-bottom: 0;
-            }
+		  	background-image: url(../i/spec_design_link.png);
+			}
         }
 
+    .source_a_s { /* Spec link */
 
-
+        &:before {
+		  	background-image: url(../i/spec_link.png);
+			}
+        }
     }
 
 
