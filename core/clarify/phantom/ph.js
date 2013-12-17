@@ -3,19 +3,19 @@ var
 	system = require('system'),
 	dom = require('../dom');
 
-// arguments from node query
+// arguments from node exec task
 var url = system.args[1],
-	id = system.args[2];
+	id = system.args[2],
+    wrap = system.args[3];
 
 page.open(url);
 
 page.onLoadFinished = function (msg) {
 	if (msg != 'success') console.log('Server is not responding.');
 	else {
-
         //TODO: create and check callback from templater
         setTimeout(function() {
-            var code = page.evaluate(function (id) {
+            var code = page.evaluate(function (args) {
 
                 var html = {};
 
@@ -57,18 +57,20 @@ page.onLoadFinished = function (msg) {
                 }
 
 
-                // collect source_example code
-                function getSource(id) {
+                // collect source_example code w/wo wrapper
+                function getSource(id, wrap) {
                     var
                         sources = document.getElementsByClassName('source_example'),
                         idArr = JSON.parse('['+ id +']'),
-                        html = '';
+                        html = '',
+                        wrap = (wrap === true || wrap === 'true')? true : false;
 
                     idArr.forEach(function (el, i, arr) { arr.splice(i, 1, --el) });
 
                     var i = 0;
                     while(i < idArr.length) {
-                        html += (sources[idArr[i]].outerHTML);
+                        if (wrap) html += (sources[idArr[i]].outerHTML);
+                        else html += (sources[idArr[i]].innerHTML);
                         ++i;
                     }
 
@@ -76,7 +78,7 @@ page.onLoadFinished = function (msg) {
                         "content": html,
                         "length": sources.length,
                         "id": id,
-                        "idSum": idArr.length
+                        "idSum": idArr.length,
                     }
                 }
 
@@ -99,16 +101,18 @@ page.onLoadFinished = function (msg) {
                     html.title = document.title;
                     html.styles = getHeadData()[0];
                     html.scripts = getHeadData()[1];
-                    html.source = getSource(id);
+                    html.source = getSource(args.id, args.wrap);
                 } catch (e) {
-                    if(e) html.err = e.name + '\nWrong request. ' +
+                    if(e) {
+                        html.err = e.name + '\f\n Wrong request. ' +
                             'May be block you looking for dont\'t ' +
                             'exist or has an you confuse .';
+                    }
                 }
 
                 return html;
-            }, id);
 
+            }, {id: id, wrap: wrap});
         console.log(JSON.stringify(code, null, 1));
         }, 250);
 	}
