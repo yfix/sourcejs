@@ -20,7 +20,7 @@ module.exports = function reply(req, res, next) {
 		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath,
 		tpl = parsedUrl.query.get,
 		id = parsedUrl.query.id,
-		wrap = parsedUrl.query.wrap,
+		wrap = parsedUrl.query.wrap || true,
         phantom = parsedUrl.query.ph || false;
 //debugger;
 
@@ -63,22 +63,22 @@ module.exports = function reply(req, res, next) {
 
 // if using PhantomJs
             if (phantom) {
+
                 var params = "sudo core/clarify/phantomjs "+
                     "core/clarify/phantom/ph.js "+
                     "http://"+ urlAdress +" "+ id +" "+ wrap;
 
                 // executes ph.js via phantomjs like separate child process
                 exec(params, function (err, stdout, stderr) {
-                    if (err) console.log('Exec error: ' + err);
+                    if (err) console.log('Exec report error: ' + err);
                     else {
                         try {
                             var html = JSON.parse(stdout);
-console.log(html);
                         } catch(e) {
                             html = 'Parsing error: ' + e;
-console.log(html);
                         }
-
+// PhantomJS output
+console.log(html);
 // got to show some view
                         reqHandler(res, html);
                     }
@@ -87,30 +87,32 @@ console.log(html);
             }
 // jsdom starts
             else {
-
                 jsdom.env(data.toString(), function (err, win) {
-                // url mode
-// 	     		jsdom.env(publicPath + '/' + urlPath, function (err, win) {
-                    var
-                        doc = win.document,
-                        html = {};
+// 	     		jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
+                    if (err) console.log('JSdom report error: ' + err);
+                    else {
+                        console.log('JSDOM', wrap);
+                        var
+                            doc = win.document,
+                            html = {};
 
-                    try {
-                        html.title = doc.title;
-                        html.meta = dom.getMeta(doc);
-                        html.styles = dom.getHeadData(doc)[0];
-                        html.scripts = dom.getHeadData(doc)[1];
-                        html.source = dom.getSource(doc, id, wrap);
-                    } catch (e) {
-                        html.err = {
-                            text: e,
-                            type: e.name
-                        };
+                        try {
+                            html.title = doc.title;
+                            html.meta = dom.getMeta(doc);
+                            html.styles = dom.getHeadData(doc)[0];
+                            html.scripts = dom.getHeadData(doc)[1];
+                            html.source = dom.getSource(doc, id, wrap);
+                        } catch (e) {
+                            html.err = {
+                                text: e,
+                                type: e.name
+                            };
+                        }
+    console.log(html);
+
+    // got to show some view
+                        reqHandler(res, html);
                     }
-// console.log(html);
-
-// got to show some view
-                    reqHandler(res, html);
                 });
             }
 

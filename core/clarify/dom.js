@@ -46,13 +46,13 @@ module.exports = {
 			sources = doc.getElementsByClassName('source_example'),
 			idArr = JSON.parse('['+ id +']'),
 			html = '',
-            wrap = (wrap === 'false')? false : (wrap)? true : false;
+            wrap = (wrap === true || wrap === 'true')? true : false;
 
 		idArr.forEach( function (el, i, arr) { arr.splice(i, 1, --el) } );
 
 		var i = 0;
 		while(i < idArr.length) {
-            if (wrap === 'true') html += (sources[idArr[i]].outerHTML);
+            if (wrap) html += (sources[idArr[i]].outerHTML);
             else html += (sources[idArr[i]].innerHTML);
 			++i;
 		}

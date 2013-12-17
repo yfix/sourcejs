@@ -13,10 +13,9 @@ page.open(url);
 page.onLoadFinished = function (msg) {
 	if (msg != 'success') console.log('Server is not responding.');
 	else {
-
         //TODO: create and check callback from templater
         setTimeout(function() {
-            var code = page.evaluate(function (id, wrap) {
+            var code = page.evaluate(function (args) {
 
                 var html = {};
 
@@ -64,7 +63,7 @@ page.onLoadFinished = function (msg) {
                         sources = document.getElementsByClassName('source_example'),
                         idArr = JSON.parse('['+ id +']'),
                         html = '',
-                        wrap = (wrap === 'false')? false : (wrap)? true : false;
+                        wrap = (wrap === true || wrap === 'true')? true : false;
 
                     idArr.forEach(function (el, i, arr) { arr.splice(i, 1, --el) });
 
@@ -80,7 +79,6 @@ page.onLoadFinished = function (msg) {
                         "length": sources.length,
                         "id": id,
                         "idSum": idArr.length,
-                        "wrap": wrap
                     }
                 }
 
@@ -104,7 +102,7 @@ page.onLoadFinished = function (msg) {
                     html.title = document.title;
                     html.styles = getHeadData()[0];
                     html.scripts = getHeadData()[1];
-                    html.source = getSource(id, wrap);
+                    html.source = getSource(args.id, args.wrap);
                 } catch (e) {
                     if(e) {
                         html.err = e.name + '\f\n Wrong request. ' +
@@ -115,8 +113,7 @@ page.onLoadFinished = function (msg) {
 
                 return html;
 
-            }, id, wrap);
-
+            }, {id: id, wrap: wrap});
         console.log(JSON.stringify(code, null, 1));
         }, 250);
 	}
