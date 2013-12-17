@@ -49,7 +49,7 @@ module.exports = {
             wrap = (wrap === true || wrap === 'true')? true : false;
 
 		idArr.forEach( function (el, i, arr) { arr.splice(i, 1, --el) } );
-console.log('getSource', {}.toString.call(wrap), wrap);
+
 		var i = 0;
 		while(i < idArr.length) {
             if (wrap) html += (sources[idArr[i]].outerHTML);
