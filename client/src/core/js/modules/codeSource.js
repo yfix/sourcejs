@@ -62,7 +62,7 @@ define([
 
                     if (_this.hasClass('css')) {
                         formatClass += 'css';
-                    } else if (_this.hasClass('html')) {
+                    } else if (_this.hasClass('html') || _this.hasClass('xml'))  {
                         formatClass += 'markup';
                     } else if (_this.hasClass('js')) {
                         formatClass += 'javascript';
