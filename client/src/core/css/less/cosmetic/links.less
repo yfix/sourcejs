@@ -1,22 +1,30 @@
 /* Links
 ---------------------------------------------------------------------------------- */
-@spec-link-color: #1b9b19;
+@green: #1b9b19;
+@blue: #1c76c2;
+@black: #333;
 
 /* TODO: rename classes */
 .source_a_hl, /* Higlight link */
 .source_a_o { /* Regular link */
-	color:#4792D2;
-	text-decoration:none;
+  	&:link,
+	&:visited {
+	  	text-decoration:none;
+	  	color: lighten(@blue, 10%);
+		}
 
     &:hover {
-		color: #1c76c2;
+		color: @blue;
 		text-decoration: underline;
 		}
 	}
 
 .source_a_bl { /* Emphasized link */
-	color: #333;
-	text-decoration: none;
+  	&:link,
+	&:visited {
+	  	color: @black;
+	  	text-decoration: none;
+		}
 
     &:hover {
 		text-decoration: underline;
@@ -24,21 +32,27 @@
 	}
 
 .source_a_l { /* Inverted link */
-	color: #999 !important; /* Highest priority needed to cosmetic classes */
-	text-decoration: none !important;
+  	&:link,
+	&:visited {
+	  	color: lighten(@black, 40%);
+	  	text-decoration: none;
+		}
 
     &:hover {
-		color: #666 !important;
-		text-decoration: underline !important;
+	 	color: lighten(@black, 20%);
+		text-decoration: underline;
 		}
 	}
 
 .source_a_g { /* Object link */
-	color: #449F13;
-	text-decoration: none;
+  	&:link,
+	&:visited {
+	  	color: @green;
+	  	text-decoration: none;
+		}
 
     &:hover {
-		color: #518731;
+		color: darken(@green, 10%);
 		text-decoration: underline;
 		}
 	}
@@ -54,36 +68,42 @@
 	}
 
 .source_a_d { /* Design link */
-    color: @spec-link-color !important;
-    font-size: 16px;
+  	&:link,
+	&:visited {
+    	color: @green !important;
+    	font-size: 16px;
+		}
 
     &:hover {
-        color: @spec-link-color;
+        color: @green;
         }
 
     &:before {
         content: '';
         display: inline;
-	   	padding: 0 25px 0 0;
+	   	padding-right: 25px;
         background: url(../i/spec_design_link.svg) 50% no-repeat;
         }
 
     }
 
 .source_a_s { /* Spec link */
-    color: @spec-link-color !important;
-    font-size: 16px;
+  	&:link,
+	&:visited {
+	  	color: @green !important;
+	  	font-size: 16px;
+		}
 
     &:hover {
-        color: @spec-link-color;
+        color: @green;
         }
 
     &:before {
         content: '';
         display: inline;
-	  	padding: 0 25px 0 0;
+	  	padding-right: 25px;
         background: url(../i/spec_link.svg) 50% no-repeat;
-      }
+      	}
 
     }
 
@@ -103,7 +123,6 @@
 			}
         }
     }
-
 
 /* /Links
 ---------------------------------------------------------------------------------- */
