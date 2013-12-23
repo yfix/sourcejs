@@ -26,7 +26,8 @@ define([
             scrollToHash: true,
             sections: true,
             globalNav: true,
-            search: true
+            search: true,
+            navHighlight: true
         },
 
         modulesOptions : {
@@ -42,7 +43,7 @@ define([
         },
 
         pluginsEnabled: {
-			navHighlight: false
+
         },
 
         // Page classes
