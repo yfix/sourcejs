@@ -85,7 +85,11 @@ define([
 				if (typeof targetCat[ navListCat + '/index.html' ] === 'object') {
 					catObj = targetCat[ navListCat + '/index.html' ];
 				} else if ( typeof targetCat[ 'index.html' ] === 'object' ) {
-					catObj = targetCat[ 'index.html' ][ 'index.html' ];
+					if (!!targetCat[ 'index.html' ][ 'index.html' ]) {
+						catObj = targetCat[ 'index.html' ][ 'index.html' ];
+					} else {
+						catObj = targetCat[ 'index.html' ];
+					}
 				}
 
 				if (typeof catObj === 'object') {
