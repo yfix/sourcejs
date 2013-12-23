@@ -73,39 +73,38 @@
 		border-top: 1px solid #dfe2e4;
 		}
 
+.source_main_nav_ul {
+	margin-left: -21px; /* menu padding compensation  */
+	margin-right: -21px;
+	}
+
 .source_main_nav_li {
 	line-height: 20px;
 	margin-bottom: 2px;
 	}
-
-
-
-.source_main_nav_ul2 {
-	display: none;
-	padding-left: 1.3em;
-	font-size: 12px;
-	}
-	.source_main_nav_li.__active .source_main_nav_ul2 {
-		display: block;
-		}
 
 .source_main_nav_li2 {
 	color: #666;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	line-height: 0;
+	transition: line-height 0.2s;
 	}
+	.source_main_nav_li.__active .source_main_nav_li2 {
+		line-height: 20px;
+		}
 
 .source_main_nav_a {
 	overflow: hidden;
 	text-overflow: ellipsis;
+	padding: 0 21px;
 	}
-
-	.source_main_nav_li.__active .source_main_nav_a {
+	.source_main_nav_li2 .source_main_nav_a {
+		padding: 0 37px;
+		}
+	.source_main_nav .source_main_nav_a.__active  { /* for weight */
 		background-color: #8AB5D6;
-		margin-left: -21px; /* menu padding compensation  */
-		margin-right: -21px;
-		padding: 0 21px;
 		color: #F9FBFD;
 		}
 

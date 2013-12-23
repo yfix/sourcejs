@@ -103,7 +103,9 @@ define([
 				appendString += '<ul class="' + this.options.modulesOptions.innerNavigation.NAV_UL_SECONDLEVEL_CLASS + '">';
 				for (var j = 0; j < sections.getSections()[i].subHeaderElements.length; j++) {
 					appendString += '<li class="' + this.options.modulesOptions.innerNavigation.NAV_LI_SECONDLEVEL_CLASS + '">' +
-					sections.getSections()[i].num + '.' + (j+1) + '&nbsp;' + sections.getSections()[i].subHeaderElements[j].text() + '</li>';
+						'<a class="source_main_nav_a" href="#' + (sections.getSections()[i].id) + '_' + (j+1) + this.options.modulesOptions.innerNavigation.hashSymb + '">' +
+							sections.getSections()[i].num + '.' + (j+1) + '&nbsp;' + sections.getSections()[i].subHeaderElements[j].text() +
+						'</a></li>';
 				}
 				appendString += '</ul>';
 			}

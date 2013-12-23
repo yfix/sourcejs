@@ -27,8 +27,7 @@ body {
 }
 body {
   position: relative;
-  /*min-width: 1000px;*/
-
+  min-width: 780px;
   font: 14px/1.5 Arial, Helvetica, sans-serif;
   background: #fff;
   color: #333;
@@ -590,35 +589,39 @@ a.source_catalog_a:hover .source_catalog_title {
   padding-top: 10px;
   border-top: 1px solid #dfe2e4;
 }
+.source_main_nav_ul {
+  margin-left: -21px;
+  /* menu padding compensation  */
+
+  margin-right: -21px;
+}
 .source_main_nav_li {
   line-height: 20px;
   margin-bottom: 2px;
-}
-.source_main_nav_ul2 {
-  display: none;
-  padding-left: 1.3em;
-  font-size: 12px;
-}
-.source_main_nav_li.__active .source_main_nav_ul2 {
-  display: block;
 }
 .source_main_nav_li2 {
   color: #666;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  line-height: 0;
+  transition: line-height 0.2s;
+}
+.source_main_nav_li.__active .source_main_nav_li2 {
+  line-height: 20px;
 }
 .source_main_nav_a {
   overflow: hidden;
   text-overflow: ellipsis;
-}
-.source_main_nav_li.__active .source_main_nav_a {
-  background-color: #8AB5D6;
-  margin-left: -21px;
-  /* menu padding compensation  */
-
-  margin-right: -21px;
   padding: 0 21px;
+}
+.source_main_nav_li2 .source_main_nav_a {
+  padding: 0 37px;
+}
+.source_main_nav .source_main_nav_a.__active {
+  /* for weight */
+
+  background-color: #8AB5D6;
   color: #F9FBFD;
 }
 .source_main_nav_ac_item {
@@ -799,7 +802,9 @@ body .source_section > * {
 body .source_section > h2:first-child {
   display: block;
 }
-.source_section__open > *:not(script):not(style):not(style):not(.source_example) {
+.source_section__open > *:not(script),
+.source_section__open > *:not(style),
+.source_section__open > *:not(.source_example) {
   display: block;
 }
 .source_section__open > .source_a_hl {
@@ -1094,8 +1099,13 @@ input.source_search_it:focus {
 .source_a_o {
   /* Regular link */
 
-  color: #4792D2;
+}
+.source_a_hl:link,
+.source_a_o:link,
+.source_a_hl:visited,
+.source_a_o:visited {
   text-decoration: none;
+  color: #3090e1;
 }
 .source_a_hl:hover,
 .source_a_o:hover {
@@ -1105,7 +1115,10 @@ input.source_search_it:focus {
 .source_a_bl {
   /* Emphasized link */
 
-  color: #333;
+}
+.source_a_bl:link,
+.source_a_bl:visited {
+  color: #333333;
   text-decoration: none;
 }
 .source_a_bl:hover {
@@ -1114,23 +1127,27 @@ input.source_search_it:focus {
 .source_a_l {
   /* Inverted link */
 
-  color: #999 !important;
-  /* Highest priority needed to cosmetic classes */
-
-  text-decoration: none !important;
+}
+.source_a_l:link,
+.source_a_l:visited {
+  color: #999999;
+  text-decoration: none;
 }
 .source_a_l:hover {
-  color: #666 !important;
-  text-decoration: underline !important;
+  color: #666666;
+  text-decoration: underline;
 }
 .source_a_g {
   /* Object link */
 
-  color: #449F13;
+}
+.source_a_g:link,
+.source_a_g:visited {
+  color: #1b9b19;
   text-decoration: none;
 }
 .source_a_g:hover {
-  color: #518731;
+  color: #136f12;
   text-decoration: underline;
 }
 .source_a_hl {
@@ -1142,6 +1159,57 @@ input.source_search_it:focus {
 .source_a_hl:after {
   content: "\A";
   white-space: pre;
+}
+.source_a_d {
+  /* Design link */
+
+}
+.source_a_d:link,
+.source_a_d:visited {
+  color: #1b9b19 !important;
+  font-size: 16px;
+}
+.source_a_d:hover {
+  color: #1b9b19;
+}
+.source_a_d:before {
+  content: '';
+  display: inline;
+  padding-right: 25px;
+  background: url(../i/spec_design_link.svg) 50% no-repeat;
+}
+.source_a_s {
+  /* Spec link */
+
+}
+.source_a_s:link,
+.source_a_s:visited {
+  color: #1b9b19 !important;
+  font-size: 16px;
+}
+.source_a_s:hover {
+  color: #1b9b19;
+}
+.source_a_s:before {
+  content: '';
+  display: inline;
+  padding-right: 25px;
+  background: url(../i/spec_link.svg) 50% no-repeat;
+}
+/* fallback for ie which not support SVG */
+.ie8 .source_a_d {
+  /* Design link */
+
+}
+.ie8 .source_a_d:before {
+  background-image: url(../i/spec_design_link.png);
+}
+.ie8 .source_a_s {
+  /* Spec link */
+
+}
+.ie8 .source_a_s:before {
+  background-image: url(../i/spec_link.png);
 }
 /* /Links
 ---------------------------------------------------------------------------------- *//* Helpers

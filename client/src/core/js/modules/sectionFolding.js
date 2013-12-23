@@ -113,6 +113,9 @@ define([
         };
 
         var openSpoiler = function (t, config) {
+        	if (t.is('h3')) {
+        		t = t.closest('.source_section');
+        	}
             t.addClass(OPEN_SECTION_CLASS);
 
             var sectionID = t.attr('id'),

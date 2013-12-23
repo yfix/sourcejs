@@ -70,6 +70,10 @@ define(["jquery", "modules/module"], function ($, module) {
             newID = section.attr('id');
         } else {
             section.attr('id', newID);
+
+            section.children('h3').each(function(index) {
+            	$(this).attr('id', newID + '_' + (index+1));
+            })
         }
 
         return newID;
