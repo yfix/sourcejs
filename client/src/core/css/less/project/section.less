@@ -122,8 +122,11 @@
 
 .source_section__open {
 
-    & > *:not(script),
-    & > *:not(style),
+    & > script,
+    & > style {
+    	display: none !important;
+    	}
+
     & > *:not(.source_example) {
 		display: block;
 		}

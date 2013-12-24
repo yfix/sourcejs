@@ -805,8 +805,10 @@ body .source_section > * {
 body .source_section > h2:first-child {
   display: block;
 }
-.source_section__open > *:not(script),
-.source_section__open > *:not(style),
+.source_section__open > script,
+.source_section__open > style {
+  display: none !important;
+}
 .source_section__open > *:not(.source_example) {
   display: block;
 }

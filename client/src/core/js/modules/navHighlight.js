@@ -65,7 +65,12 @@ define([
 
 		var sourceHeaders = [],
 			navHeaders,
-			currentHeader = -1;
+			currentHeader = -1,
+			extension = '.html';
+
+		if (window.location.href.indexOf('.src') != '-1') {
+			extension = '.src';
+		}
 
 		// watch headers position
 		var watchSectionTop = function () {
@@ -98,7 +103,7 @@ define([
 
 				// Modern browsers uses history API for correct back-button-browser functionality
 				if (!!(window.history && history.pushState)) {
-					window.history.replaceState({anchor: closestHeader+1}, document.title, 'index.html' + href);
+					window.history.replaceState({anchor: closestHeader+1}, document.title, 'index' + extension + href);
 				} else { // ie9 fallback
 					 window.location.hash = href;
 				}
