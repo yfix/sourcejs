@@ -27,7 +27,8 @@ define([
             sections: true,
             globalNav: true,
             search: true,
-            navHighlight: true
+            navHighlight: true,
+            headerFooter: true
         },
 
         modulesOptions : {
