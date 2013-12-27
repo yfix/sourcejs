@@ -49,35 +49,38 @@ define([
             //Add HTML source code container before each example without it
             $('.source_example').each(function () {
                 var _this = $(this);
-                // <pre><code>...</code></pre> is the wrapper for prism.js plugin
+                // <pre class="lang-*"><code>...</code></pre> is the wrapper for prism.js plugin
                 if (!_this.prev().is('pre')) {
-                    _this.before('<pre class="language-markup line-numbers" style="display:none"><code class="language-markup"></code></pre>')
+                    _this.before('<pre class="lang-markup" style="display:none"><code></code></pre>')
                 }
             });
 
             var wrapOldTags = function() {
+                // temporary solution while code:brush is still used
                 $('.source_section').find('code[class*="brush"]').each(function () {
                     var _this = $(this)
-                        ,formatClass = ' language-';
+                        ,formatClass = 'lang-';
 
                     if (_this.hasClass('css')) {
                         formatClass += 'css';
-                    } else if (_this.hasClass('html') || _this.hasClass('xml'))  {
-                        formatClass += 'markup';
+//                    } else if (_this.hasClass('html') || _this.hasClass('xml'))  {
+//                        formatClass += 'markup';
                     } else if (_this.hasClass('js')) {
                         formatClass += 'javascript';
+                    } else {
+                        formatClass += 'markup';
                     }
-
                     if (_this.hasClass('source_visible')) {
-                        formatClass += ' source_visible';
+                        formatClass += ' source_visible ';
                     }
 
-                    _this.removeClass().addClass(formatClass);
+                    _this[0].removeAttribute("class");
 
                     if (!_this.parent().is('pre')) {
                         _this.html().trim();
-                        _this.wrap('<pre style="display:none" class="line-numbers'+formatClass+'"></pre>');
+                        _this.wrap('<pre style="display:none"></pre>');
                     }
+                    _this.parent().attr("class", formatClass);
                 });
             }
             //Code show toggle on each code block
@@ -86,21 +89,21 @@ define([
                 var selection = (onlyStatic ? $('.source_section > pre.source_visible > code') : $('.source_section > pre > code'));
                 selection.each(function () {
                     var _this = $(this)
+                        ,parent = _this.parent()
                         ,langClass='';
-
-                    if (_this.hasClass('language-css')) {
+                    if (parent.hasClass('lang-css')) {
                         langClass = SourceCodeToggleCSS;
-                    } else if (_this.hasClass('language-markup')) {
+                    } else if (parent.hasClass('lang-markup')) {
                         langClass = SourceCodeToggleHTML;
-                    } else if (_this.hasClass('language-javascript')) {
+                    } else if (parent.hasClass('lang-javascript')) {
                         langClass = SourceCodeToggleJS;
                     }
 
-                    if (_this.parent().hasClass('source_visible')) {
-                        _this.parent().wrap('<div class="'+SourceCode+' '+SourceCodeStatic+'"><div class="' + SourceCodeCnt + '"></div></div>');
+                    if (parent.hasClass('source_visible')) {
+                        parent.wrap('<div class="'+SourceCode+' '+SourceCodeStatic+'"><div class="' + SourceCodeCnt + '"></div></div>');
                     }
                     else {
-                        _this.parent().wrap('<div class="'+SourceCode+'"><div class="' + SourceCodeCnt + '"></div></div>');
+                        parent.wrap('<div class="'+SourceCode+'"><div class="' + SourceCodeCnt + '"></div></div>');
                         _this.closest('.' + SourceCode).prepend('' +
                         '<a href="" class="' + SourceCodeToggle + ' ' + langClass + '"><span class="source_hide">' + RES_HIDE_CODE + '</span><span class="source_show">' + RES_SHOW_CODE + '</span> ' + RES_CODE + '</a>' +
                         '');
@@ -117,20 +120,19 @@ define([
                     if (_this.html().trim().length === 0) {
                         HTMLcode = _this.parent().nextAll('.'+ options.exampleSectionClass ).html();
                         _this.html(HTMLcode);
-                        if (_this.hasClass('language-markup')) {
+                        if (_this.parent().hasClass('lang-markup')) {
                             _this.formatify();
                         }
                     }
                     else {
                         HTMLcode = _this.html();
-                        console.log(HTMLcode);
                         var spaces = HTMLcode.replace(/\t/,'  ').match(/^\s{0,}/)[0].length;
                         var HTMLarray = HTMLcode.trim().split("\n");
                         for (var i=0; i<HTMLarray.length;i++) {
                             HTMLarray[i] = HTMLarray[i].replace(new RegExp(' {'+(spaces-1)+'}'), '');
                         }
                         HTMLcode = HTMLarray.join('\n').replace(/\s{1,}<span class="line-num/g, '<span class="line-num');
-                        if (_this.hasClass('language-markup'))
+                        if (_this.parent().hasClass('lang-markup'))
                             HTMLcode = HTMLcode.replace(/<!--/g, "&lt;!--").replace(/-->/g,"--&gt;");
                         _this.html(HTMLcode);
                     }

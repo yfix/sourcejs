@@ -90,7 +90,8 @@
         },
 
         highlightAll: function(async, callback) {
-            var elements = document.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code');
+//            var elements = document.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code');
+            var elements = document.querySelectorAll('pre[class*="lang-"] code');
 
             for (var i=0, element; element = elements[i++];) {
                 _.highlightElement(element, async === true, callback);
@@ -115,13 +116,13 @@
             }
 
             // Set language on the element, if not present
-            element.className = element.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+//            element.className = element.className.replace(lang, '').replace(/\s+/g, ' ') + 'lang-' + language;
 
             // Set language on the parent, for styling
             parent = element.parentNode;
 
             if (/pre/i.test(parent.nodeName)) {
-                parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+                parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + 'lang-' + language;
             }
 
             var code = element.textContent;
@@ -504,7 +505,7 @@ Prism.languages.insertBefore('bash', 'comment', {
 Prism.hooks.add('after-highlight', function (env) {
     // works only for <code> wrapped inside <pre data-line-numbers> (not inline)
     var pre = env.element.parentNode;
-    if (!pre || !/pre/i.test(pre.nodeName) || pre.className.indexOf('line-numbers') === -1) {
+    if (!pre || !/pre/i.test(pre.nodeName)) {
         return;
     }
 

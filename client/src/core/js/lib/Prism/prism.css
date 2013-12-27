@@ -4,8 +4,8 @@
  * @author Lea Verou
  */
 
-code[class*="language-"],
-pre[class*="language-"] {
+pre[class*="lang-"],
+pre[class*="lang-"] code {
     color: black;
     /*text-shadow: 0 1px white;*/
     font:12px/1.5 Consolas, Monaco, 'Andale Mono', monospace;
@@ -15,6 +15,7 @@ pre[class*="language-"] {
     text-align: left;
     white-space: pre;
     word-spacing: normal;
+    position: relative;
 
     -moz-tab-size: 4;
     -o-tab-size: 4;
@@ -26,40 +27,43 @@ pre[class*="language-"] {
     hyphens: none;
 }
 
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+pre[class*="lang-"]::-moz-selection, pre[class*="lang-"] ::-moz-selection,
+pre[class*="lang-"] code::-moz-selection, pre[class*="lang-"] code ::-moz-selection
+/*code[class*="lang-"]::-moz-selection, code[class*="lang-"] ::-moz-selection */
+ {
     text-shadow: none;
     background: #f1f2f3;
 }
 
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
+pre[class*="lang-"]::selection, pre[class*="lang-"] ::selection,
+pre[class*="lang-"] code::selection, pre[class*="lang-"] code::selection {
     text-shadow: none;
     background: #f1f2f3;
 }
 
 @media print {
-    code[class*="language-"],
-    pre[class*="language-"] {
+    pre[class*="lang-"],
+    pre[class*="lang-"] code {
         text-shadow: none;
     }
 }
 
 /* Code blocks */
-pre[class*="language-"] {
-    padding: 1em;
+pre[class*="lang-"] {
+    counter-reset: linenumber;
+    padding: 1em 1em 1em 3.8em;
     margin: .5em 0;
     overflow: auto;
     resize:horizontal;
 }
 
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
+:not(pre) > code[class*="lang-"],
+pre[class*="lang-"] {
     background: #f1f2f3;
 }
 
 /* Inline code */
-:not(pre) > code[class*="language-"] {
+:not(pre) > code[class*="lang-"] {
     padding: .1em;
     border-radius: .3em;
 }
@@ -98,7 +102,7 @@ pre[class*="language-"] {
 .token.operator,
 .token.entity,
 .token.url,
-.language-css .token.string,
+.lang-css .token.string,
 .style .token.string,
 .token.variable {
     color: #a67f59;
@@ -124,17 +128,7 @@ pre[class*="language-"] {
     cursor: help;
 }
 
-pre.line-numbers {
-    position: relative;
-    padding-left: 3.8em;
-    counter-reset: linenumber;
-}
-
-pre.line-numbers > code {
-    position: relative;
-}
-
-.line-numbers .line-numbers-rows {
+.line-numbers-rows {
     position: absolute;
     pointer-events: none;
     top: 0;
