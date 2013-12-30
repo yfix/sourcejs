@@ -1,30 +1,9 @@
 // .src files support
 
 var fs = require('fs'),
-    ejs = require('ejs');
+    ejs = require('ejs'),
+    getHeaderAndFooter = require('../headerFooter/headerFooter').getHeaderAndFooter;
 
-function getHeaderAndFooter() {
-    var defaultTemplatePath = global.app.get('specs path') + "/core/templates/";
-    var userTemplatePath = global.app.get('specs path') + "/user/templates/";
-    var headerFile = "header.inc.html";
-    var footerFile = "footer.inc.html";
-
-    var data = {};
-
-    if(fs.existsSync(userTemplatePath + headerFile)) {
-        data.header = ejs.render(fs.readFileSync(userTemplatePath + headerFile, "utf-8"));
-    } else {
-        data.header = ejs.render(fs.readFileSync(defaultTemplatePath + headerFile, "utf-8"));
-    }
-
-    if(fs.existsSync(userTemplatePath + footerFile)) {
-        data.footer = ejs.render(fs.readFileSync(userTemplatePath + footerFile, "utf-8"));
-    } else {
-        data.footer = ejs.render(fs.readFileSync(defaultTemplatePath + footerFile, "utf-8"));
-    }
-
-    return data;
-}
 
 function serveContent(filePath, pathToSpec, res) {
     fs.exists(filePath, function(exists) {
@@ -125,3 +104,5 @@ global.app.get('/:dir/:spec/:sub/', function(req, res){
 
     doRedirect(pathToSpec, specURI, res);
 });
+
+exports.getHeaderAndFooter = getHeaderAndFooter;

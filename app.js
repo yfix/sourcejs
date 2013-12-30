@@ -10,7 +10,8 @@ var express = require('express')
     , fs = require('fs')
     , lessMiddleware = require('less-middleware')
     , os = require('os')
-    , ejs = require('ejs');
+    , ejs = require('ejs')
+    , headerAndFooter = require('./core/headerFooter/headerFooter');
 
 global.app = express();
 global.opts = require('./core/options/');
@@ -72,8 +73,12 @@ app.use(function(req, res, next){
 	var path = req.url.replace('/index.html', '');
 
 	if (req.accepts('html')) {
+
+        var headFoot = headerAndFooter.getHeaderAndFooter();
 		res.render(__dirname + '/core/views/404.ejs', {
-			section: path
+			section: path,
+            header: headFoot.header,
+            footer: headFoot.footer
 		})
 
 		return;

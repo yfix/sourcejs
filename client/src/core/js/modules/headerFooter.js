@@ -1,13 +1,20 @@
 define(["core/options"], function(options) {
     if(options.modulesEnabled.headerFooter) {
+        var headerExists = $(".source_header").length;
+        var footerExists = $(".source_footer").length;
+
         //Header and Footer injection
         var source_container = $('.source_container');
 
-        source_container
-                .prepend($('<div class="source_header"></div>'))
-                .append($('<div class="source_footer"></div>'));
+        if (!headerExists) {
+            source_container.prepend($('<div class="source_header"></div>'));
+        }
 
-        if (source_container.length) {
+        if (!footerExists) {
+            source_container.append($('<div class="source_footer"></div>'));
+        }
+
+        if (source_container.length && !(headerExists && footerExists)) {
             //some empty page
             if (!source_container.contents().length) {
                 source_container.append($('<div class="source_main source_col-main" role="main">Welcome to Source!</div>'));

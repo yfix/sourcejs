@@ -22,21 +22,12 @@
     <!-- /Source default resources -->
 </head>
 <body>
-<!--TODO: delete after adding check in headerFooter.js -->
-<script>
-    define('modules/inlineOptions', {
-        modulesEnabled : {
-            headerFooter : false
-        }
-    })
-</script>
-
-<div class="source_container">
-    <%- header %>
-    <div class="source_main source_col-main" role="main">
-        <%- content %>
+    <div class="source_container">
+        <%- header %>
+        <div class="source_main source_col-main" role="main">
+            <%- content %>
+        </div>
+        <%- footer %>
     </div>
-    <%- footer %>
-</div>
 </body>
 </html>
