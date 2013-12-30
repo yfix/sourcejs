@@ -63,17 +63,17 @@ define([
 								if (getSpecificCat.indexOf('index.html') === -1) {
 									for (innerCat in returnedTreeObj) {
 										if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, true) ) {
-											if (innerCat == 'index.html' && (!excludeRootDocument)) {
+											if (innerCat == 'specFile' && (!excludeRootDocument)) {
 												fileTree[innerCat] = {};
-												fileTree[innerCat]['index.html'] = returnedTreeObj[innerCat];
+												fileTree[innerCat]['specFile'] = returnedTreeObj[innerCat];
 											} else {
 												fileTree[innerCat] = returnedTreeObj[innerCat];
 											}
 										}
 									}
 								} else {
-									fileTree['index.html'] = {};
-									fileTree['index.html']['index.html'] = returnedTreeObj;
+									fileTree['specFile'] = {};
+									fileTree['specFile']['specFile'] = returnedTreeObj;
 									isSingle = true;
 								}
 								return isSingle;
@@ -118,7 +118,7 @@ define([
                             if (typeof getCatInfo !== 'undefined') {
 
                                 // Checking navigation page info
-                                if (typeof targetSubCatObj['index.html'] !== 'object' ) {
+                                if (typeof targetSubCatObj['specFile'] !== 'object' ) {
                                     searchCat(targetSubCatObj, currentSubCat, true);
                                 }
 
@@ -154,9 +154,9 @@ define([
     ParseFileTree.prototype.checkCatInfo = function (targetSubCatObj, currentSubCat, getCatInfo) {
         //If cat info needed
         if (getCatInfo) {
-            return typeof targetSubCatObj['index.html'] === 'object' || currentSubCat === 'index.html';
+            return typeof targetSubCatObj['specFile'] === 'object' || currentSubCat === 'specFile';
         } else {
-            return typeof targetSubCatObj['index.html'] === 'object';
+            return typeof targetSubCatObj['specFile'] === 'object';
         }
     };
 
@@ -221,8 +221,8 @@ define([
 				if (typeof tree[folder] === 'object') {
 					if ( !_this.checkCatInfo(tree[folder]) ) {
 
-							var fullPath = tree['index.html'].url.split('index.html')[0];
-							fileFlat[fullPath] = tree;
+                        var fullPath = tree['specFile'].url;
+                        fileFlat[fullPath] = tree;
 
 					} else {
 						lookForIndexOrGoDeeper( tree[folder] );

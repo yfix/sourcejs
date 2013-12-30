@@ -29,93 +29,98 @@ module.exports = function reply(req, res, next) {
 	if (path.basename(parsedUrl.path).indexOf('index.html') != -1 && parsedUrl.query.get) {
 // reading file..
 		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
+            var responseData = data || '';
+
             if (err) res.end('Huston, we have 404.\n'+ err);
 
-            // make data for template
-            function reqHandler(res, html) {
-                if (html.source) {
-                    //// переменные для Jade
-                    var locals = {
-                        head: {
-                            title: html.title,
-                            mAuthor: html.meta.author,
-                            mKeywords: html.meta.keywords,
-                            mDescription: html.meta.description,
-                            scripts: html.scripts,
-                            stylesheets: html.styles
-                        },
-                        body: {
-                            spec: html.source.content,
-                            specLength: html.source.length,
-                            specId: html.source.id,
-                            specIdSum: html.source.idSum,
-                            homeLink: 'http://'+ urlAdress
-                        },
-                        pretty: true
-                    };
+            if (responseData !== '') {
 
-                    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-                    res.end(jady(locals, tpl));
+                // make data for template
+                function reqHandler(res, html) {
+                    if (html.source) {
+                        //// переменные для Jade
+                        var locals = {
+                            head: {
+                                title: html.title,
+                                mAuthor: html.meta.author,
+                                mKeywords: html.meta.keywords,
+                                mDescription: html.meta.description,
+                                scripts: html.scripts,
+                                stylesheets: html.styles
+                            },
+                            body: {
+                                spec: html.source.content,
+                                specLength: html.source.length,
+                                specId: html.source.id,
+                                specIdSum: html.source.idSum,
+                                homeLink: 'http://'+ urlAdress
+                            },
+                            pretty: true
+                        };
 
-                } else res.end('STDOUT: can\'t recieve content.');
-            }
+                        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+                        res.end(jady(locals, tpl));
+
+                    } else res.end('STDOUT: can\'t recieve content.');
+                }
 
 
-// if using PhantomJs
-            if (phantom) {
+        // if using PhantomJs
+                if (phantom) {
 
-                var params = "sudo core/clarify/phantomjs "+
-                    "core/clarify/phantom/ph.js "+
-                    "http://"+ urlAdress +" "+ id +" "+ wrap;
+                    var params = "sudo core/clarify/phantomjs "+
+                        "core/clarify/phantom/ph.js "+
+                        "http://"+ urlAdress +" "+ id +" "+ wrap;
 
-                // executes ph.js via phantomjs like separate child process
-                exec(params, function (err, stdout, stderr) {
-                    if (err) console.log('Exec report error: ' + err);
-                    else {
-                        try {
-                            var html = JSON.parse(stdout);
-                        } catch(e) {
-                            html = 'Parsing error: ' + e;
+                    // executes ph.js via phantomjs like separate child process
+                    exec(params, function (err, stdout, stderr) {
+                        if (err) console.log('Exec report error: ' + err);
+                        else {
+                            try {
+                                var html = JSON.parse(stdout);
+                            } catch(e) {
+                                html = 'Parsing error: ' + e;
+                            }
+        // PhantomJS output
+        console.log(html);
+        // got to show some view
+                            reqHandler(res, html);
                         }
-// PhantomJS output
-console.log(html);
-// got to show some view
-                        reqHandler(res, html);
-                    }
-                });
+                    });
 
-            }
-// jsdom starts
-            else {
-                jsdom.env(data.toString(), function (err, win) {
-// 	     		jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
-                    if (err) console.log('JSdom report error: ' + err);
-                    else {
-                        console.log('JSDOM', wrap);
-                        var
-                            doc = win.document,
-                            html = {};
+                }
+        // jsdom starts
+                else {
+                    jsdom.env(responseData.toString(), function (err, win) {
+        // 	     		jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
+                        if (err) console.log('JSdom report error: ' + err);
+                        else {
+                            console.log('JSDOM', wrap);
+                            var
+                                doc = win.document,
+                                html = {};
 
-                        try {
-                            html.title = doc.title;
-                            html.meta = dom.getMeta(doc);
-                            html.styles = dom.getHeadData(doc)[0];
-                            html.scripts = dom.getHeadData(doc)[1];
-                            html.source = dom.getSource(doc, id, wrap);
-                        } catch (e) {
-                            html.err = {
-                                text: e,
-                                type: e.name
-                            };
+                            try {
+                                html.title = doc.title;
+                                html.meta = dom.getMeta(doc);
+                                html.styles = dom.getHeadData(doc)[0];
+                                html.scripts = dom.getHeadData(doc)[1];
+                                html.source = dom.getSource(doc, id, wrap);
+                            } catch (e) {
+                                html.err = {
+                                    text: e,
+                                    type: e.name
+                                };
+                            }
+        console.log(html);
+
+        // got to show some view
+                            reqHandler(res, html);
                         }
-    console.log(html);
+                    });
+                }
 
-    // got to show some view
-                        reqHandler(res, html);
-                    }
-                });
             }
-
 		});
 	} else next();
 };

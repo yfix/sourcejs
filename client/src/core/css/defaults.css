@@ -458,6 +458,11 @@ body {
 /* /Footer
 ---------------------------------------------------------------------------------- *//* Catalog
 ---------------------------------------------------------------------------------- */
+.source_section .source_catalog {
+  padding: 10px 20px;
+  border: 1px solid #dfe2e4;
+  border-radius: 10px;
+}
 .source_catalog_h2,
 .source_catalog h2 {
   font-size: 18px;
@@ -793,7 +798,7 @@ body p.source_data,
 }
 .source_section > ul {
   padding: 0;
-  margin: 0 0 0 22px;
+  margin-left: 22px;
   list-style: outside disc;
 }
 /* Dynamics

@@ -18,7 +18,7 @@ var infoFile = "info.json";
 var outputFile = 'data/pages_tree.json';
 
 // File mask for search
-var fileMask = global.opts.fileTree.fileMask;
+var fileMask = global.opts.fileTree.fileMask; //Arr
 
 // for waiting when function finished
 var NOT_EXEC = true;
@@ -41,21 +41,34 @@ excludedDirs.forEach(function(exlDir) {
 });
 var excludes = new RegExp(dirsForRegExp);
 
+var isSpec = function(file) {
+    var response = false;
+
+    fileMask.map(function(specFile){
+        if (file === specFile) {
+            response = true;
+        }
+    });
+
+    return response;
+};
+
 function fileTree(dir) {
-    var arr = {},
+    var outputJSON = {},
         dirContent = fs.readdirSync(dir);
 
     dirContent.forEach(function(file) {
+        var targetFile = file;
 
         if (excludes.test(dir)) {return}
 
-        var urlToFile = dir + '/' + file,
+        var urlToFile = dir + '/' + targetFile,
             baseName = path.basename(dir);
 
         urlToFile = path.normalize(urlToFile);
         var urlFromHostRoot = urlToFile.replace('../','/');
 
-        arr[baseName] = arr[baseName];
+        outputJSON[baseName] = outputJSON[baseName];
 
         var fileStats = fs.statSync(urlToFile);
 
@@ -64,31 +77,36 @@ function fileTree(dir) {
         if (fileStats.isDirectory()) {
 
             var childObj = fileTree(urlToFile);
-            if (/*fs.existsSync(urlToFile+"/"+fileMask) &&*/ Object.getOwnPropertyNames(childObj).length !== 0) { // filter by dir/index.html disabled
-                arr[file] = extend(arr[file],childObj);
+            if (Object.getOwnPropertyNames(childObj).length !== 0) {
+                outputJSON[targetFile] = extend(outputJSON[targetFile],childObj);
             }
 
-        } else if (file == fileMask) {
+        } else if (isSpec(targetFile)) {
 
             var urlForJson = urlFromHostRoot.substring(rootLength, urlFromHostRoot.length);
+
+            //Removing filename from path
+            urlForJson = urlForJson.split('/');
+            urlForJson.pop();
+            urlForJson = urlForJson.join('/');
 
             var page = {};
 
             if (fs.existsSync(dir+'/'+infoFile)) {
-                var fileJSON = require("../../"+dir+"/"+infoFile);
+                    var fileJSON = require("../../"+dir+"/"+infoFile);
 
-            var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
-                lastmodSec = Date.parse(fileStats.mtime),
-                fileName = file,
-                author = fileJSON.author,
-                title = fileJSON.title,
-                keywords = fileJSON.keywords,
-                info = fileJSON.info;
-        } else {
-            // if infoFile don't exist in project folder
-            var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
-                lastmodSec = Date.parse(fileStats.mtime),
-                fileName = file
+                var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
+                    lastmodSec = Date.parse(fileStats.mtime),
+                    fileName = targetFile,
+                    author = fileJSON.author,
+                    title = fileJSON.title,
+                    keywords = fileJSON.keywords,
+                    info = fileJSON.info;
+            } else {
+                // if infoFile don't exist in project folder
+                var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
+                    lastmodSec = Date.parse(fileStats.mtime),
+                    fileName = targetFile
             }
 
             page = {
@@ -102,10 +120,10 @@ function fileTree(dir) {
                 info: info
             };
 
-            arr[file] = extend(page);
+            outputJSON['specFile'] = extend(page);
         }
     });
-    return arr;
+    return outputJSON;
 }
 
 // function for write json file

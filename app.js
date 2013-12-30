@@ -11,7 +11,7 @@ var express = require('express')
     , lessMiddleware = require('less-middleware')
     , os = require('os')
     , ejs = require('ejs')
-    , headerAndFooter = require('./core/headerFooter/headerFooter');
+    , headerFooter = require('./core/headerFooter');
 
 global.app = express();
 global.opts = require('./core/options/');
@@ -74,11 +74,11 @@ app.use(function(req, res, next){
 
 	if (req.accepts('html')) {
 
-        var headFoot = headerAndFooter.getHeaderAndFooter();
+        var headerFooterHTML = headerFooter.getHeaderAndFooter();
 		res.render(__dirname + '/core/views/404.ejs', {
 			section: path,
-            header: headFoot.header,
-            footer: headFoot.footer
+            header: headerFooterHTML.header,
+            footer: headerFooterHTML.footer
 		})
 
 		return;

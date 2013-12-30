@@ -2,7 +2,7 @@
 
 var fs = require('fs'),
     ejs = require('ejs'),
-    getHeaderAndFooter = require('../headerFooter/headerFooter').getHeaderAndFooter;
+    getHeaderAndFooter = require('../headerFooter').getHeaderAndFooter;
 
 var userTemplatesDir = __dirname + "/../../user/views/",
     coreTemplatesDir = __dirname + "/../views/";
@@ -18,30 +18,43 @@ function serveContent(filePath, pathToSpec, res) {
 
                     var info = {
                         title: "New spec",
-                        author: "Anonymous"
+                        author: "Anonymous",
+                        keywords: ""
                     };
 
                     if(fs.existsSync(pathToSpec + 'info.json')) {
                         info = require(pathToSpec + 'info.json');
                     }
 
-                    var headerFooter = getHeaderAndFooter();
+                    var headerFooterHTML = getHeaderAndFooter();
 
                     var template;
 
-                    if(fs.existsSync(userTemplatesDir + "index.ejs")) {
-                        template = fs.readFileSync(userTemplatesDir + "index.ejs", "utf-8");
+                    if (info.role === 'navigation') {
+                        if(fs.existsSync(userTemplatesDir + "navigation.ejs")) {
+                            template = fs.readFileSync(userTemplatesDir + "navigation.ejs", "utf-8");
+                        } else {
+                            template = fs.readFileSync(coreTemplatesDir + "navigation.ejs", "utf-8");
+                        }
                     } else {
-                        template = fs.readFileSync(coreTemplatesDir + "index.ejs", "utf-8");
+                        if(fs.existsSync(userTemplatesDir + "spec.ejs")) {
+                            template = fs.readFileSync(userTemplatesDir + "spec.ejs", "utf-8");
+                        } else {
+                            template = fs.readFileSync(coreTemplatesDir + "spec.ejs", "utf-8");
+                        }
                     }
 
-                    var html = ejs.render(template, {
-                        title: info.title,
-                        author: info.author,
+                    var templateJSON = {
                         content: data,
-                        header: headerFooter.header,
-                        footer: headerFooter.footer
-                    });
+                        header: headerFooterHTML.header,
+                        footer: headerFooterHTML.footer
+                    }
+
+                    templateJSON.title  = info.title ? info.title : "New spec";
+                    templateJSON.author  = info.author ? info.author : "Anonymous";
+                    templateJSON.keywords  = info.keywords ? info.keywords : "";
+
+                    var html = ejs.render(template, templateJSON);
 
                     res.send(html);
                 }

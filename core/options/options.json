@@ -8,7 +8,7 @@
             "excludedDirs":"write path from public root. Example: ['core','docs/base']"
         },
         "excludedDirs": ["core","data","test","plugins","node_modules",".git",".idea"],
-        "fileMask": "index.html",
+        "fileMask": ["index.html", "index.src"],
         "cron": false,
         "cronRepeatTime": 60000
     }

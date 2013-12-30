@@ -36,7 +36,7 @@ define([
 
             var pagesData = parseFileTree.getAllPages();
             for (var page in pagesData) {
-                var targetPage = pagesData[page]['index.html'];
+                var targetPage = pagesData[page]['specFile'];
 
                 var keywords = targetPage.keywords,
                     keywordsPageName = page, //get cat name
@@ -45,9 +45,9 @@ define([
                     autocompleteValue = targetPage.title,
                     pclass = targetPage.pclass;
 
-				if ( (json[rootFolder[1]] !== undefined) && (json[rootFolder[1]]['index.html'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
+				if ( (json[rootFolder[1]] !== undefined) && (json[rootFolder[1]]['specFile'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
 					keywordsPageName = rootFolder[ rootFolder.length-2 ];
-					keywordsPageName = '<span style="font-weight: 700">' + json[rootFolder[1]]['index.html'].title + ':</span> ' + keywordsPageName; // exclude <b> from search
+					keywordsPageName = '<span style="font-weight: 700">' + json[rootFolder[1]]['specFile'].title + ':</span> ' + keywordsPageName; // exclude <b> from search
 				}
 
                 if ((keywords !== undefined) && (keywords != '')) {

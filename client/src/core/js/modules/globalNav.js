@@ -82,13 +82,14 @@ define([
 
 				if (targetCat === undefined) return;
 
-				if (typeof targetCat[ navListCat + '/index.html' ] === 'object') {
-					catObj = targetCat[ navListCat + '/index.html' ];
-				} else if ( typeof targetCat[ 'index.html' ] === 'object' ) {
-					if (!!targetCat[ 'index.html' ][ 'index.html' ]) {
-						catObj = targetCat[ 'index.html' ][ 'index.html' ];
+//				if (typeof targetCat[ navListCat + '/index.html' ] === 'object') {
+//					catObj = targetCat[ navListCat + '/index.html' ];
+//				} else
+                if ( typeof targetCat[ 'specFile' ] === 'object' ) {
+					if (!!targetCat[ 'specFile' ][ 'specFile' ]) {
+						catObj = targetCat[ 'specFile' ][ 'specFile' ];
 					} else {
-						catObj = targetCat[ 'index.html' ];
+						catObj = targetCat[ 'specFile' ];
 					}
 				}
 
@@ -120,7 +121,7 @@ define([
                 // cast Object to Array of objects
                 if (typeof targetCat === 'object'){
                     var targetCatArray = $.map(targetCat, function(k, v) {
-                        if(typeof k['index.html'] === 'object') {
+                        if(typeof k['specFile'] === 'object') {
                             return [k];
                         }
                     });
@@ -143,7 +144,7 @@ define([
 
                     var navTreeHTML = '',
                         authorName = '',
-                        targetCatUrl =  (targetCat['index.html'] !== undefined) ? targetCat['index.html']['url'] : targetCatArray['0']['index.html']['url'] ;
+                        targetCatUrl =  (targetCat['specFile'] !== undefined) ? targetCat['specFile']['url'] : targetCatArray['0']['specFile']['url'] ;
 
                     //Building navigation HTML
                     var addNavPosition = function (target) {
@@ -180,7 +181,7 @@ define([
                             : pageLimit;
 
                     for (var j = 0; j < navListItems; j++) {
-                        var targetPage = targetCatArray[j]['index.html'];
+                        var targetPage = targetCatArray[j]['specFile'];
 
                         //Ignore page list
                         if ( $.inArray(targetPage.title, ignorePages) !== -1 ) {
@@ -222,8 +223,8 @@ define([
     };
 
     GlobalNav.prototype.sortByDate = function (a, b) {
-        a = parseInt(a['index.html'].lastmodSec);
-        b = parseInt(b['index.html'].lastmodSec);
+        a = parseInt(a['specFile'].lastmodSec);
+        b = parseInt(b['specFile'].lastmodSec);
 
         if(a == b) return 0;
         else {
@@ -232,8 +233,8 @@ define([
     };
 
     GlobalNav.prototype.sortByAlpha = function (a, b) {
-        a = a['index.html'].title;
-        b = b['index.html'].title;
+        a = a['specFile'].title;
+        b = b['specFile'].title;
 
         if(a == b) return 0;
         else {
