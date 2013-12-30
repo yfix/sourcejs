@@ -21,9 +21,7 @@
 
     <!-- Custom -->
         <style>
-            .emph {
-                color: #67A9D4;
-                }
+            .emph { color: #67A9D4 }
         </style>
 </head>
 <body>
@@ -35,16 +33,28 @@
         <section class="source_section">
             <h2>What?</h2>
 
-            <p>Plugin for "Source" (documentation engine), that show chosen code blocks in separate page with defined context. (as example: environment for mobile devices). Context you may create by yourself using Jade.</p>
+            <p>Plugin for doumentation engine "Source", that allow to cut
+                chosen code blocks in separate page with predefined context.
+                (as example: environment for mobile devices). New context you
+                may create using Jade or made new one.
+            </p>
 
             <h3>..should I do to make it work?</h3>
-            <p>Clarify works "from box", but keep in mind that it uses PhantomJS and by default in repo it's prepared for Linux. <a href="http://phantomjs.org/download.html">Download</a> or <a href="http://phantomjs.org/build.html">build</a> suitable one for Mac or PC.</p>
+            <p>Clarify works "from box", its uses Jsdom for cutting code,
+                but keep in mind that you may use builded-in PhantomJS if
+                you need cut specs rendered by client-side templating
+                and by default in repo it's prepared for Linux. For Mac or
+                PC <a href="http://phantomjs.org/download.html">Download</a>
+                or <a href="http://phantomjs.org/build.html">build</a> suitable
+                one.
+            </p>
 
             <h3>..we're using behind?</h3>
             <ul>
-                <li><a href="http://nodejs.org">Nodejs</a> - for back-end;
+                <li><a href="http://nodejs.org">Nodejs</a> - back-end;
                 <li><a href="http://jade-lang.com/">Jade</a> - template engine;
-                <li><a href="http://phantomjs.org/">PhantomJS</a> - for Webkit and all his magick to parse page;
+                <li><a href="http://phantomjs.org/">PhantomJS</a> - Webkit engine to parse page;
+                <li><a href="https://npmjs.org/package/jsdom">Jsdom</a> - nodejs npm module to work with page DOM;
             </ul>
 
         </section>
@@ -54,7 +64,8 @@
 
             <h3>..it can be uses</h3>
 
-            <p>To clarify code block you interested in from noise of bunch information you should do request with following pattern: <br>
+            <p>To clarify code block you interested in from noise of bunch
+                information you should do request with following pattern: <br>
             <b>http://
                 <span class="emph">source.org</span>
                /.../
@@ -67,9 +78,24 @@
                 <li><span class="emph">source.org</span> - hostname/localhost;
                 <li><span class="emph">index.html</span> - used to match specs nor navigation;
                 <li><span class="emph">mob</span> - predefined context for mobile devices;
-                <li><span class="emph">1,2</span> - this is .source_example bocks, counting by order from 1;
+                <li><span class="emph">1,2</span> - this is .source_example bocks, counting by order from 1, may be written in custom order, accordingly to blocks need to cut from main specs;
             </ul>
 
+            <h3>..little more options</h3>
+
+            <p>With last update Clarify include Jsdom module, it provide more fast spec clarification, but hasnt work with client template engines yet.</p>
+
+            <p>Added new context value (in a fact new template)</p>
+
+            <ul>
+                <li>?get=<span class="emph">clr</span></li> {String}    new context template, absolutely clear page;
+            </ul>
+
+            <p>Надстрйоки:</p>
+            <ul>
+                <li>?ph=<span class="emph">false</span></li> {Boolean}   use PhantomJS engine (default: false)
+                <li>?wrap=<span class="emph">true</span></li> {Boolean}    use .source_example wrapper  (default: true)
+            </ul>
 
             <h3>..it solve problems</h3>
 
