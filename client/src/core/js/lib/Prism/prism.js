@@ -7,7 +7,7 @@
 (function(){
 
 // Private helper vars
-    var lang = /\blang(?:uage)?-(?!\*)(\w+)\b/i;
+    var lang = /\bsrc?-(?!\*)(\w+)\b/i;
 
     var _ = self.Prism = {
         util: {
@@ -91,7 +91,7 @@
 
         highlightAll: function(async, callback) {
 //            var elements = document.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code');
-            var elements = document.querySelectorAll('pre[class*="lang-"] code');
+            var elements = document.querySelectorAll('pre[class*="src"] code');
 
             for (var i=0, element; element = elements[i++];) {
                 _.highlightElement(element, async === true, callback);
@@ -122,7 +122,7 @@
             parent = element.parentNode;
 
             if (/pre/i.test(parent.nodeName)) {
-                parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' lang-' + language;
+                parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' src-' + language;
             }
 
             var code = element.textContent;

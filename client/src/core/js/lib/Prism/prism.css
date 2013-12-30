@@ -4,8 +4,8 @@
  * @author Lea Verou
  */
 
-pre[class*="lang-"],
-pre[class*="lang-"] code {
+pre[class*="src-"],
+pre[class*="src-"] code {
     color: black;
     /*text-shadow: 0 1px white;*/
     font:12px/1.5 Consolas, Monaco, 'Andale Mono', monospace;
@@ -27,29 +27,29 @@ pre[class*="lang-"] code {
     hyphens: none;
 }
 
-pre[class*="lang-"]::-moz-selection, pre[class*="lang-"] ::-moz-selection,
-pre[class*="lang-"] code::-moz-selection, pre[class*="lang-"] code ::-moz-selection
-/*code[class*="lang-"]::-moz-selection, code[class*="lang-"] ::-moz-selection */
+pre[class*="src-"]::-moz-selection, pre[class*="src-"] ::-moz-selection,
+pre[class*="src-"] code::-moz-selection, pre[class*="src-"] code ::-moz-selection
+/*code[class*="src-"]::-moz-selection, code[class*="src-"] ::-moz-selection */
  {
     text-shadow: none;
     background: #f1f2f3;
 }
 
-pre[class*="lang-"]::selection, pre[class*="lang-"] ::selection,
-pre[class*="lang-"] code::selection, pre[class*="lang-"] code::selection {
+pre[class*="src-"]::selection, pre[class*="src-"] ::selection,
+pre[class*="src-"] code::selection, pre[class*="src-"] code::selection {
     text-shadow: none;
     background: #f1f2f3;
 }
 
 @media print {
-    pre[class*="lang-"],
-    pre[class*="lang-"] code {
+    pre[class*="src-"],
+    pre[class*="src-"] code {
         text-shadow: none;
     }
 }
 
 /* Code blocks */
-pre[class*="lang-"] {
+pre[class*="src-"] {
     counter-reset: linenumber;
     padding: 1em 1em 1em 3.8em;
     margin: .5em 0;
@@ -57,13 +57,13 @@ pre[class*="lang-"] {
     resize:horizontal;
 }
 
-:not(pre) > code[class*="lang-"],
-pre[class*="lang-"] {
+:not(pre) > code[class*="src-"],
+pre[class*="src-"] {
     background: #f1f2f3;
 }
 
 /* Inline code */
-:not(pre) > code[class*="lang-"] {
+:not(pre) > code[class*="src-"] {
     padding: .1em;
     border-radius: .3em;
 }
@@ -102,7 +102,7 @@ pre[class*="lang-"] {
 .token.operator,
 .token.entity,
 .token.url,
-.lang-css .token.string,
+.src-css .token.string,
 .style .token.string,
 .token.variable {
     color: #a67f59;

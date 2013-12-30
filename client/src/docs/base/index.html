@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <!--[if IE 7]>         <html class="ie7"> <![endif]-->
 <!--[if IE 8]>         <html class="ie8"> <![endif]-->
 <!--[if IE 9]>         <html class="ie9"> <![endif]-->
@@ -38,7 +38,7 @@
 
 	        <p>To get started, follow these simple steps:</p>
 
-	        <code class="brush : html source_visible">
+	        <code class="src-html source_visible">
                 $ git clone https://github.com/sourcejs/Source.git
                 $ cd Source
 
@@ -72,7 +72,7 @@
 
           <p>Each environment has its own modules and plugins.</p>
 
-            <code class="brush : js source_visible">
+            <code class="src-js source_visible">
                 // Client-side (frontend) part
                 client
                     init
@@ -96,7 +96,7 @@
 
             <h3>Node</h3>
 
-            <code class="brush : js source_visible">
+            <code class="src-js source_visible">
                 // Server (node) part
                 init
                 core
@@ -123,7 +123,7 @@
 
             <h3>Client</h3>
 
-            <code class="brush : js source_visible">
+            <code class="src-js source_visible">
                 // Client-side (frontend) part
                 client
                     init
@@ -161,7 +161,7 @@
 
             <p>Source server-side options are stored in <span class="source_hl">/user/options/options.json</span> which is available after initializing a project. All options set in that file will override default core options defined in <span class="source_hl">/core/options/options.js</span>.</p>
 
-            <code class="brush : js source_visible">
+            <code class="src-js source_visible">
                 {
                     "common": {
                         "pathToSpecs": "public"
@@ -186,7 +186,7 @@
 
             <p>Client-side options work similarly to server-side options, where you may override core options inside <span class="source_hl">/public/user/js/options.js</span>.</p>
 
-            <code class="brush : js source_visible">
+            <code class="src-js source_visible">
                 {
                     sourceOptions : {
                         modulesEnabled : {},
@@ -217,7 +217,7 @@
 
             <p>All client-side options can be overridden from within any page using the following approach:</p>
 
-            <code class="brush : html source_visible">
+            <code class="src-html source_visible">
                 <script>
                     define('modules/inlineOptions', {
                         modulesOptions : {
@@ -244,7 +244,7 @@
 
 	        <p>To activate plugins, open <span class="source_hl">/public/user/js/options.js</span> and in the `pluginsEnabled` object add the name of the plugin (must match the plugin folder name) with its value set to true.</p>
 
-	        <code class="brush : js source_visible">
+	        <code class="src-js source_visible">
 		        pluginsEnabled : {
 			        // Enable plugins
 			        //bubble: true,

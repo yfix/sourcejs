@@ -50,9 +50,9 @@ define([
             $('.source_example').each(function () {
                 var _this = $(this);
 
-                // <pre class="lang-*"><code>...</code></pre> is the wrapper for prism.js plugin
-                if (!(_this.prev().hasClass('lang-html') && ($.trim(_this.prev().html()) === ''))) {
-                    _this.before('<pre class="lang-html" style="display:none"><code></code></pre>')
+                // <pre class="src-*"><code>...</code></pre> is the wrapper for prism.js plugin
+                if (!(_this.prev().hasClass('src-html') && ($.trim(_this.prev().html()) === ''))) {
+                    _this.before('<pre class="src-html" style="display:none"><code></code></pre>')
                 }
             });
 
@@ -61,7 +61,7 @@ define([
                 $('.source_section').find('code[class*="brush"]').each(function () {
 
                     var _this = $(this)
-                        ,formatClass = 'lang-';
+                        ,formatClass = 'src-';
 
                     if (_this.hasClass('css')) {
                         formatClass += 'css';
@@ -92,8 +92,8 @@ define([
                     _this[0].removeAttribute("class");
                 });
 
-                // wrapper for new syntax: <code class="lang-*"></code>
-                $('.source_section').find('code[class*="lang-"]').each(function () {
+                // wrapper for new syntax: <code class="src-*"></code>
+                $('.source_section').find('code[class*="src-"]').each(function () {
                     var _this = $(this);
 
                     if (!_this.parent().is('pre')) {
@@ -101,7 +101,7 @@ define([
                         _this.wrap('<pre></pre>');
                     }
 
-                    if (_this.hasClass('lang-html')) {
+                    if (_this.hasClass('src-html')) {
                         var HTMLcode = _this.html();
                         _this.html(HTMLcode.replace(/</g, "&lt;").replace(/>/g,"&gt;"));
                     }
@@ -117,19 +117,18 @@ define([
             //Code show toggle on each code block
             var prepareCodeBlocks = function() {
                 new css('prism/prism.css','/core/js/lib/');
-                var selection = onlyStatic ? $('.source_section pre.source_visible > code') : $('.source_section pre > code');
+                var selection = onlyStatic ? $('.source_section pre[class*="src-"].source_visible > code') : $('.source_section pre[class*="src-"] > code');
                 selection.each(function () {
                     var _this = $(this)
                         ,parent = _this.parent()
                         ,langClass='';
-                    if (parent.hasClass('lang-css')) {
+                    if (parent.hasClass('src-css')) {
                         langClass = SourceCodeToggleCSS;
-                    } else if (parent.hasClass('lang-html')) {
-                        langClass = SourceCodeToggleHTML;
-                    } else if (parent.hasClass('lang-js')) {
+                    } else if (parent.hasClass('src-js')) {
                         langClass = SourceCodeToggleJS;
+                    } else {
+                        langClass = SourceCodeToggleHTML;
                     }
-
                     if (parent.hasClass('source_visible')) {
                         parent.wrap('<div class="'+SourceCode+' '+SourceCodeStatic+'"><div class="' + SourceCodeCnt + '"></div></div>');
                     }
@@ -144,7 +143,7 @@ define([
             };
             var fillCodeContainers = function() {
                 //Auto copy HTML in code.html if it's now filled
-                var selection = onlyStatic ? $('.source_section pre.source_visible > code') : $('.source_section pre > code');
+                var selection = onlyStatic ? $('.source_section pre[class*="src-"].source_visible > code') : $('.source_section pre[class*="src-"] > code');
                 selection.each(function () {
                     var _this = $(this)
                         ,HTMLcode;
@@ -152,7 +151,7 @@ define([
                     if (_this.html().trim().length === 0) {
                         HTMLcode = _this.parent().nextAll('.'+ options.exampleSectionClass ).html();
                         _this.html(HTMLcode);
-                        if (_this.parent().hasClass('lang-html')) {
+                        if (_this.parent().hasClass('src-html')) {
                             _this.formatify();
                         }
                     }
