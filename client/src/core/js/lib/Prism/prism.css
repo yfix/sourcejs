@@ -60,6 +60,9 @@ pre[class*="src-"] {
 :not(pre) > code[class*="src-"],
 pre[class*="src-"] {
     background: #f1f2f3;
+	border: #ccc solid 1px;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 /* Inline code */

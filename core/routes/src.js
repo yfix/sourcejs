@@ -1,5 +1,7 @@
+// .src files support
+
 var fs = require('fs'),
-        ejs = require('ejs');
+    ejs = require('ejs');
 
 function getHeaderAndFooter() {
     var defaultTemplatePath = global.app.get('specs path') + "/core/templates/";

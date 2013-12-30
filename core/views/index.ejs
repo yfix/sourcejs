@@ -1,22 +1,28 @@
 <!DOCTYPE html>
-<html>
+<!--[if IE 7]>         <html class="ie7"> <![endif]-->
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if IE 9]>         <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><%= title %></title>
     <meta name="author" content="<%= author %>">
 
-    <link href="/data/res/css/portal.css" rel="stylesheet">
+    <!-- Your project styles -->
+        <link href="/data/res/css/portal.css" rel="stylesheet"> <!--TEMP TODO: delete after overriding view from user-->
+        <!--<link href="/data/docs/project.css" rel="stylesheet">-->
+    <!-- /Your project styles -->
 
-    <!-- Demo default -->
-    <link href="/core/css/core.css" rel="stylesheet">
+    <!-- Source default resources -->
+        <link href="/core/css/core.css" rel="stylesheet">
 
-    <!--[if lt IE 9]>
-    <script src="/core/js/lib/html5shiv.js"></script><![endif]-->
-    <script data-main="/core/js/source" src="/core/js/lib/require-jquery.js"></script>
-    <!-- /Demo default -->
-
+        <!--[if lt IE 9]><script src="/core/js/lib/html5shiv.js"></script><![endif]-->
+        <script data-main="/core/js/source" src="/core/js/lib/require-jquery.js"></script>
+    <!-- /Source default resources -->
 </head>
 <body>
+<!--TODO: delete after adding check in headerFooter.js -->
 <script>
     define('modules/inlineOptions', {
         modulesEnabled : {
