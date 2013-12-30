@@ -117,7 +117,7 @@ define([
             //Code show toggle on each code block
             var prepareCodeBlocks = function() {
                 new css('prism/prism.css','/core/js/lib/');
-                var selection = (onlyStatic ? $('.source_section > pre.source_visible > code') : $('.source_section > pre > code'));
+                var selection = onlyStatic ? $('.source_section pre.source_visible > code') : $('.source_section pre > code');
                 selection.each(function () {
                     var _this = $(this)
                         ,parent = _this.parent()
@@ -144,7 +144,7 @@ define([
             };
             var fillCodeContainers = function() {
                 //Auto copy HTML in code.html if it's now filled
-                var selection = (onlyStatic ? $('.source_section > pre.source_visible > code') : $('.source_section > pre > code'));
+                var selection = onlyStatic ? $('.source_section pre.source_visible > code') : $('.source_section pre > code');
                 selection.each(function () {
                     var _this = $(this)
                         ,HTMLcode;
