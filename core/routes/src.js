@@ -4,6 +4,8 @@ var fs = require('fs'),
     ejs = require('ejs'),
     getHeaderAndFooter = require('../headerFooter/headerFooter').getHeaderAndFooter;
 
+var userTemplatesDir = __dirname + "/../../user/views/",
+    coreTemplatesDir = __dirname + "/../views/";
 
 function serveContent(filePath, pathToSpec, res) {
     fs.exists(filePath, function(exists) {
@@ -25,13 +27,23 @@ function serveContent(filePath, pathToSpec, res) {
 
                     var headerFooter = getHeaderAndFooter();
 
-                    res.render("index", {
+                    var template;
+
+                    if(fs.existsSync(userTemplatesDir + "index.ejs")) {
+                        template = fs.readFileSync(userTemplatesDir + "index.ejs", "utf-8");
+                    } else {
+                        template = fs.readFileSync(coreTemplatesDir + "index.ejs", "utf-8");
+                    }
+
+                    var html = ejs.render(template, {
                         title: info.title,
                         author: info.author,
                         content: data,
                         header: headerFooter.header,
                         footer: headerFooter.footer
                     });
+
+                    res.send(html);
                 }
 
             });
