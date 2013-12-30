@@ -40,6 +40,27 @@
 			Relative and absolute paths supported.</p>
 		</div>
 
+		<section class="source_section">
+			<h2>Embedding</h2>
+
+			Common scheme of embedding looks like this:
+
+<div class="source_source-code source_source-code__static">
+	<div class="source_source-code_cnt">
+		<pre class="line-numbers source_visible language-html">
+<code class=" source_visible language-html">&lt;div class="source_catalog" data-nav="docs"&gt;
+	&lt;ul class="source_catalog_list"&gt;
+		&lt;!--Navigation generated dynamically via Global Navigation module--&gt;
+		&lt;img src="/core/i/process.gif" alt="Loading..."/&gt;
+	&lt;/ul&gt;
+&lt;/div&gt;<span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+	</div>
+</div>
+
+		<p>Key role plays <code>data-nav</code> attribute, which describe displaying content.</p>
+
+		</section>
+
         <section class="source_section">
 
 
@@ -62,6 +83,34 @@
 
 
         </section>
+
+		<section class="source_section">
+			<h2>Auto headers and description output</h2>
+			<p>Usually, information from corresponding info.json will be out. Alternatively, it can be defined by user in markup like this:</p>
+
+<div class="source_source-code source_source-code__static">
+	<div class="source_source-code_cnt">
+		<pre class="line-numbers source_visible language-html">
+<code class=" source_visible language-html">&lt;div class="source_catalog" data-nav="docs"&gt;
+	&lt;ul class="source_catalog_list"&gt;
+		&lt;h2 class="source_catalog_title"&gt;Nice clarify plugin&lt;/h2&gt;
+		&lt;div class="source_catalog_tx"&gt;Custom description about that&lt;/div&gt;
+		&lt;!--Navigation generated dynamically via Global Navigation module--&gt;
+		&lt;img src="/core/i/process.gif" alt="Loading..."/&gt;
+	&lt;/ul&gt;
+&lt;/div&gt;<span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+	</div>
+</div>
+<br />
+
+			<div class="source_catalog" data-nav="/docs/plugins/clarify">
+				<h2 class="source_catalog_title">Nice clarify plugin</h2>
+				<div class="source_catalog_tx">Custom description about that</div>
+			</div>
+
+
+
+		<section>
     </div></div>
 
 </body>
