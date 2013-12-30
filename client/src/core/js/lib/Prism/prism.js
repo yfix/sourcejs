@@ -122,7 +122,7 @@
             parent = element.parentNode;
 
             if (/pre/i.test(parent.nodeName)) {
-                parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + 'lang-' + language;
+                parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' lang-' + language;
             }
 
             var code = element.textContent;
@@ -351,7 +351,7 @@
     }
 
 })();;
-Prism.languages.markup = {
+Prism.languages.html = {
     'comment': /&lt;!--[\w\W]*?-->/g,
     'prolog': /&lt;\?.+?\?>/,
     'doctype': /&lt;!DOCTYPE.+?>/,
@@ -409,14 +409,14 @@ Prism.languages.css = {
     'punctuation': /[\{\};:]/g
 };
 
-if (Prism.languages.markup) {
-    Prism.languages.insertBefore('markup', 'prism_tag', {
+if (Prism.languages.html) {
+    Prism.languages.insertBefore('html', 'prism_tag', {
         'style': {
             pattern: /(&lt;|<)style[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/style(>|&gt;)/ig,
             inside: {
                 'prism_tag': {
                     pattern: /(&lt;|<)style[\w\W]*?(>|&gt;)|(&lt;|<)\/style(>|&gt;)/ig,
-                    inside: Prism.languages.markup.prism_tag.inside
+                    inside: Prism.languages.html.prism_tag.inside
                 },
                 rest: Prism.languages.css
             }
@@ -450,28 +450,28 @@ Prism.languages.clike = {
     'punctuation': /[{}[\];(),.:]/g
 };
 ;
-Prism.languages.javascript = Prism.languages.extend('clike', {
+Prism.languages.js = Prism.languages.extend('clike', {
     'keyword': /\b(var|let|if|else|while|do|for|return|in|instanceof|function|new|with|typeof|try|throw|catch|finally|null|break|continue)\b/g,
     'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?|NaN|-?Infinity)\b/g
 });
 
-Prism.languages.insertBefore('javascript', 'keyword', {
+Prism.languages.insertBefore('js', 'keyword', {
     'regex': {
         pattern: /(^|[^/])\/(?!\/)(\[.+?]|\\.|[^/\r\n])+\/[gim]{0,3}(?=\s*($|[\r\n,.;})]))/g,
         lookbehind: true
     }
 });
 
-if (Prism.languages.markup) {
-    Prism.languages.insertBefore('markup', 'prism_tag', {
+if (Prism.languages.html) {
+    Prism.languages.insertBefore('html', 'prism_tag', {
         'script': {
             pattern: /(&lt;|<)script[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/script(>|&gt;)/ig,
             inside: {
                 'prism_tag': {
                     pattern: /(&lt;|<)script[\w\W]*?(>|&gt;)|(&lt;|<)\/script(>|&gt;)/ig,
-                    inside: Prism.languages.markup.prism_tag.inside
+                    inside: Prism.languages.html.prism_tag.inside
                 },
-                rest: Prism.languages.javascript
+                rest: Prism.languages.js
             }
         }
     });

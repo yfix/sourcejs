@@ -49,40 +49,71 @@ define([
             //Add HTML source code container before each example without it
             $('.source_example').each(function () {
                 var _this = $(this);
+
                 // <pre class="lang-*"><code>...</code></pre> is the wrapper for prism.js plugin
-                if (!_this.prev().is('pre')) {
-                    _this.before('<pre class="lang-markup" style="display:none"><code></code></pre>')
+                if (!(_this.prev().hasClass('lang-html') && ($.trim(_this.prev().html()) === ''))) {
+                    _this.before('<pre class="lang-html" style="display:none"><code></code></pre>')
                 }
             });
 
-            var wrapOldTags = function() {
-                // temporary solution while code:brush is still used
+            var wrapTags = function() {
+                // temporary solution while code:brush is still used, later this section will be removed
                 $('.source_section').find('code[class*="brush"]').each(function () {
+
                     var _this = $(this)
                         ,formatClass = 'lang-';
 
                     if (_this.hasClass('css')) {
                         formatClass += 'css';
-//                    } else if (_this.hasClass('html') || _this.hasClass('xml'))  {
-//                        formatClass += 'markup';
                     } else if (_this.hasClass('js')) {
-                        formatClass += 'javascript';
+                        formatClass += 'js';
                     } else {
-                        formatClass += 'markup';
+                        formatClass += 'html';
                     }
+
                     if (_this.hasClass('source_visible')) {
                         formatClass += ' source_visible ';
                     }
 
+                    if (!_this.parent().is('pre')) {
+                        _this.html().trim();
+                        _this.wrap('<pre></pre>');
+                    }
+
+                    if (_this.hasClass('html')) {
+                        var HTMLcode = _this.html();
+                        _this.html(HTMLcode.replace(/</g, "&lt;").replace(/>/g,"&gt;"));
+                    }
+
+                    _this.parent()
+                        .attr('class', formatClass)
+                        .attr('style', 'display:none');
+
                     _this[0].removeAttribute("class");
+                });
+
+                // wrapper for new syntax: <code class="lang-*"></code>
+                $('.source_section').find('code[class*="lang-"]').each(function () {
+                    var _this = $(this);
 
                     if (!_this.parent().is('pre')) {
                         _this.html().trim();
-                        _this.wrap('<pre style="display:none"></pre>');
+                        _this.wrap('<pre></pre>');
                     }
-                    _this.parent().attr("class", formatClass);
+
+                    if (_this.hasClass('lang-html')) {
+                        var HTMLcode = _this.html();
+                        _this.html(HTMLcode.replace(/</g, "&lt;").replace(/>/g,"&gt;"));
+                    }
+
+                    _this.parent()
+                        .attr('class', _this.attr('class'))
+                        .attr('style', 'display:none');
+
+                    _this[0].removeAttribute('class');
                 });
             }
+
             //Code show toggle on each code block
             var prepareCodeBlocks = function() {
                 new css('prism/prism.css','/core/js/lib/');
@@ -93,9 +124,9 @@ define([
                         ,langClass='';
                     if (parent.hasClass('lang-css')) {
                         langClass = SourceCodeToggleCSS;
-                    } else if (parent.hasClass('lang-markup')) {
+                    } else if (parent.hasClass('lang-html')) {
                         langClass = SourceCodeToggleHTML;
-                    } else if (parent.hasClass('lang-javascript')) {
+                    } else if (parent.hasClass('lang-js')) {
                         langClass = SourceCodeToggleJS;
                     }
 
@@ -115,12 +146,13 @@ define([
                 //Auto copy HTML in code.html if it's now filled
                 var selection = (onlyStatic ? $('.source_section > pre.source_visible > code') : $('.source_section > pre > code'));
                 selection.each(function () {
-                    var _this = $(this), HTMLcode;
+                    var _this = $(this)
+                        ,HTMLcode;
 
                     if (_this.html().trim().length === 0) {
                         HTMLcode = _this.parent().nextAll('.'+ options.exampleSectionClass ).html();
                         _this.html(HTMLcode);
-                        if (_this.parent().hasClass('lang-markup')) {
+                        if (_this.parent().hasClass('lang-html')) {
                             _this.formatify();
                         }
                     }
@@ -132,8 +164,7 @@ define([
                             HTMLarray[i] = HTMLarray[i].replace(new RegExp(' {'+(spaces-1)+'}'), '');
                         }
                         HTMLcode = HTMLarray.join('\n').replace(/\s{1,}<span class="line-num/g, '<span class="line-num');
-                        if (_this.parent().hasClass('lang-markup'))
-                            HTMLcode = HTMLcode.replace(/<!--/g, "&lt;!--").replace(/-->/g,"--&gt;");
+
                         _this.html(HTMLcode);
                     }
                 });
@@ -182,7 +213,7 @@ define([
             };
 
             var showStaticCode = function () {
-                wrapOldTags();
+                wrapTags();
                 fillCodeContainers();
                 prepareCodeBlocks();
                 onlyStatic = false;
