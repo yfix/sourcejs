@@ -37,7 +37,7 @@
 <section class="source_section">
     <h2>How?</h2>
 
-    <h3>..it can be uses</h3>
+    <h3>..it can be used</h3>
 
     <p>To clarify code block you interested in from noise of bunch
         information you should do request with following pattern: <br>
@@ -55,6 +55,8 @@
         <li><span class="emph">mob</span> - predefined context for mobile devices;
         <li><span class="emph">1,2</span> - this is .source_example bocks, counting by order from 1, may be written in custom order, accordingly to blocks need to cut from main specs;
     </ul>
+
+    <a class="source_a_hl" href="/docs/spec/index.html?get=mob&id=1">Check this example from Spec documentation first block.</a>
 
     <h3>..little more options</h3>
 
