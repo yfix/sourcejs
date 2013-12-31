@@ -18,29 +18,52 @@
     Common scheme of embedding looks like this:
 
     <code class="source_visible src-html">
-        <div class="source_catalog" data-nav="docs"></div>
+        <div class="source_catalog" data-nav="/docs"></div>
     </code>
 
-    <p>Required attribute <code>data-nav</code> names the catalogue to be displayed.</p>
+    <p>Required attribute <code>data-nav</code> names the catalogue to be displayed. Inserting mentioned code in any Source page a navigation like this will be generated:</p>
 
-
-    <h3 class="source_section_h">Relative path</h3>
-    <p>By default, list of specs from catalogue will be generated. Look at the output of <code>data-nav="docs"</code> for instance:</p>
-
-    <div class="source_catalog" data-nav="docs"></div>
-
-    <p>Descendant catalog values, i.e. <code>data-nav="plugins/clarify"</code> supported as well:</p>
-    <div class="source_catalog" data-nav="plugins/clarify"></div>
+    <div class="source_catalog" data-nav="/docs"></div>
 
 
     <h3 class="source_section_h">Absolute path</h3>
     <p>We recommend using absolute paths, as they are more stable and predictable.</p>
 
-    <p>Output of <code>data-nav="/docs/plugins/clarify"</code>:</p>
-    <div class="source_catalog" data-nav="/docs/plugins/clarify"></div>
+    <p>Output of:</p>
 
-    <p>Output using direct link <code>data-nav="/docs/plugins/clarify/index.html"</code>:</p>
+    <code class="source_visible src-html">
+        <div class="source_catalog" data-nav="/docs/plugins"></div>
+    </code>
+
+    <p>Renders like this:</p>
+
+    <div class="source_catalog" data-nav="/docs/plugins"></div>
+
+    <p>Also, you could leave a direct path to any Spec:</p>
+
+    <code class="source_visible src-html">
+        <div class="source_catalog" data-nav="/docs/plugins/clarify/index.html"></div>
+    </code>
+
     <div class="source_catalog" data-nav="/docs/plugins/clarify/index.html"></div>
+
+
+    <h3 class="source_section_h">Relative path</h3>
+    <p>Relative paths are also supported, but are less stable (with some issues):</p>
+
+    <code class="source_visible src-html">
+        <div class="source_catalog" data-nav="plugins"></div>
+    </code>
+
+    <div class="source_catalog" data-nav="plugins"></div>
+
+    <p>You also could math catalogue by parent:</p>
+
+    <code class="source_visible src-html">
+        <div class="source_catalog" data-nav="plugins/clarify"></div>
+    </code>
+
+    <div class="source_catalog" data-nav="plugins/clarify"></div>
 
 </section>
 
