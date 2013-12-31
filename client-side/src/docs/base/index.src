@@ -47,7 +47,7 @@
 
     <code class="src-js source_visible">
         // Client-side (frontend) part
-        client
+        client-side
             init
             src
             plugins (.gitignored)
@@ -98,7 +98,7 @@
 
     <code class="src-js source_visible">
         // Client-side (frontend) part
-        client
+        client-side
             init
             src
                 core
@@ -110,7 +110,7 @@
         // Server root folder for specs (.gitignored)
         public
 
-            // Files copied from /client/src on init (.gitignored)
+            // Files copied from /client-side/src on init (.gitignored)
             core    // minified
             docs
             test
@@ -120,7 +120,7 @@
             user
     </code>
 
-    <p><span class="source_hl">/client/src</span> contains all the client-side code of the Source engine. All files in this folder are minified and copied to the <span class="source_hl">/public</span> folder by the `grunt init` (initial setup) and `grunt update` tasks.</p>
+    <p><span class="source_hl">/client-side/src</span> contains all the client-side code of the Source engine. All files in this folder are minified and copied to the <span class="source_hl">/public</span> folder by the `grunt init` (initial setup) and `grunt update` tasks.</p>
 
     <p>Similar to server-side settings, <strong>core</strong> client-side settings and templates can be overridden in the <span class="source_hl">/public/user</span> folder.</p>
 
@@ -211,9 +211,9 @@
 
     <p>Any server-side plugins can be installed through <strong>npm</strong> directly to the <span class="source_hl">/user</span> folder and a custom <strong>package.json</strong>, and can be required in <span class="source_hl">/user/app.js</span>.</p>
 
-    <h3>Client</h3>
+    <h3>Client-side</h3>
 
-    <p>All client-side plugins must to be stored in <span class="source_hl">/client/plugins</span>. Plugins will be copied to the <span class="source_hl">/public</span> folder via Grunt tasks. We recommend using <a href="http://volojs.org">Volo</a> dependency manager, which will allow you to find all of our official plugins on <a href="https://github.com/sourcejs">GitHub</a> using `volo find Sourcejs`.</p>
+    <p>All client-side plugins must to be stored in <span class="source_hl">/client-side/plugins</span>. Plugins will be copied to the <span class="source_hl">/public</span> folder via Grunt tasks. We recommend using <a href="http://volojs.org">Volo</a> dependency manager, which will allow you to find all of our official plugins on <a href="https://github.com/sourcejs">GitHub</a> using `volo find Sourcejs`.</p>
 
     <p>To activate plugins, open <span class="source_hl">/public/user/js/options.js</span> and in the `pluginsEnabled` object add the name of the plugin (must match the plugin folder name) with its value set to true.</p>
 
