@@ -8,7 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><%= title %></title>
     <meta name="author" content="<%= author %>">
+    <% if (keywords !== '') {%>
     <meta name="keywords" content="<%= keywords %>">
+    <% } %>
 
     <!-- Your project styles -->
         <link href="/data/docs/project.css" rel="stylesheet">
@@ -24,9 +26,7 @@
 <body>
     <div class="source_container">
         <%- header %>
-        <div class="source_main source_col-main" role="main">
-            <%- content %>
-        </div>
+        <div class="source_main source_col-main" role="main"><%- content %></div>
         <%- footer %>
     </div>
 </body>
