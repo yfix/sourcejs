@@ -81,6 +81,11 @@ define([
 
 			// catch section which is closed for top window border
 			for (var i=0; i < headersLength; i++) {
+
+				if ((sourceHeaders[i].tagName == 'H3') && (!utils.hasClass(utils.closest(sourceHeaders[i], 'source_section'), 'source_section__open')) ) {
+					continue;
+				}
+
 				var currentDist = Math.abs( utils.offsetTop(sourceHeaders[i]) - 60 - window.pageYOffset ); //60 = Header heights
 				if (currentDist < minDistance) {
 					closestHeader = i;
@@ -115,6 +120,7 @@ define([
 		// watch navmenu render
 		var checkNavInterval,
 			h2Nodes, h3Nodes,
+			bodyNode = document.querySelector('body'),
 			checkOnNav = function checkOnNav() {
 
 			if ((document.querySelector('.source_section') !== null) &&
@@ -135,7 +141,9 @@ define([
 
 				}
 
-				watchSectionTop();
+				if (utils.hasClass(bodyNode, 'source__scrolled-down')) {
+					watchSectionTop();
+				}
 
 				window.onscroll = function() {
 					watchSectionTop();

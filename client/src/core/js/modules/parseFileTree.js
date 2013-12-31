@@ -49,6 +49,8 @@ define([
                     } else {
                         //Going deeper
 
+                        getSpecificCat = getSpecificCat.replace(/index.html/i, 'specFile');
+
                         // complex/paths/handles/here
                         if ( (getSpecificCat !== undefined) && (getSpecificCat.indexOf('/') !== -1) ) {
 							var getSpecificCatArr = getSpecificCat.split('/'),
@@ -60,7 +62,7 @@ define([
 
 							var returnObject = function(returnedTreeObj, excludeRootDocument) {
 								var isSingle = false;
-								if (getSpecificCat.indexOf('index.html') === -1) {
+								if (getSpecificCat.indexOf('specFile') === -1) {
 									for (innerCat in returnedTreeObj) {
 										if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, true) ) {
 											if (innerCat == 'specFile' && (!excludeRootDocument)) {

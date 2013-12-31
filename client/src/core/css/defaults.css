@@ -194,14 +194,16 @@ body {
 .source_nav {
   white-space: nowrap;
 }
-.source_nav:before {
-  content: '';
-  display: inline-block;
-  vertical-align: middle;
-  height: 100%;
-}
 .source_nav:empty {
   display: none;
+}
+@media all and (min-width: 990px) {
+  .source_nav:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+  }
 }
 .source_nav_c {
   display: inline-block;

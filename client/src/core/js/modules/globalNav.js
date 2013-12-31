@@ -82,9 +82,9 @@ define([
 
 				if (targetCat === undefined) return;
 
-//				if (typeof targetCat[ navListCat + '/index.html' ] === 'object') {
-//					catObj = targetCat[ navListCat + '/index.html' ];
-//				} else
+				if (typeof targetCat[ navListCat + '/specFile' ] === 'object') {
+					catObj = targetCat[ navListCat + '/specFile' ];
+				} else
                 if ( typeof targetCat[ 'specFile' ] === 'object' ) {
 					if (!!targetCat[ 'specFile' ][ 'specFile' ]) {
 						catObj = targetCat[ 'specFile' ][ 'specFile' ];
