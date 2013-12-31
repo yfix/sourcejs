@@ -49,69 +49,71 @@ define([
                     } else {
                         //Going deeper
 
-                        getSpecificCat = getSpecificCat.replace(/index.html/i, 'specFile');
-
                         // complex/paths/handles/here
-                        if ( (getSpecificCat !== undefined) && (getSpecificCat.indexOf('/') !== -1) ) {
-							var getSpecificCatArr = getSpecificCat.split('/'),
-								success = true;
+                        if ( getSpecificCat !== undefined ) {
+                            getSpecificCat = getSpecificCat.replace(/index.html/i, 'specFile');
 
-							if (getSpecificCatArr[ getSpecificCatArr.length-1 ] == '') {
-								getSpecificCatArr.pop();
-							}
+                            if (getSpecificCat.indexOf('/') !== -1) {
+                                var getSpecificCatArr = getSpecificCat.split('/'),
+                                    success = true;
 
-							var returnObject = function(returnedTreeObj, excludeRootDocument) {
-								var isSingle = false;
-								if (getSpecificCat.indexOf('specFile') === -1) {
-									for (innerCat in returnedTreeObj) {
-										if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, true) ) {
-											if (innerCat == 'specFile' && (!excludeRootDocument)) {
-												fileTree[innerCat] = {};
-												fileTree[innerCat]['specFile'] = returnedTreeObj[innerCat];
-											} else {
-												fileTree[innerCat] = returnedTreeObj[innerCat];
-											}
-										}
-									}
-								} else {
-									fileTree['specFile'] = {};
-									fileTree['specFile']['specFile'] = returnedTreeObj;
-									isSingle = true;
-								}
-								return isSingle;
-							}
+                                if (getSpecificCatArr[ getSpecificCatArr.length-1 ] == '') {
+                                    getSpecificCatArr.pop();
+                                }
 
-                        	// absolute path
-                        	if (getSpecificCat.indexOf('/') == 0) {
-                        		returnedTreeObj = _this.json;
+                                var returnObject = function(returnedTreeObj, excludeRootDocument) {
+                                    var isSingle = false;
+                                    if (getSpecificCat.indexOf('specFile') === -1) {
+                                        for (innerCat in returnedTreeObj) {
+                                            if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, true) ) {
+                                                if (innerCat == 'specFile' && (!excludeRootDocument)) {
+                                                    fileTree[innerCat] = {};
+                                                    fileTree[innerCat]['specFile'] = returnedTreeObj[innerCat];
+                                                } else {
+                                                    fileTree[innerCat] = returnedTreeObj[innerCat];
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        fileTree['specFile'] = {};
+                                        fileTree['specFile']['specFile'] = returnedTreeObj;
+                                        isSingle = true;
+                                    }
+                                    return isSingle;
+                                }
 
-                        		for (var i = 1; i < getSpecificCatArr.length; i++) {
-									returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
-                        		}
+                                // absolute path
+                                if (getSpecificCat.indexOf('/') == 0) {
+                                    returnedTreeObj = _this.json;
 
-								if (returnObject(returnedTreeObj, true)) return;
+                                    for (var i = 1; i < getSpecificCatArr.length; i++) {
+                                        returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
+                                    }
 
-                        	} else {
-                        		//relative path
+                                    if (returnObject(returnedTreeObj, true)) return;
 
-								var	currentCheckCat = currentSubCat,
-									returnedTreeObj = currentCatObj;
+                                } else {
+                                    //relative path
 
-								for (var i = 0; i < getSpecificCatArr.length; i++) {
-									if (_this.checkCat(currentCheckCat, getSpecificCatArr[i])) {
-										currentCheckCat = getSpecificCatArr[i+1];
-									} else {
-										success = false;
-										break;
-									}
+                                    var	currentCheckCat = currentSubCat,
+                                        returnedTreeObj = currentCatObj;
 
-									returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
-								}
+                                    for (var i = 0; i < getSpecificCatArr.length; i++) {
+                                        if (_this.checkCat(currentCheckCat, getSpecificCatArr[i])) {
+                                            currentCheckCat = getSpecificCatArr[i+1];
+                                        } else {
+                                            success = false;
+                                            break;
+                                        }
 
-								if (success) {
-									if (returnObject(returnedTreeObj)) return;
-								}
-                        	}
+                                        returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
+                                    }
+
+                                    if (success) {
+                                        if (returnObject(returnedTreeObj)) return;
+                                    }
+                                }
+                            }
 
                         } else if (_this.checkCat(currentCat, getSpecificCat, toCheckCat)) {
                             //Turn off cat checking in this process, to get all inner folders
