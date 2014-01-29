@@ -3,7 +3,6 @@ var jsdom = require('jsdom'),
 	css = require('css');
 
 module.exports = function startCSSParse() {
-    console.log('!!!!');
 
 	var importCss = fs.readFileSync('./core/api/parseModifiers/input/nmain.css', 'utf8') +
 					fs.readFileSync('./core/api/parseModifiers/input/ncore.css', 'utf8') +
