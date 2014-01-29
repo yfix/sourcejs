@@ -51,7 +51,10 @@ module.exports = function api(req, res, next) {
 
             // tasks in POST
             var modules = {
-                parseModifiers: require('./parseModifiers')
+                parseModifiers: require('./parseModifiers'),
+                getHTMLParts: require('./getHTMLParts').process( './public/data/pages_tree.json', function() {
+                	console.log('Finish');
+                } )
             }
 
             postParser(req, function (post) {
@@ -72,13 +75,7 @@ module.exports = function api(req, res, next) {
 
                 }
 
-                res.writeHead(200, {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, POST',
-                    'Access-Control-Allow-Headers': 'Content-Type'
-                });
-                res.end(innerBody);
+                res.send(innerBody);
 
             });
 
