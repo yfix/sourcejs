@@ -1,7 +1,7 @@
 // modules
 var fs = require('fs');
 var url = require('url');
-var qs = require('querystring')
+var qs = require('querystring');
 
 
 // global vars
@@ -33,8 +33,7 @@ file.on('end', function (err) {
     if (err) console.log('END: ', err);
 
 //    console.log(JSON.parse(body));
-//   getPaths(JSON.parse(body), ['base', 'mob']);
-    parseFileTree(JSON.parse(body));
+   getPaths(JSON.parse(body), ['base', 'mob']);
 //    console.log(_path);
 });
 /* /File Tree reader */
@@ -48,18 +47,29 @@ module.exports = function api(req, res, next) {
 
         if (req.method == 'POST') {
 
+            console.log('POSTED');
+
             // tasks in POST
             var modules = {
                 parseModifiers: require('./parseModifiers')
             }
 
             postParser(req, function (post) {
-                var innerBody = body;
+                var
+                    innerBody = body,
+                    path = post.specID,
+                    section = post.sec;
 
-                console.log('----> postParser\n', post);
+                console.log('----> postParser\n', post['specs[id]']);
 
-                if (post.task && modules[post.task]) {
-                    innerBody = JSON.stringify(modules[post.task]);
+//                if (post.task && modules[post.task]) {
+//                    innerBody = JSON.stringify(modules[post.task]);
+//                }
+
+                if (path) {
+                    console.log('PATH: ', path);
+                    var pathArr = path.split('/');
+
                 }
 
                 res.writeHead(200, {
@@ -142,47 +152,18 @@ function getPaths(obj) {
 
     for (var k in obj) {
 
-        console.log(k);
-
-        if (typeof obj[k] == 'object' && obj['specFile']) {
-//            console.log(k);
-            if (obj['specFile']['keywords']) {
-                _path.push(obj['specFile']['url']);
-                return;
-            }
-        }
-
-//        for (j in obj[k]) {
-//            if (j == undefined) continue;
-//        }
-        getPaths(obj[k]);
-//        return;
-
-    }
-
-    console.log('PATH', _path);
-}
-
-
-
-function parseFileTree( obj ) {
-
-    for (var k in obj) {
-        if (typeof obj[k] === "object") {
-            parseFileTree( obj[k] );
-
-        } else if ( obj.url && obj.keywords ) {
-            _path.push(obj.url);
+        if (obj['specFile'] && obj['specFile']['keywords']) {
+            _path.push(obj.specFile.url);
             return;
         }
 
-//        if ( object.url && object.fileName && object.keywords ) {
-//
-//        }
+        if (typeof obj[k] == 'object') getPaths(obj[k]);
 
     }
-
 }
+
+
+
 
 /**
  * Ajax
@@ -195,10 +176,9 @@ function parseFileTree( obj ) {
 /*
 $.ajax('/api', {
     data: {
-        task: '--parseModifiers',
-        specs: {
-            id: 'mob/base/buttons',
-            sec: 2}
+        task: 'parseModifiers',
+        specID: 'mob/base/buttons',
+        sec: 2
     },
     method: 'POST',
     success: function (data) {console.log(data)}
