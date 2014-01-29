@@ -50,12 +50,6 @@ global.app.use(clarify);
 global.app.use(express.static(__dirname + '/core/clarify')); // static for module css
 /*  /Clarify module */
 
-
-/* API module */
-var api = require('./core/api');
-global.app.use(api);
-/* /API module */
-
 /*  File tree module */
 fileTree = require('./core/file-tree');
 global.app.use(function(req, res, next){
@@ -66,6 +60,11 @@ global.app.use(function(req, res, next){
 });
 /*  /File tree module */
 
+
+/* API module */
+var api = require('./core/api');
+global.app.use(api);
+/* /API module */
 
 /* Error handling */
 global.app.use(logErrors);

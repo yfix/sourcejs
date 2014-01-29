@@ -1,24 +1,37 @@
+// modules
 var fs = require('fs');
 
-//console.log(__dirname);
+// global vars
+var
+    bd = 'pages_tree.json',
+    body = '',
+    specs;
 
-var fileStream = fs.ReadStream('/Users/dmitrylapynov/odkl/OKP-odkl/data/pages_tree.json');
+// transform symbolic link
+var symlink = fs.readlinkSync(__dirname + '/../../public');
+var link = symlink + 'data/pages_tree.json';
+console.log('link', link);
 
-var body = '';
-fileStream.on('readable', function (err) {
-    if (err) console.log(err);
 
-    var data = fileStream.read();
+console.log('\n\n\n======== START =======');
+console.log(link);
 
+var file = fs.ReadStream(link, { encoding: 'UTF-8' });
+
+file.on('readable', function (err) {
+    if (err) console.log('READABLE: ', err);
+
+    var data = file.read();
     body += data;
-    console.log( data.length );
-    console.log( data );
-    console.log( '---> data end' );
 });
 
-fileStream.on('end', function (err) {
-    if (err) console.log(err);
-//    console.log('body:\n\n', body);
-    console.log('---> all data readed');
+file.on('end', function (err) {
+    if (err) console.log('END: ', err);
 
-})
+//    console.log('Reading over.\n');
+
+    specs = JSON.parse(body);
+    //    console.log( specs.mob.base );
+//            res.writeHead(200, {'Content-Type': 'text/plain'});
+
+});
