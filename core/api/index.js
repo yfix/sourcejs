@@ -7,11 +7,13 @@ var
     body = '',
     specs;
 
-
-
 module.exports = function api(req, res, next) {
 
-    if (req.url == '/api') {
+	if (req.url == '/api/get-css-mod') {
+		var cssParser = require('./parseModifiers');
+
+		res.send( cssParser );
+	} else if (req.url == '/api') {
     console.log('Api:: URL:: ', req.url);
 
 // before work
