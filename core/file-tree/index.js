@@ -102,7 +102,10 @@ function fileTree(dir) {
                     author = fileJSON.author,
                     title = fileJSON.title,
                     keywords = fileJSON.keywords,
-                    info = fileJSON.info;
+                    info = fileJSON.info,
+
+                    category = fileJSON.category,
+                    target = fileJSON.target;
             } else {
                 // if infoFile don't exist in project folder
                 var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
@@ -118,7 +121,10 @@ function fileTree(dir) {
                 author: author,
                 title: title,
                 keywords: keywords,
-                info: info
+                info: info,
+
+				category: category,
+				target: target
             };
 
             outputJSON['specFile'] = extend(page);
