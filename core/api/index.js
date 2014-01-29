@@ -19,7 +19,8 @@ console.log('\n\n\n======== START =======');
 //var link = symlink + 'data/pages_tree.json';
 
 // read data from file
-var file = fs.ReadStream(__dirname + '/../../public/data/pages_tree.json', { encoding: 'UTF-8' });
+//var file = fs.ReadStream(__dirname + '/../../public/data/pages_tree.json', { encoding: 'UTF-8' });
+var file = fs.ReadStream(__dirname + '/pages_tree.json', { encoding: 'UTF-8' });
 
 file.on('readable', function (err) {
     if (err) console.log('READABLE: ', err);
@@ -31,10 +32,10 @@ file.on('readable', function (err) {
 file.on('end', function (err) {
     if (err) console.log('END: ', err);
 
-    console.log(body);
-//    var path = getPaths(body, ['base', 'mob']);
-//    path();
-
+//    console.log(JSON.parse(body));
+//   getPaths(JSON.parse(body), ['base', 'mob']);
+    parseFileTree(JSON.parse(body));
+//    console.log(_path);
 });
 /* /File Tree reader */
 
@@ -136,44 +137,57 @@ function postParser(req, callback) {
 
 }
 
-//var _path = [];
-//function getPaths(obj, folders) {
-//    var obj = JSON.parse(obj);
-//    var newObj = {};
-//    var n = 0;
-//
-//
-//    return function count() {
-//        n++; console.log(n);
-//
-//        for (k in obj) {
-////            if (obj['specFile']) _path.push(obj['specFile']['url']);
-//            if (obj[k]['specFile']) {
-//                _path.push(obj[k]['specFile']['url']);
-//                continue;
-//            }
-//
-//            console.log(k);
-////            if (obj[k])
-//        }
-//
-//        console.log('PATH', _path);
-//    }
-//}
+var _path = [];
+function getPaths(obj) {
 
-//function parseFileTree( object ) {
-//
-//    for (var temp in object) {
-//        if (typeof object[temp] === "object") {
-//            parseFileTree( object[temp] );
+    for (var k in obj) {
+
+        console.log(k);
+
+        if (typeof obj[k] == 'object' && obj['specFile']) {
+//            console.log(k);
+            if (obj['specFile']['keywords']) {
+                _path.push(obj['specFile']['url']);
+                return;
+            }
+        }
+
+//        for (j in obj[k]) {
+//            if (j == undefined) continue;
 //        }
-//    }
+        getPaths(obj[k]);
+//        return;
+
+    }
+
+    console.log('PATH', _path);
+}
+
+
+
+function parseFileTree( obj ) {
+
+    for (var k in obj) {
+        if (typeof obj[k] === "object") {
+            parseFileTree( obj[k] );
+
+        } else if ( obj.url && obj.keywords ) {
+            _path.push(obj.url);
+            return;
+        }
+
+//        if ( object.url && object.fileName && object.keywords ) {
 //
-//    if ( object.url && object.fileName && object.category ) {
-//        hasCategoryCount++;
-//
-//        var fileName = '/' + object.url + '/' + object.fileName;
-//
-//        var params = "core/clarify/phantomjs core/api/getHTMLParts/ph.js "+ fileName;
-//        object.sections = [];
-//}
+//        }
+
+    }
+
+}
+
+/**
+ * Ajax
+ *
+ * method: POST
+ * url: /api
+ * data: {task: 'CSSModifiers', spec: { id: <path>, sec: <num>}}
+ */
