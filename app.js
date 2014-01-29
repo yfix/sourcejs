@@ -51,6 +51,11 @@ global.app.use(express.static(__dirname + '/core/clarify')); // static for modul
 /*  /Clarify module */
 
 
+/* API module */
+var api = require('./core/api');
+global.app.use(api);
+/* /API module */
+
 /*  File tree module */
 fileTree = require('./core/file-tree');
 global.app.use(function(req, res, next){
