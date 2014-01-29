@@ -191,3 +191,17 @@ function parseFileTree( obj ) {
  * url: /api
  * data: {task: 'CSSModifiers', spec: { id: <path>, sec: <num>}}
  */
+
+/*
+$.ajax('/api', {
+    data: {
+        task: '--parseModifiers',
+        specs: {
+            id: 'mob/base/buttons',
+            sec: 2}
+    },
+    method: 'POST',
+    success: function (data) {console.log(data)}
+});
+
+*/
