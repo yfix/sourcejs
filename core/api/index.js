@@ -15,11 +15,11 @@ console.log('\n\n\n======== START =======');
 /* File Tree reader */
 
 // transform symbolic link
-var symlink = fs.readlinkSync(__dirname + '/../../public');
-var link = symlink + 'data/pages_tree.json';
+//var symlink = fs.readlinkSync(__dirname + '/../../public');
+//var link = symlink + 'data/pages_tree.json';
 
 // read data from file
-var file = fs.ReadStream(link, { encoding: 'UTF-8' });
+var file = fs.ReadStream(__dirname + '/../../public/data/pages_tree.json', { encoding: 'UTF-8' });
 
 file.on('readable', function (err) {
     if (err) console.log('READABLE: ', err);
@@ -30,6 +30,10 @@ file.on('readable', function (err) {
 
 file.on('end', function (err) {
     if (err) console.log('END: ', err);
+
+    console.log(body);
+//    var path = getPaths(body, ['base', 'mob']);
+//    path();
 
 });
 /* /File Tree reader */
@@ -131,3 +135,45 @@ function postParser(req, callback) {
     });
 
 }
+
+//var _path = [];
+//function getPaths(obj, folders) {
+//    var obj = JSON.parse(obj);
+//    var newObj = {};
+//    var n = 0;
+//
+//
+//    return function count() {
+//        n++; console.log(n);
+//
+//        for (k in obj) {
+////            if (obj['specFile']) _path.push(obj['specFile']['url']);
+//            if (obj[k]['specFile']) {
+//                _path.push(obj[k]['specFile']['url']);
+//                continue;
+//            }
+//
+//            console.log(k);
+////            if (obj[k])
+//        }
+//
+//        console.log('PATH', _path);
+//    }
+//}
+
+//function parseFileTree( object ) {
+//
+//    for (var temp in object) {
+//        if (typeof object[temp] === "object") {
+//            parseFileTree( object[temp] );
+//        }
+//    }
+//
+//    if ( object.url && object.fileName && object.category ) {
+//        hasCategoryCount++;
+//
+//        var fileName = '/' + object.url + '/' + object.fileName;
+//
+//        var params = "core/clarify/phantomjs core/api/getHTMLParts/ph.js "+ fileName;
+//        object.sections = [];
+//}
