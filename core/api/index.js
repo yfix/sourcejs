@@ -19,8 +19,7 @@ console.log('\n\n\n======== START =======');
 //var link = symlink + 'data/pages_tree.json';
 
 // read data from file
-//var file = fs.ReadStream(__dirname + '/../../public/data/pages_tree.json', { encoding: 'UTF-8' });
-var file = fs.ReadStream(__dirname + '/pages_tree.json', { encoding: 'UTF-8' });
+var file = fs.ReadStream(__dirname + '/../../public/data/pages_tree.json', { encoding: 'UTF-8' });
 
 file.on('readable', function (err) {
     if (err) console.log('READABLE: ', err);
@@ -32,7 +31,11 @@ file.on('readable', function (err) {
 file.on('end', function (err) {
     if (err) console.log('END: ', err);
 
-//    console.log(JSON.parse(body));
+    var api = fs.writeFile('./api.json', body, function () {
+       console.log('file written');
+    });
+
+    console.log(JSON.parse(body));
    getPaths(JSON.parse(body), ['base', 'mob']);
 //    console.log(_path);
 });
@@ -42,8 +45,15 @@ file.on('end', function (err) {
 
 module.exports = function api(req, res, next) {
 
+    var headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+        'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
+        'Access-Control-Allow-Credentials': true
+    };
+
     if (req.url == '/api') {
-        console.log('Api :: URL :: ', req.url, req.method);
 
         if (req.method == 'POST') {
 
@@ -67,28 +77,34 @@ module.exports = function api(req, res, next) {
 //                }
 
                 if (path) {
-                    console.log('PATH: ', path);
-                    var pathArr = path.split('/');
+                    var
+                        pathArr = path.split('/'),
+                        length = pathArr.length,
+                        obj = JSON.parse(innerBody);
 
+                    for (var i = 0; i < length; i++) {
+                        if (obj[pathArr[i]]) {
+                            obj = obj[pathArr[i]];
+                        } else {
+                            obj = {
+                                specFile: {
+                                    error: 'false path'
+                                }
+                            }
+                        }
+                    }
+
+                    console.log('OBJ: ', obj);
+                    innerBody = JSON.stringify(obj.specFile);
                 }
 
-                res.writeHead(200, {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, POST',
-                    'Access-Control-Allow-Headers': 'Content-Type'
-                });
+                res.writeHead(200, headers);
                 res.end(innerBody);
 
             });
 
         } else {
-            res.writeHead(200, {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            });
+            res.writeHead(200, headers);
             res.end(body);
         }
 
