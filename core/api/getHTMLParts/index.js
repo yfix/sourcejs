@@ -1,34 +1,21 @@
 var fs = require('fs'),
-	exec = require('child_process').exec;
+	exec = require('exec-sync');
 
 
-function process ( filename, callback ) {
+function go (filename) {
 
 	var currentCategoryCount = 0;
 		totalCategoryCount = 0,
 		totalStruct = JSON.parse(fs.readFileSync(filename, { encoding: 'UTF-8' }));
 
-	function checkParseEnd() {
-		var interval = setInterval(function() {
-
-			//console.log(currentCategoryCount, totalCategoryCount);
-
-			if (currentCategoryCount >= totalCategoryCount) {
-				writeToFile();
-				clearInterval(interval);
-				currentCategoryCount = 0;
-			}
-		}, 10000)
-	}
-
 	function writeToFile() {
-		fs.writeFile(__dirname + '/../api.json', JSON.stringify(totalStruct, null, 4), function (err) {
+        console.log('{"response":true}');
+
+		fs.writeFile(process.argv[2]+'/api.json', JSON.stringify(totalStruct, null, 4), function (err) {
 			if (err) {
 				console.log(err);
 			}
 		});
-
-		callback();
 	}
 
 	function parseFileTree( object ) {
@@ -38,43 +25,39 @@ function process ( filename, callback ) {
 			}
 
 			if ( object.url && object.fileName && object.category ) {
-				var fileName = 'http://127.0.0.1:' + global.opts.common.port + object.url + '/' + object.fileName;
+				var fileName = 'http://127.0.0.1:80' + object.url + '/' + object.fileName;
 				totalCategoryCount++;
 
 				(function(fileName, object) {
-					var params = "core/clarify/phantomjs core/api/getHTMLParts/ph.js "+ fileName;
 
-					exec(params, function (err, stdout, stderr) {
-						if (err) {
-							//console.log('err', err);
-							currentCategoryCount++;
-						} else {
+                        var params = process.argv[3]+"/phantomjs "+ process.argv[2] + "/getHTMLParts/ph.js "+ fileName;
 
-							try {
-								object.sections = [];
-								currentCategoryCount++;
+					    var data = exec(params, true).stdout;
 
-								var html = JSON.parse(stdout);
+                        try {
+                            object.sections = [];
+                            currentCategoryCount++;
 
-								if (!html.error) {
-									for (var htmlCount = 0; htmlCount < html.result.length; htmlCount++) {
-										object.sections.push(html.result[htmlCount])														;
-									}
+                            var html = JSON.parse(data);
 
-									if (html.result.length == 0) {
-										console.log(fileName);
-									}
+                            if (!html.error) {
+                                for (var htmlCount = 0; htmlCount < html.result.length; htmlCount++) {
+                                    object.sections.push(html.result[htmlCount]);
+                                }
 
-								} else {
-									console.log(html);
-								}
+                                if (html.result.length == 0) {
+//                                    console.log(fileName);
+                                }
 
-							} catch(e) {
-								//console.log(e);
-								currentCategoryCount++;
-							}
-						}
-					});
+                            } else {
+//                                console.log(html);
+                            }
+
+                        } catch(e) {
+                            //console.log(e);
+                            currentCategoryCount++;
+                        }
+
 
 				})(fileName, object);
 
@@ -84,12 +67,8 @@ function process ( filename, callback ) {
 	}
 
 	parseFileTree( totalStruct );
-	checkParseEnd();
+	writeToFile();
 
-};
-
-module.exports = {
-	process: function( filename, callback ) {
-		process( filename, callback );
-	}
 }
+
+go(process.argv[2]+'/api.json');

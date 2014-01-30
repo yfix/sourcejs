@@ -1,6 +1,7 @@
 // modules
 var fs = require('fs'),
     url = require('url'),
+    exec = require('child_process').exec,
     qs = require('querystring');
 
 
@@ -28,14 +29,15 @@ fs.stat(__dirname + '/api.json', function (err, data) {
         apiState = 'not found';
     } else {
         console.log('stats:\n', data);
-        console.log((new Date - data.mtime) / 60000 );
-        if ((new Date - data.mtime) / 60000 < 1) {
-            console.log('Api is fresh');
-            apiState = 'fresh';
-        } else {
-            console.log('Api is old shit')
-            apiState = 'old';
-        }
+//        console.log((new Date - data.mtime) / 60000 );
+//        if ((new Date - data.mtime) / 60000 < 1) {
+//            console.log('Api is fresh');
+//            apiState = 'fresh';
+//        } else {
+//            console.log('Api is old shit')
+//            apiState = 'old';
+//        }
+        apiState = 'old';
     }
 
 
@@ -48,23 +50,38 @@ fs.stat(__dirname + '/api.json', function (err, data) {
             fs.writeFile(__dirname +'/api.json', body, function () {
                 console.log('---> api.json is written.');
 
-                require('./getHTMLParts').process(__dirname + '/api.json', function () {
-                    console.log('---> Api has been modified.');
+                exec('node ' + __dirname + '/getHTMLParts/index.js '+ __dirname +' '+__dirname+'/../clarify ' + global.opts.common.port, function(err, stdout){
+                    if (err){
+                        console.log(err);
+                    }
 
-                    fs.readFile(__dirname + '/api.json', { encoding: 'UTF-8' }, function (err, data) {
-                        if (err) console.log(err);
+                    console.log(stdout);
 
-                        console.log('--> New file readed.');
-                        body = data;
+                    var waiting = setInterval(function(){
+                        if(JSON.parse(stdout).response==true) {
+                            setTimeout(function(){
+                                fs.readFile(__dirname + '/api.json', { encoding: 'UTF-8' }, function (err, data) {
+                                    if (err) console.log(err);
 
-                        _path = [];
-                        getPaths( JSON.parse(data) );
+                                    console.log('--> New file readed.');
+                                    body = data;
 
-                        cats = {};
-                        getCats( JSON.parse(data) );
+                                    console.log('++++++++++++++++ body',body);
+//                                    fs.readFile('api2.json', function (data) {
 
-                    });
+                                        _path = [];
+                                        getPaths( JSON.parse(data) );
 
+                                        cats = {};
+                                        getCats( JSON.parse(data) );
+//                                    })
+//
+                                });
+                            }, 10000);
+
+                            clearInterval(waiting);
+                        }
+                    }, 10000);
                 });
             });
 

@@ -22,7 +22,8 @@
     "grunt-contrib-cssmin": "~0.6.2",
     "grunt-sftp-deploy": "0.0.9",
     "grunt-contrib-less": "~0.7.0",
-    "css": "~1.6.0"
+    "css": "~1.6.0",
+    "exec-sync": "~0.1.6"
   },
   "devDependencies": {
     "less-middleware": "~0.1.12"
