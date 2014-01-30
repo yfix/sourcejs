@@ -58,10 +58,10 @@ fs.stat(__dirname + '/api.json', function (err, data) {
                         body = data;
 
                         _path = [];
-                        getPaths( JSON.parse(body), ['base', 'mob'] );
+                        getPaths( JSON.parse(data) );
 
                         cats = {};
-                        getCats( JSON.parse(body) );
+                        getCats( JSON.parse(data) );
 
                     });
 

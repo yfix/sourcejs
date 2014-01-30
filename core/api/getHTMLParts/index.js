@@ -4,7 +4,6 @@ var fs = require('fs'),
 
 function process ( filename, callback ) {
 
-console.log('filename', filename);
 	var currentCategoryCount = 0;
 		totalCategoryCount = 0,
 		totalStruct = JSON.parse(fs.readFileSync(filename, { encoding: 'UTF-8' }));
@@ -19,7 +18,7 @@ console.log('filename', filename);
 				clearInterval(interval);
 				currentCategoryCount = 0;
 			}
-		}, 1000)
+		}, 10000)
 	}
 
 	function writeToFile() {
