@@ -74,8 +74,8 @@ fs.stat(__dirname + '/api.json', function (err, data) {
         fs.readFile(__dirname + '/api.json', function (err, data) {
             body = data;
 
-            getPaths( JSON.parse(body), ['base', 'mob'] );
-            getCats( JSON.parse(body) );
+//            getPaths( JSON.parse(body), ['base', 'mob'] );
+//            getCats( JSON.parse(body) );
         });
     }
 });
