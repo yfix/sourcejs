@@ -18,3 +18,4 @@ file.on('data', function () {
     data.read();
     console.log()
 })
+
