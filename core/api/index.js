@@ -220,7 +220,8 @@ function getCats(obj) {
                 keywords: obj.specFile.keywords,
                 info: obj.specFile.info,
                 target: obj.specFile.target,
-                sections: obj.specFile.sections
+                sections: obj.specFile.sections,
+                single: obj.specFile.single
             };
 
             return;
@@ -243,12 +244,15 @@ function getCats(obj) {
 /*
 $.ajax('/api', {
     data: {
-        task: parseModifiers || getCats
+        task: <your task*>
         specID: 'mob/base/buttons',
-        sec: 2
+        sec: <num>
     },
     method: 'POST',
     success: function (data) {console.log(data)}
 });
 
+* Tasks:
+* getCats
+* parseModifiers
 */
