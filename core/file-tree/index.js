@@ -104,8 +104,9 @@ function fileTree(dir) {
                     keywords = fileJSON.keywords,
                     info = fileJSON.info,
 
-					className = fileJSON.className;
+					className = fileJSON.className,
                     category = fileJSON.category,
+                    single = fileJSON.single,
                     target = fileJSON.target;
             } else {
                 // if infoFile don't exist in project folder
@@ -126,7 +127,8 @@ function fileTree(dir) {
 
                 className: className,
 				category: category,
-				target: target
+				target: target,
+                single: single
             };
 
             outputJSON['specFile'] = extend(page);
