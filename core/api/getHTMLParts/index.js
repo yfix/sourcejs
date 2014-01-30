@@ -1,78 +1,94 @@
 var fs = require('fs'),
 	exec = require('child_process').exec;
 
-module.exports = function getHTMLParts() {
+function process ( filename, callback ) {
 
-	var OUTPUT_FILE = 'htmlparts.json',
-		hasCategoryCount = 0;
-		currentCategoryCount = 0,
-		totalStruct = fs.readFileSync(__dirname + '/../../public/data/pages_tree.json', { encoding: 'UTF-8' });
+	var currentCategoryCount = 0;
+		totalCategoryCount = 0,
+		totalStruct = JSON.parse(fs.readFileSync(filename, { encoding: 'UTF-8' }));
 
-	function checkParseEnd = function() {
+	function checkParseEnd() {
 		var interval = setInterval(function() {
 
-			if (currentCategoryCount == hasCategoryCount) {
-				writeToFile( totalStruct );
+			//console.log(currentCategoryCount, totalCategoryCount);
+
+			if (currentCategoryCount >= totalCategoryCount) {
+				writeToFile();
 				clearInterval(interval);
 				currentCategoryCount = 0;
-				hasCategoryCount = 0;
 			}
 		}, 1000)
 	}
 
-	function writeToFile( object ) {
-		fs.writeFile(global.app.get("specs path") + "/" + OUTPUT_FILE, JSON.stringify(object, null, 4), function (err) {
+	function writeToFile() {
+		fs.writeFile(filename, JSON.stringify(totalStruct, null, 4), function (err) {
 			if (err) {
 				console.log(err);
 			}
 		});
+
+		callback();
 	}
 
 	function parseFileTree( object ) {
-
-		for (var temp in object) {
-			if (typeof object[temp] === "object") {
-				parseFileTree( object[temp] );
+		for (var spec in object) {
+			if (typeof object[spec] === "object") {
+				parseFileTree( object[spec] );
 			}
-		}
 
-		if ( object.url && object.fileName && object.category ) {
-			hasCategoryCount++;
+			if ( object.url && object.fileName && object.category ) {
+				var fileName = 'http://okp.me' + object.url + '/' + object.fileName; //http://okp.me
+				totalCategoryCount++;
 
-			var fileName = '/' + object.url + '/' + object.fileName;
+				(function(fileName, object) {
+					var params = "core/clarify/phantomjs core/api/getHTMLParts/ph.js "+ fileName;
 
-			var params = "core/clarify/phantomjs core/api/getHTMLParts/ph.js "+ fileName;
-			object.sections = [];
-
-			exec(params, function (err, stdout, stderr) {
-				if (err) {
-					//console.log('err', err);
-					currentCategoryCount++;
-				} else {
-
-					try {
-						currentCategoryCount++;
-						var html = JSON.parse(stdout);
-
-						if (!html.error) {
-							for (var htmlCount = 0; htmlCount < html.result.length; htmlCount++) {
-								object.sections.push( html.result[htmlCount] );
-							}
+					exec(params, function (err, stdout, stderr) {
+						if (err) {
+							//console.log('err', err);
+							currentCategoryCount++;
 						} else {
-							console.log(html);
-						}
 
-					} catch(e) {
-						//jsDomDegradation(fileName);
-						console.log(e);
-						currentCategoryCount++;
-					}
-				}
-			});
+							try {
+								object.sections = [];
+								currentCategoryCount++;
+
+								var html = JSON.parse(stdout);
+
+								if (!html.error) {
+									for (var htmlCount = 0; htmlCount < html.result.length; htmlCount++) {git commin
+										object.sections.push(html.result[htmlCount])														;
+									}
+
+									if (html.result.length == 0) {
+										console.log(fileName);
+									}
+
+								} else {
+									console.log(html);
+								}
+
+							} catch(e) {
+								console.log(e);
+								currentCategoryCount++;
+							}
+						}
+					});
+
+				})(fileName, object);
+
+				return;
+			}
 		}
 	}
 
 	parseFileTree( totalStruct );
 	checkParseEnd();
 
-}();
+};
+
+module.exports = {
+	process: function( filename, callback ) {
+		process( filename, callback );
+	}
+}
