@@ -56,7 +56,7 @@ function process ( filename, callback ) {
 								var html = JSON.parse(stdout);
 
 								if (!html.error) {
-									for (var htmlCount = 0; htmlCount < html.result.length; htmlCount++) {git commin
+									for (var htmlCount = 0; htmlCount < html.result.length; htmlCount++) {
 										object.sections.push(html.result[htmlCount])														;
 									}
 
