@@ -1,8 +1,10 @@
 var fs = require('fs'),
 	exec = require('child_process').exec;
 
+
 function process ( filename, callback ) {
 
+console.log('filename', filename);
 	var currentCategoryCount = 0;
 		totalCategoryCount = 0,
 		totalStruct = JSON.parse(fs.readFileSync(filename, { encoding: 'UTF-8' }));
@@ -21,7 +23,7 @@ function process ( filename, callback ) {
 	}
 
 	function writeToFile() {
-		fs.writeFile(__dirname+ '/../api.json', JSON.stringify(totalStruct, null, 4), function (err) {
+		fs.writeFile(__dirname + '/../api.json', JSON.stringify(totalStruct, null, 4), function (err) {
 			if (err) {
 				console.log(err);
 			}

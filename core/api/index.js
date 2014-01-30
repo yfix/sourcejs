@@ -34,16 +34,26 @@ file
     .on('end', function (err) {
         if (err) console.log('END: ', err);
 
-        var api = fs.writeFile('./api.json', body, function () {
+        fs.writeFile(__dirname +'/api.json', body, function () {
            console.log('---> api.json is written.');
 
-            require('./getHTMLParts').process('api.json', function () {
-               console.log('---> Api has been modified.')
+            require('./getHTMLParts').process(__dirname + '/api.json', function () {
+               console.log('---> Api has been modified.');
 
-                newFile = fs.readFile('./api.json', { encoding: 'UTF-8' }, function (err, data) {
+                // проверка модифицирован ли файл
+
+                fs.readFile(__dirname + '/api.json', { encoding: 'UTF-8' }, function (err, data) {
                     if (err) console.log(err);
 
-                    console.log(data)
+                    console.log('--> New file readed.');
+                    body = data;
+
+                    _path = [];
+                    getPaths( JSON.parse(body), ['base', 'mob'] );
+
+                    cats = {};
+                    getCats( JSON.parse(body) );
+
                 });
 
             });
@@ -173,7 +183,8 @@ function getCats(obj) {
                 url: obj.specFile.url,
                 keywords: obj.specFile.keywords,
                 info: obj.specFile.info,
-                target: obj.specFile.target
+                target: obj.specFile.target,
+                sections: obj.specFile.sections
             };
 
             return;
