@@ -1,11 +1,13 @@
 // modules
-var fs = require('fs');
-var url = require('url');
-var qs = require('querystring');
+var fs = require('fs'),
+    url = require('url'),
+    qs = require('querystring');
 
 
 // global vars
-var body = '';
+var body = '',
+    _path = [],
+    cats = {};
 
 
 
@@ -32,12 +34,14 @@ file.on('end', function (err) {
     if (err) console.log('END: ', err);
 
     var api = fs.writeFile('./api.json', body, function () {
-       console.log('file written');
+       console.log('---> api.json is written.');
     });
 
-    console.log(JSON.parse(body));
-   getPaths(JSON.parse(body), ['base', 'mob']);
+//    console.log(JSON.parse(body));
+    getPaths( JSON.parse(body), ['base', 'mob'] );
+    getCats( JSON.parse(body) );
 //    console.log(_path);
+    console.log(cats);
 });
 /* /File Tree reader */
 
@@ -61,22 +65,22 @@ module.exports = function api(req, res, next) {
 
             // tasks in POST
             var modules = {
-                parseModifiers: require('./parseModifiers')
+                parseModifiers: require('./parseModifiers'),
+                getCats: cats
             }
 
             postParser(req, function (post) {
                 var
                     innerBody = body,
+                    task = post.task,
                     path = post.specID,
                     section = post.sec;
 
                 console.log('----> postParser\n', post['specs[id]']);
 
-//                if (post.task && modules[post.task]) {
-//                    innerBody = JSON.stringify(modules[post.task]);
-//                }
-
-                if (path) {
+                if (task && modules[task]) {
+                    innerBody = JSON.stringify(modules[post.task]);
+                } else if (path) {
                     var
                         pathArr = path.split('/'),
                         length = pathArr.length,
@@ -94,9 +98,10 @@ module.exports = function api(req, res, next) {
                         }
                     }
 
-                    console.log('OBJ: ', obj);
+//                    console.log('OBJ: ', obj);
                     innerBody = JSON.stringify(obj.specFile);
                 }
+
 
                 res.writeHead(200, headers);
                 res.end(innerBody);
@@ -163,7 +168,8 @@ function postParser(req, callback) {
 
 }
 
-var _path = [];
+
+
 function getPaths(obj) {
 
     for (var k in obj) {
@@ -178,7 +184,26 @@ function getPaths(obj) {
     }
 }
 
+function getCats(obj) {
 
+    for (var k in obj) {
+
+        if (obj['specFile'] && obj['specFile']['category']) {
+            if (!cats[obj['specFile']['category']]) {
+                cats[obj['specFile']['category']] = [];
+            }
+            cats[obj['specFile']['category']].push({
+                url: obj.specFile.url,
+                title: obj.specFile.title,
+                keywords: obj.specFile.keywords
+            });
+            return;
+        }
+
+        if (typeof obj[k] == 'object') getCats(obj[k]);
+    }
+
+}
 
 
 /**
