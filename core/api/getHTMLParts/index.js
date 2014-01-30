@@ -21,7 +21,7 @@ function process ( filename, callback ) {
 	}
 
 	function writeToFile() {
-		fs.writeFile(filename, JSON.stringify(totalStruct, null, 4), function (err) {
+		fs.writeFile(__dirname+ '/../api.json', JSON.stringify(totalStruct, null, 4), function (err) {
 			if (err) {
 				console.log(err);
 			}

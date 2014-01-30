@@ -36,6 +36,17 @@ file
 
         var api = fs.writeFile('./api.json', body, function () {
            console.log('---> api.json is written.');
+
+            require('./getHTMLParts').process('api.json', function () {
+               console.log('---> Api has been modified.')
+
+                file = fs.readFile('./api.json', {encoding: 'UTF-8'}, function (err, data) {
+                    if (err) console.log(err);
+
+                    console.log(data)
+                });
+
+            });
         });
 
     getPaths( JSON.parse(body), ['base', 'mob'] );
@@ -105,38 +116,13 @@ module.exports = function api(req, res, next) {
             res.end(body);
         }
 
-
-
-//	if (req.url == '/api/get-css-mod') {
-//		var cssParser = require('./parseModifiers');
-//
-//		res.send( cssParser );
-//	} else if (req.url == '/api') {
-//    console.log('Api:: URL:: ', req.url);
-
-
-        // read directory
-        //fs.readdir(symlink, function (err, data) {
-        //    if (err) console.log('READDIR: ', err);
-        //
-        //    console.log('--> FS:\n\n', data)
-        //});
-
-
-        //var stats = fs.stat(path).isFile();
-        //console.log('STATS:\n', stats);
-
-        //var stat = fs.lstat(__dirname + '/../../public/data', function (err, path) {
-        //   console.log('LSTAT', path);
-        //});
-
     } else next();
 
 }
 
 
 // all done
-console.log('----> API connected. All done.');
+console.log('---> API connected succesfully.');
 
 
 
@@ -180,13 +166,15 @@ function getCats(obj) {
 
         if (obj['specFile'] && obj['specFile']['category']) {
             if (!cats[obj['specFile']['category']]) {
-                cats[obj['specFile']['category']] = [];
+                cats[obj['specFile']['category']] = {};
             }
-            cats[obj['specFile']['category']].push({
+
+            cats[obj['specFile']['category']][obj.specFile.title] = {
                 url: obj.specFile.url,
-                title: obj.specFile.title,
-                keywords: obj.specFile.keywords
-            });
+                keywords: obj.specFile.keywords,
+                info: obj.specFile.info
+            };
+
             return;
         }
 
@@ -207,7 +195,7 @@ function getCats(obj) {
 /*
 $.ajax('/api', {
     data: {
-        task: 'parseModifiers',
+        task: parseModifiers || getCats
         specID: 'mob/base/buttons',
         sec: 2
     },
