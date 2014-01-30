@@ -39,7 +39,7 @@ console.log('filename', filename);
 			}
 
 			if ( object.url && object.fileName && object.category ) {
-				var fileName = 'http://okp.me:8080' + object.url + '/' + object.fileName; //http://okp.me
+				var fileName = 'http://127.0.0.1:' + global.opts.common.port + object.url + '/' + object.fileName; //http://okp.me
 				totalCategoryCount++;
 
 				(function(fileName, object) {

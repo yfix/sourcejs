@@ -14,57 +14,74 @@ var body = '',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
         'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
         'Access-Control-Allow-Credentials': true
-    };
+    },
+    apiState;
 
 
 console.log('\n\n\n======== START =======');
 
 
 /* File Tree reader */
-var file = fs.ReadStream(__dirname + '/../../public/data/pages_tree.json', { encoding: 'UTF-8' });
+fs.stat(__dirname + '/api.json', function (err, data) {
+    if (data == undefined) {
+        console.log('Stat error: ',err);
+        apiState = 'not found';
+    } else {
+        console.log('stats:\n', data);
+        if ((data.atime - data.mtime) / 60000 < 10) {
+            console.log('Api is fresh');
+            apiState = 'fresh';
+        } else {
+            console.log('Api is old shit')
+            apiState = 'old';
+        }
+    }
 
-file
-    .on('readable', function (err) {
-        if (err) console.log('READABLE: ', err);
 
-        var data = file.read();
-        body += data;
-    })
+    if (apiState == 'old' || apiState == 'not found') {
+        fs.readFile(__dirname + '/../../public/data/pages_tree.json', function (err, data) {
+            if (err) console.log(err);
 
-    .on('end', function (err) {
-        if (err) console.log('END: ', err);
+            body = data;
 
-        fs.writeFile(__dirname +'/api.json', body, function () {
-           console.log('---> api.json is written.');
+            fs.writeFile(__dirname +'/api.json', body, function () {
+                console.log('---> api.json is written.');
 
-            require('./getHTMLParts').process(__dirname + '/api.json', function () {
-               console.log('---> Api has been modified.');
+                require('./getHTMLParts').process(__dirname + '/api.json', function () {
+                    console.log('---> Api has been modified.');
 
-                // проверка модифицирован ли файл
+                    fs.readFile(__dirname + '/api.json', { encoding: 'UTF-8' }, function (err, data) {
+                        if (err) console.log(err);
 
-                fs.readFile(__dirname + '/api.json', { encoding: 'UTF-8' }, function (err, data) {
-                    if (err) console.log(err);
+                        console.log('--> New file readed.');
+                        body = data;
 
-                    console.log('--> New file readed.');
-                    body = data;
+                        _path = [];
+                        getPaths( JSON.parse(body), ['base', 'mob'] );
 
-                    _path = [];
-                    getPaths( JSON.parse(body), ['base', 'mob'] );
+                        cats = {};
+                        getCats( JSON.parse(body) );
 
-                    cats = {};
-                    getCats( JSON.parse(body) );
+                    });
 
                 });
-
             });
-        });
 
-    getPaths( JSON.parse(body), ['base', 'mob'] );
-    getCats( JSON.parse(body) );
-//    console.log(_path);
-//    console.log(cats);
+
+        });
+    } else {
+        fs.readFile(__dirname + '/api.json', function (err, data) {
+            body = data;
+
+            getPaths( JSON.parse(body), ['base', 'mob'] );
+            getCats( JSON.parse(body) );
+        });
+    }
 });
-/* /File Tree reader */
+
+//console.log('apiSTAT', apiState);
+//
+
 
 
 
@@ -74,7 +91,8 @@ module.exports = function api(req, res, next) {
 
         if (req.method == 'POST') {
 
-            console.log('POSTED');
+
+//            console.log('POSTED');
 
             // tasks in POST
             var modules = {
@@ -89,7 +107,7 @@ module.exports = function api(req, res, next) {
                     path = post.specID,
                     section = post.sec;
 
-                console.log('----> postParser\n', post['specs[id]']);
+//                console.log('----> postParser\n');
 
                 if (task && modules[task]) {
                     innerBody = JSON.stringify(modules[post.task]);
