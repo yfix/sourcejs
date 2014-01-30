@@ -61,12 +61,12 @@ page.onLoadFinished = function (msg) {
             });
 
         	console.log(JSON.stringify(code, null, 1));
-        }, 400);
+        }, 1000);
 	}
 
     setTimeout(function(){
 		phantom.exit();
-    }, 400)
+    }, 1000)
 };
 
 // error handler & logger: helps to avoid error stream within a common log
