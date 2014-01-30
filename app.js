@@ -117,7 +117,7 @@ global.app.use(function(req, res, next){
 			section: path,
             header: headerFooterHTML.header,
             footer: headerFooterHTML.footer
-		})
+		});
 
 		return;
 	}
