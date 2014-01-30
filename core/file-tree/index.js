@@ -104,6 +104,7 @@ function fileTree(dir) {
                     keywords = fileJSON.keywords,
                     info = fileJSON.info,
 
+					className = fileJSON.className;
                     category = fileJSON.category,
                     target = fileJSON.target;
             } else {
@@ -123,6 +124,7 @@ function fileTree(dir) {
                 keywords: keywords,
                 info: info,
 
+                className: className,
 				category: category,
 				target: target
             };

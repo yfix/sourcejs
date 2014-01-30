@@ -10,6 +10,7 @@ var url = system.args[1],
 page.open(url);
 
 page.onLoadFinished = function (msg) {
+
 	if (msg != 'success') {
 		console.log( JSON.stringify({'error': url}) );
 	} else {
@@ -17,16 +18,42 @@ page.onLoadFinished = function (msg) {
         setTimeout(function() {
             var code = page.evaluate(function () {
 
+				function closestTitle(elem) {
+					if (elem.tagName == 'HTML') return false;
+
+					if ( (elem.tagName !== 'H2') && (elem.tagName !== 'H3') ) {
+						return closestTitle(elem.previousSibling);
+					} else {
+						return elem.textContent;
+					}
+
+					return false;
+				}
+
 				var sections = document.querySelectorAll('.source_example'),
-					result = [];
+					result = [],
+					titles = [];
 
 				for (var sectionCounter = 0; sectionCounter < sections.length; sectionCounter++) {
-					result.push( sections[sectionCounter].innerHTML
+
+					var markupTitle = closestTitle( sections[sectionCounter] ) || sectionCounter;
+					var markup = sections[sectionCounter].innerHTML
 							.replace('\n', '')
 							.replace(/\n/g, "")
                             .replace(/[\t ]+\</g, "<")
                             .replace(/\>[\t ]+\</g, "><")
-                            .replace(/\>[\t ]+$/g, ">") );
+                            .replace(/\>[\t ]+$/g, ">");
+
+                	if (titles.indexOf(markupTitle) === -1) {
+                		titles.push(markupTitle);
+
+                		var tmp = {};
+
+                		tmp[markupTitle] = markup;
+						result.push( tmp );
+                	}
+
+
 				}
 
                 return {result: result};

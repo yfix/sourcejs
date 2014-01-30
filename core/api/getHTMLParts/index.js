@@ -37,7 +37,7 @@ function process ( filename, callback ) {
 			}
 
 			if ( object.url && object.fileName && object.category ) {
-				var fileName = 'http://okp.me' + object.url + '/' + object.fileName; //http://okp.me
+				var fileName = 'http://127.0.0.1:8080' + object.url + '/' + object.fileName; //http://okp.me
 				totalCategoryCount++;
 
 				(function(fileName, object) {
@@ -69,7 +69,7 @@ function process ( filename, callback ) {
 								}
 
 							} catch(e) {
-								console.log(e);
+								//console.log(e);
 								currentCategoryCount++;
 							}
 						}
