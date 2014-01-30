@@ -40,7 +40,7 @@ file
             require('./getHTMLParts').process('api.json', function () {
                console.log('---> Api has been modified.')
 
-                file = fs.readFile('./api.json', {encoding: 'UTF-8'}, function (err, data) {
+                newFile = fs.readFile('./api.json', { encoding: 'UTF-8' }, function (err, data) {
                     if (err) console.log(err);
 
                     console.log(data)
@@ -172,7 +172,8 @@ function getCats(obj) {
             cats[obj['specFile']['category']][obj.specFile.title] = {
                 url: obj.specFile.url,
                 keywords: obj.specFile.keywords,
-                info: obj.specFile.info
+                info: obj.specFile.info,
+                target: obj.specFile.target
             };
 
             return;
