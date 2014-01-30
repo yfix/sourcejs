@@ -116,7 +116,7 @@ module.exports = function api(req, res, next) {
             var modules = {
                 parseModifiers: require('./parseModifiers'),
                 getCats: cats
-            }
+            };
 
             postParser(req, function (post) {
                 var

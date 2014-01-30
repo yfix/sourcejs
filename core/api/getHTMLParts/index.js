@@ -25,7 +25,7 @@ function go (filename) {
 			}
 
 			if ( object.url && object.fileName && object.category ) {
-				var fileName = 'http://127.0.0.1:80' + object.url + '/' + object.fileName;
+				var fileName = 'http://127.0.0.1:'+ process.argv[4] + object.url + '/' + object.fileName;
 				totalCategoryCount++;
 
 				(function(fileName, object) {
