@@ -7,55 +7,47 @@ var fs = require('fs'),
 // global vars
 var body = '',
     _path = [],
-    cats = {};
-
-
-
-console.log('\n\n\n======== START =======');
-
-
-/* File Tree reader */
-
-// transform symbolic link
-//var symlink = fs.readlinkSync(__dirname + '/../../public');
-//var link = symlink + 'data/pages_tree.json';
-
-// read data from file
-var file = fs.ReadStream(__dirname + '/../../public/data/pages_tree.json', { encoding: 'UTF-8' });
-
-file.on('readable', function (err) {
-    if (err) console.log('READABLE: ', err);
-
-    var data = file.read();
-    body += data;
-});
-
-file.on('end', function (err) {
-    if (err) console.log('END: ', err);
-
-    var api = fs.writeFile('./api.json', body, function () {
-       console.log('---> api.json is written.');
-    });
-
-//    console.log(JSON.parse(body));
-    getPaths( JSON.parse(body), ['base', 'mob'] );
-    getCats( JSON.parse(body) );
-//    console.log(_path);
-    console.log(cats);
-});
-/* /File Tree reader */
-
-
-
-module.exports = function api(req, res, next) {
-
-    var headers = {
+    cats = {},
+    headers = {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
         'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
         'Access-Control-Allow-Credentials': true
     };
+
+
+console.log('\n\n\n======== START =======');
+
+
+/* File Tree reader */
+var file = fs.ReadStream(__dirname + '/../../public/data/pages_tree.json', { encoding: 'UTF-8' });
+
+file
+    .on('readable', function (err) {
+        if (err) console.log('READABLE: ', err);
+
+        var data = file.read();
+        body += data;
+    })
+
+    .on('end', function (err) {
+        if (err) console.log('END: ', err);
+
+        var api = fs.writeFile('./api.json', body, function () {
+           console.log('---> api.json is written.');
+        });
+
+    getPaths( JSON.parse(body), ['base', 'mob'] );
+    getCats( JSON.parse(body) );
+//    console.log(_path);
+//    console.log(cats);
+});
+/* /File Tree reader */
+
+
+
+module.exports = function api(req, res, next) {
 
     if (req.url == '/api') {
 
@@ -167,8 +159,6 @@ function postParser(req, callback) {
     });
 
 }
-
-
 
 function getPaths(obj) {
 
