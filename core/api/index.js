@@ -28,7 +28,8 @@ fs.stat(__dirname + '/api.json', function (err, data) {
         apiState = 'not found';
     } else {
         console.log('stats:\n', data);
-        if ((data.atime - data.mtime) / 60000 < 10) {
+        console.log((new Date - data.mtime) / 15000);
+        if ((new Date - data.mtime) / 15000 < 10) {
             console.log('Api is fresh');
             apiState = 'fresh';
         } else {
