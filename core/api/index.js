@@ -21,24 +21,23 @@ var body = '',
 
 /* File Tree reader */
 fs.stat(__dirname + '/api.json', function (err, data) {
-    if (data == undefined) {
+    if (data == undefined || process.argv.indexOf('reload') !== -1) {
         console.log('Stat error: ', err);
-        apiState = 'not found';
+        console.log('* API need to be updated.\n');
+        apiState = false;
     } else {
-        console.log('stats:\n', data);
-        console.log((new Date - data.mtime) / 60000 );
-        if ((new Date - data.mtime) / 60000 < 1) {
-            console.log('Api is fresh.\n');
-            apiState = 'fresh';
+        console.log( (new Date - data.mtime) / 60000 );
+
+        if ((new Date - data.mtime) / 60000 < 2) {
+            console.log('* API is fresh.\n');
+            apiState = true;
         } else {
-            console.log('Api is old shit.\nOhmy, I reload it again.\n')
-            apiState = 'old';
+            console.log('* API is old shit.\nOhmy, I reload it again.\n')
+            apiState = false;
         }
     }
 
-    if (process.argv.indexOf('reload') !== -1) apiState = 'old';
-
-    if (apiState == 'old' || apiState == 'not found') {
+    if (!apiState) {
         console.log('---> Reading pages_tree.json..');
         fs.readFile(__dirname + '/../../public/data/pages_tree.json', function (err, data) {
             if (err) console.log(err);
@@ -49,14 +48,13 @@ fs.stat(__dirname + '/api.json', function (err, data) {
                 console.log('---> File api.json has been written.');
 
                 exec('node ' + __dirname + '/getHTMLParts/index.js '+ __dirname +' '+__dirname+'/../clarify ' + global.opts.common.port, function(err, stdout){
-                    if (err){
-                        console.log(err);
-                    }
+                    if (err) console.log(err);
 
                     console.log(stdout);
+                    console.log(JSON.parse(stdout).written == true);
 
-                    var waiting = setInterval(function(){
-                        if(JSON.parse(stdout).response==true) {
+                    var waiting = setInterval(function() {
+                        if(JSON.parse(stdout).written == true) {
                             setTimeout(function(){
                                 fs.readFile(__dirname + '/api.json', { encoding: 'UTF-8' }, function (err, data) {
                                     if (err) console.log(err);
@@ -64,26 +62,19 @@ fs.stat(__dirname + '/api.json', function (err, data) {
                                     console.log('--> New file readed.');
                                     body = data;
 
-//                                    console.log('++++++++++++++++ body',body);
-//                                    fs.readFile('api2.json', function (data) {
+                                    _path = [];
+                                    getPaths( JSON.parse(data) );
 
-                                        _path = [];
-                                        getPaths( JSON.parse(data) );
-
-                                        cats = {};
-                                        getCats( JSON.parse(data) );
-//                                    })
-//
+                                    cats = {};
+                                    getCats( JSON.parse(data) );
                                 });
-                            }, 10000);
+                            }, 3000);
 
                             clearInterval(waiting);
                         }
-                    }, 10000);
+                    }, 3000);
                 });
             });
-
-
         });
     } else {
         fs.readFile(__dirname + '/api.json', function (err, data) {
@@ -95,7 +86,6 @@ fs.stat(__dirname + '/api.json', function (err, data) {
     }
 });
 
-//console.log('apiSTAT', apiState);
 
 
 module.exports = function api(req, res, next) {

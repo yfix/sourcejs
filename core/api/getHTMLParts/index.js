@@ -9,12 +9,11 @@ function go (filename) {
 		totalStruct = JSON.parse(fs.readFileSync(filename, { encoding: 'UTF-8' }));
 
 	function writeToFile() {
-        console.log('{"response":true}');
+//        console.log('{"response":true}');
 
 		fs.writeFile(process.argv[2]+'/api.json', JSON.stringify(totalStruct, null, 4), function (err) {
-			if (err) {
-				console.log(err);
-			}
+			if (err) console.log(err);
+            console.log('{"written": true}');
 		});
 	}
 
