@@ -38,44 +38,7 @@ fs.stat(__dirname + '/api.json', function (err, data) {
     }
 
     if (!apiState) {
-        console.log('---> Reading pages_tree.json..');
-        fs.readFile(__dirname + '/../../public/data/pages_tree.json', function (err, data) {
-            if (err) console.log(err);
-
-            body = data;
-
-            fs.writeFile(__dirname +'/api.json', body, function () {
-                console.log('---> File api.json has been written.');
-
-                exec('node ' + __dirname + '/getHTMLParts/index.js '+ __dirname +' '+__dirname+'/../clarify ' + global.opts.common.port, function(err, stdout){
-                    if (err) console.log(err);
-
-                    console.log(stdout);
-                    console.log(JSON.parse(stdout).written == true);
-
-                    var waiting = setInterval(function() {
-                        if(JSON.parse(stdout).written == true) {
-                            setTimeout(function(){
-                                fs.readFile(__dirname + '/api.json', { encoding: 'UTF-8' }, function (err, data) {
-                                    if (err) console.log(err);
-
-                                    console.log('--> New file readed.');
-                                    body = data;
-
-                                    _path = [];
-                                    getPaths( JSON.parse(data) );
-
-                                    cats = {};
-                                    getCats( JSON.parse(data) );
-                                });
-                            }, 3000);
-
-                            clearInterval(waiting);
-                        }
-                    }, 3000);
-                });
-            });
-        });
+        updateApi();
     } else {
         fs.readFile(__dirname + '/api.json', function (err, data) {
             body = data;
@@ -144,7 +107,13 @@ module.exports = function api(req, res, next) {
             res.end(body);
         }
 
-    } else next();
+    } else if (req.url == '/api-update') {
+        updateApi();
+        res.writeHead(200, headers);
+        res.end(body);
+    } else {
+        next();
+    }
 
 }
 
@@ -153,8 +122,48 @@ module.exports = function api(req, res, next) {
 console.log('---> API connected succesfully.');
 
 
-
 // Helpers
+
+function updateApi() {
+    console.log('---> Reading pages_tree.json..');
+    fs.readFile(__dirname + '/../../public/data/pages_tree.json', function (err, data) {
+        if (err) console.log(err);
+
+        body = data;
+
+        fs.writeFile(__dirname +'/api.json', body, function () {
+            console.log('---> File api.json has been written.');
+
+            exec('node ' + __dirname + '/getHTMLParts/index.js '+ __dirname +' '+__dirname+'/../clarify ' + global.opts.common.port, function(err, stdout){
+                if (err) console.log(err);
+
+                console.log(stdout);
+                console.log(JSON.parse(stdout).written == true);
+
+                var waiting = setInterval(function() {
+                    if(JSON.parse(stdout).written == true) {
+                        setTimeout(function(){
+                            fs.readFile(__dirname + '/api.json', { encoding: 'UTF-8' }, function (err, data) {
+                                if (err) console.log(err);
+
+                                console.log('--> New file readed.');
+                                body = data;
+
+                                _path = [];
+                                getPaths( JSON.parse(data) );
+
+                                cats = {};
+                                getCats( JSON.parse(data) );
+                            });
+                        }, 3000);
+
+                        clearInterval(waiting);
+                    }
+                }, 3000);
+            });
+        });
+    });
+}
 
 function postParser(req, callback) {
 
@@ -215,13 +224,6 @@ function getCats(obj) {
 }
 
 
-/**
- * Ajax
- *
- * method: POST
- * url: /api
- * data: {task: 'CSSModifiers', spec: { id: <path>, sec: <num>}}
- */
 
 /*
 $.ajax('/api', {

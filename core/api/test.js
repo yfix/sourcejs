@@ -1,31 +1,21 @@
-var fs = require('fs'),
-    execSync = require('exec-sync');
+// stream testing
+
+var exec = require('child_process').exec;
 
 
-var params = "http://127.0.0.1:8080";
-var arr = [
-    '/base/amodal',
-    '/mob/base/buttons'
-//    '/project/photo',
-//    '/project/posting-form/cross-posting',
-];
 
 var output = [];
-
-
-arr.map(function(item) {
-//    console.log(item);
-    var out = execSync(__dirname + '/../clarify/phantomjs getHTMLParts/ph.js '+ params+item, true);
-
-
-//    output.push(out.stdout);
-    console.log(out.stdout);
-//
-//
+var child = exec('curl mail.ru', function (err, stdout, stderr) {
+//    console.log(child);
+//    output = stdout;
 });
 
-//console.log(output[3]);
-//console.log(output.length);
+child.stdout.on('data', function (data) {
+    output.push(data);
+});
 
+child.stdout.on('end', function () {
+   console.log(output.length);
+});F
 
 
