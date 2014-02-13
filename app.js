@@ -134,9 +134,9 @@ if (!module.parent) {
     var d = new Date(),
         dateArr = [d.getHours(), d.getMinutes(), d.getSeconds()],
         dateArr = dateArr.map(function (el) { return (el > 9)? el : '0'+ el; }),
-        dateString = (MODE == 'development')? ' startup in '.blue + dateArr.join(':').red : '';
+        dateString = dateArr.join(':').red;
 
-    console.log('[SOURCE]'.blue + dateString +' and working on '.blue + portString.red + ' port in '.blue + MODE.blue + ' mode...'.blue);
+    console.log(dateString + ' [SOURCE] lauched on '.blue + portString.red + ' port in '.blue + MODE.blue + ' mode...'.blue);
 }
 
 function logErrors(err, req, res, next) {
