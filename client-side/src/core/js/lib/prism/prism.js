@@ -219,7 +219,6 @@
                     }
 
                     pattern.lastIndex = 0;
-
                     var match = pattern.exec(str);
 
                     if (match) {
@@ -242,6 +241,10 @@
 
                         var wrapped = new Token(token, inside? _.tokenize(match, inside) : match);
 
+                        console.log(wrapped);
+                        if (wrapped['type'] === 'new' || wrapped['type'] === 'old') {
+                            wrapped['content'] = wrapped['content'].replace(/{\/?(new|old)}/g, '');
+                        }
                         args.push(wrapped);
 
                         if (after) {
@@ -407,6 +410,12 @@ Prism.languages.css = {
     'important': /\B!important\b/gi,
     'ignore': /&(lt|gt|amp);/gi,
     'punctuation': /[\{\};:]/g
+};
+
+Prism.languages.json = {
+    'old': /\{old\}[\w\W]*?\{\/old\}/ig,
+    'new': /\{new\}[\w\W]*?{\/new}/ig,
+    'json-property': /(\b|\B)[\w-]+(?=\s*:)/ig
 };
 
 if (Prism.languages.html) {

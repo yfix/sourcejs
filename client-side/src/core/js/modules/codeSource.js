@@ -31,6 +31,7 @@ define([
                 SourceCodeToggleCSS = SourceCodeToggle + '__css',
                 SourceCodeToggleHTML = SourceCodeToggle + '__html',
                 SourceCodeToggleJS = SourceCodeToggle + '__js',
+                SourceCodeToggleJSON = SourceCodeToggle + '__json',
 
                 SourceCodeToggleAll = 'source_source-code_toggle-all',
                 SourceCodeToggleAllHide = SourceCodeToggleAll + '__hide',
@@ -67,6 +68,8 @@ define([
                         formatClass += 'css';
                     } else if (_this.hasClass('js')) {
                         formatClass += 'js';
+                    } else if (_this.hasClass('json')) {
+                        formatClass += 'json';
                     } else {
                         formatClass += 'html';
                     }
@@ -126,6 +129,8 @@ define([
                         langClass = SourceCodeToggleCSS;
                     } else if (parent.hasClass('src-js')) {
                         langClass = SourceCodeToggleJS;
+                    } else if (parent.hasClass('src-json')) {
+                        langClass = SourceCodeToggleJSON;
                     } else {
                         langClass = SourceCodeToggleHTML;
                     }
